@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ming's Tools — Quick Access</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2314161A'/%3E%3Crect x='6' y='6' width='9' height='9' rx='2' fill='%23D5672B'/%3E%3Crect x='17' y='6' width='9' height='9' rx='2' fill='%235B8BA0'/%3E%3Crect x='6' y='17' width='9' height='9' rx='2' fill='%235B8BA0'/%3E%3Crect x='17' y='17' width='9' height='9' rx='2' fill='%23D5672B'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;family=Inter:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:        #14161A;
+    --bg-2:      #191C21;
+    --panel:     #1E2126;
+    --panel-hi:  #23262C;
+    --border:    #2A2E34;
+    --text:      #ECE7DF;
+    --muted:     #868C94;
+    --faint:     #565B62;
+    --orange:    #D5672B;
+    --orange-hi: #E87B3E;
+    --blue:      #5B8BA0;
+    --blue-hi:   #6EA0B6;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(213,103,43,0.07), transparent 60%),
+      radial-gradient(ellipse 900px 500px at 90% 0%, rgba(91,139,160,0.06), transparent 60%);
+    color:var(--text);
+    font-family:'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  a{ color:inherit; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  header{
+    padding:2.6rem 1.5rem 1.8rem;
+    background:
+      repeating-linear-gradient(135deg, rgba(213,103,43,0.05) 0 2px, transparent 2px 14px),
+      var(--bg-2);
+    border-bottom:1px solid var(--border);
+  }
+  .header-inner{ max-width:1080px; margin:0 auto; }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 0.6rem;
+  }
+  .eyebrow::before{ content:"● "; color:var(--orange); }
+  .version-tag{
+    font-family:'IBM Plex Mono', monospace; font-size:0.68rem; color:var(--faint);
+    letter-spacing:0.06em; float:right; margin-top:0.15rem;
+  }
+  h1{
+    font-family:'Oswald', sans-serif;
+    font-weight:700;
+    font-size:clamp(2rem, 5vw, 2.9rem);
+    letter-spacing:0.02em;
+    text-transform:uppercase;
+    margin:0 0 0.35rem;
+  }
+  h1 span{ color:var(--orange); }
+  .sub{ color:var(--muted); font-size:0.95rem; max-width:50ch; margin:0; }
+
+  /* ---------- controls ---------- */
+  .controls{
+    max-width:1080px; margin:1.6rem auto 0; padding:0 1.5rem;
+    display:flex; gap:0.6rem; flex-wrap:wrap; align-items:center;
+  }
+  #search{
+    flex:1 1 220px; background:var(--panel); border:1px solid var(--border);
+    color:var(--text); font-family:'Inter', sans-serif; font-size:0.9rem;
+    padding:0.65rem 0.9rem; border-radius:8px; outline:none;
+    transition:border-color .15s ease;
+  }
+  #search:focus{ border-color:var(--orange); }
+  #search::placeholder{ color:var(--faint); }
+
+  .filter-btn{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.06em;
+    text-transform:uppercase; background:transparent; border:1px solid var(--border);
+    color:var(--muted); padding:0.6rem 0.9rem; border-radius:8px; transition:all .15s ease;
+  }
+  .filter-btn:hover{ border-color:var(--faint); color:var(--text); }
+  .filter-btn.active[data-filter="all"]{ border-color:var(--text); color:var(--text); }
+  .filter-btn.active[data-filter="operational"]{ border-color:var(--orange); color:var(--orange-hi); }
+  .filter-btn.active[data-filter="reference"]{ border-color:var(--blue); color:var(--blue-hi); }
+
+  .edit-toggle{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.06em;
+    text-transform:uppercase; background:var(--panel); border:1px solid var(--border);
+    color:var(--text); padding:0.6rem 1rem; border-radius:8px; margin-left:auto;
+    transition:all .15s ease;
+  }
+  .edit-toggle:hover{ border-color:var(--orange); }
+  .edit-toggle.on{ background:var(--orange); border-color:var(--orange); color:#14161A; font-weight:600; }
+
+  /* ---------- edit panel ---------- */
+  #editPanel{
+    max-width:1080px; margin:1rem auto 0; padding:1.1rem 1.5rem;
+  }
+  #editPanel[hidden]{ display:none; }
+  .panel-box{
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    padding:1.1rem 1.2rem; display:flex; flex-wrap:wrap; gap:0.7rem; align-items:flex-end;
+  }
+  .field{ display:flex; flex-direction:column; gap:0.35rem; flex:1 1 160px; }
+  .field.wide{ flex:2 1 240px; }
+  .field label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.66rem; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--muted);
+  }
+  .field input, .field select, .field textarea{
+    background:var(--bg); border:1px solid var(--border); color:var(--text);
+    font-family:'Inter', sans-serif; font-size:0.87rem; padding:0.55rem 0.7rem;
+    border-radius:7px; outline:none; resize:vertical; min-height:38px;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{ border-color:var(--orange); }
+  .field textarea{ min-height:38px; max-height:90px; }
+
+  #f-submit{
+    background:var(--orange); border:1px solid var(--orange); color:#14161A;
+    font-weight:600; font-size:0.85rem; padding:0.6rem 1.1rem; border-radius:7px;
+  }
+  #f-submit:hover{ background:var(--orange-hi); }
+  #f-cancel{
+    background:transparent; border:1px solid var(--border); color:var(--muted);
+    font-size:0.85rem; padding:0.6rem 1rem; border-radius:7px;
+  }
+  #f-cancel:hover{ color:var(--text); border-color:var(--faint); }
+
+  .download-row{
+    max-width:1080px; margin:0.7rem auto 0; padding:0 1.5rem;
+    display:flex; align-items:center; gap:0.7rem; flex-wrap:wrap;
+  }
+  #downloadBtn{
+    background:var(--blue); border:1px solid var(--blue); color:#14161A; font-weight:600;
+    font-size:0.82rem; padding:0.6rem 1rem; border-radius:7px;
+  }
+  #downloadBtn:hover{ background:var(--blue-hi); }
+  .download-hint{ font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--faint); }
+
+  /* ---------- grid + cards ---------- */
+  main{ max-width:1080px; margin:0 auto; padding:2rem 1.5rem 4rem; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:1.1rem; }
+
+  .card{
+    position:relative; background:var(--panel); border:1px solid var(--border);
+    border-radius:10px; padding:1.3rem 1.2rem 1.15rem; display:flex; flex-direction:column;
+    gap:0.7rem; transition:transform .15s ease, background .15s ease, border-color .15s ease;
+  }
+  .card.clickable{ cursor:pointer; }
+  .card.clickable:hover{ background:var(--panel-hi); transform:translateY(-2px); border-color:var(--faint); }
+
+  .card::before{
+    content:""; position:absolute; top:-1px; left:14px; right:14px; height:3px;
+    border-radius:0 0 3px 3px;
+  }
+  .card[data-category="operational"]::before{ background:var(--orange); }
+  .card[data-category="reference"]::before{ background:var(--blue); }
+
+  .card::after{
+    content:""; position:absolute; top:9px; right:12px; width:5px; height:5px;
+    border-radius:50%; background:var(--faint);
+  }
+
+  .card-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:0.6rem; }
+  .icon{ flex:none; width:24px; height:24px; }
+  .card[data-category="operational"] .icon{ color:var(--orange-hi); }
+  .card[data-category="reference"] .icon{ color:var(--blue-hi); }
+
+  .card-actions{ display:none; gap:0.35rem; }
+  body.edit-mode .card-actions{ display:flex; }
+  .icon-btn{
+    background:var(--bg); border:1px solid var(--border); color:var(--muted);
+    width:24px; height:24px; border-radius:6px; font-size:0.72rem; line-height:1;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .icon-btn:hover{ color:var(--text); border-color:var(--faint); }
+  .icon-btn.delete-btn:hover{ color:#E0645A; border-color:#E0645A; }
+
+  .card h2{
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:1.08rem;
+    letter-spacing:0.015em; text-transform:uppercase; margin:0; line-height:1.25;
+  }
+  .card p{ font-size:0.86rem; color:var(--muted); line-height:1.45; margin:0; flex:1; }
+  .card-foot{
+    display:flex; align-items:center; justify-content:space-between; margin-top:0.2rem;
+    padding-top:0.7rem; border-top:1px solid var(--border);
+  }
+  .meta{ font-family:'IBM Plex Mono', monospace; font-size:0.68rem; color:var(--faint); letter-spacing:0.02em; }
+  .open{ font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase; text-decoration:none; }
+  .card[data-category="operational"] .open{ color:var(--orange-hi); }
+  .card[data-category="reference"] .open{ color:var(--blue-hi); }
+
+  #emptyState{
+    display:none; text-align:center; color:var(--muted); font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem; padding:3rem 1rem; border:1px dashed var(--border); border-radius:10px;
+  }
+
+  footer{
+    max-width:1080px; margin:0 auto; padding:0 1.5rem 2.5rem; color:var(--faint);
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem;
+  }
+
+  @media (prefers-reduced-motion: reduce){ .card{ transition:none; } }
+</style>
+</head>
+<body class="">
+
+<header>
+  <div class="header-inner">
+    <p class="eyebrow">Personal Dashboard<span class="version-tag">v2</span></p>
+    <h1>MING'S <span>TOOLS</span></h1>
+    <p class="sub">Quick access to my tools and projects. Click Edit to add a link, then download to publish it as your GitHub Pages index.html.</p>
+  </div>
+</header>
+
+<div class="controls">
+  <input id="search" type="text" placeholder="Search tools…" autocomplete="off">
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="operational">Operational</button>
+  <button class="filter-btn" data-filter="reference">Reference</button>
+  <button class="edit-toggle" id="editToggle">✎ Edit</button>
+</div>
+
+<div id="editPanel" hidden="">
+  <form class="panel-box" id="toolForm">
+    <div class="field wide">
+      <label for="f-title">Title</label>
+      <input id="f-title" type="text" placeholder="e.g. Sample Station Dashboard" required="">
+    </div>
+    <div class="field wide">
+      <label for="f-desc">Description</label>
+      <input id="f-desc" type="text" placeholder="One short line about what it does">
+    </div>
+    <div class="field wide">
+      <label for="f-url">GitHub / page URL</label>
+      <input id="f-url" type="text" placeholder="https://username.github.io/repo/ or filename.html" required="">
+    </div>
+    <div class="field">
+      <label for="f-category">Category</label>
+      <select id="f-category">
+        <option value="operational">Operational</option>
+        <option value="reference">Reference</option>
+      </select>
+    </div>
+    <button type="submit" id="f-submit">Add Tool</button>
+    <button type="button" id="f-cancel" hidden="">Cancel</button>
+  </form>
+  <div class="download-row">
+    <button id="downloadBtn">⬇ Download index.html</button>
+    <span class="download-hint">Saves everything above into a ready-to-upload index.html for your GitHub Pages repo.</span>
+  </div>
+</div>
+
+<main>
+  <section class="grid" id="toolGrid"><div class="card clickable" data-category="operational">
+        <div class="card-top">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+          <div class="card-actions">
+            <button type="button" class="icon-btn edit-btn" data-index="0" title="Edit">✎</button>
+            <button type="button" class="icon-btn delete-btn" data-index="0" title="Delete">✕</button>
+          </div>
+        </div>
+        <h2>COA Backlog</h2>
+        <p>2 tab, 1 for COA authorising, 1 for L1</p>
+        <div class="card-foot">
+          <span class="meta">operational</span>
+          <a class="open" href="https://mingfahfong-dev.github.io/Backlog/" target="_blank" rel="noopener">Open →</a>
+        </div>
+      </div><div class="card clickable" data-category="operational">
+        <div class="card-top">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+          <div class="card-actions">
+            <button type="button" class="icon-btn edit-btn" data-index="1" title="Edit">✎</button>
+            <button type="button" class="icon-btn delete-btn" data-index="1" title="Delete">✕</button>
+          </div>
+        </div>
+        <h2>Lab Roster</h2>
+        <p>need password, ask Ming</p>
+        <div class="card-foot">
+          <span class="meta">operational</span>
+          <a class="open" href="https://mingfahfong-dev.github.io/Roster/" target="_blank" rel="noopener">Open →</a>
+        </div>
+      </div><div class="card clickable" data-category="operational">
+        <div class="card-top">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+          <div class="card-actions">
+            <button type="button" class="icon-btn edit-btn" data-index="2" title="Edit">✎</button>
+            <button type="button" class="icon-btn delete-btn" data-index="2" title="Delete">✕</button>
+          </div>
+        </div>
+        <h2>ESLS</h2>
+        <p>convert ESLS for people with poor vision</p>
+        <div class="card-foot">
+          <span class="meta">operational</span>
+          <a class="open" href="https://mingfahfong-dev.github.ioESLS/" target="_blank" rel="noopener">Open →</a>
+        </div>
+      </div><div class="card clickable" data-category="operational">
+        <div class="card-top">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+          <div class="card-actions">
+            <button type="button" class="icon-btn edit-btn" data-index="3" title="Edit">✎</button>
+            <button type="button" class="icon-btn delete-btn" data-index="3" title="Delete">✕</button>
+          </div>
+        </div>
+        <h2>Parcher/LOI</h2>
+        <p>Parcher/LOI ISO</p>
+        <div class="card-foot">
+          <span class="meta">operational</span>
+          <a class="open" href="https://mingfahfong-dev.github.io/Parcher/" target="_blank" rel="noopener">Open →</a>
+        </div>
+      </div><div class="card clickable" data-category="reference">
+        <div class="card-top">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+          <div class="card-actions">
+            <button type="button" class="icon-btn edit-btn" data-index="4" title="Edit">✎</button>
+            <button type="button" class="icon-btn delete-btn" data-index="4" title="Delete">✕</button>
+          </div>
+        </div>
+        <h2>Sample Station Dashboard</h2>
+        <p>check berth, control contact number and moisture correction value</p>
+        <div class="card-foot">
+          <span class="meta">reference</span>
+          <a class="open" href="https://mingfahfong-dev.github.io/Station/" target="_blank" rel="noopener">Open →</a>
+        </div>
+      </div><div class="card clickable" data-category="reference">
+        <div class="card-top">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+          <div class="card-actions">
+            <button type="button" class="icon-btn edit-btn" data-index="5" title="Edit">✎</button>
+            <button type="button" class="icon-btn delete-btn" data-index="5" title="Delete">✕</button>
+          </div>
+        </div>
+        <h2>Shipping Quality Limit</h2>
+        <p>FY2026/FY2027</p>
+        <div class="card-foot">
+          <span class="meta">reference</span>
+          <a class="open" href="https://mingfahfong-dev.github.io/Limit/" target="_blank" rel="noopener">Open →</a>
+        </div>
+      </div><div class="card clickable" data-category="operational">
+        <div class="card-top">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+          <div class="card-actions">
+            <button type="button" class="icon-btn edit-btn" data-index="6" title="Edit">✎</button>
+            <button type="button" class="icon-btn delete-btn" data-index="6" title="Delete">✕</button>
+          </div>
+        </div>
+        <h2>Sample Barcode Generator</h2>
+        <p>Generate Barcode</p>
+        <div class="card-foot">
+          <span class="meta">operational</span>
+          <a class="open" href="https://mingfahfong-dev.github.io/Barcode/" target="_blank" rel="noopener">Open →</a>
+        </div>
+      </div><div class="card clickable" data-category="operational">
+        <div class="card-top">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+          <div class="card-actions">
+            <button type="button" class="icon-btn edit-btn" data-index="7" title="Edit">✎</button>
+            <button type="button" class="icon-btn delete-btn" data-index="7" title="Delete">✕</button>
+          </div>
+        </div>
+        <h2>Login QR Scan</h2>
+        <p>save your username/password for scanner login</p>
+        <div class="card-foot">
+          <span class="meta">operational</span>
+          <a class="open" href="https://mingfahfong-dev.github.io/Login/" target="_blank" rel="noopener">Open →</a>
+        </div>
+      </div><div class="card clickable" data-category="reference">
+        <div class="card-top">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+          <div class="card-actions">
+            <button type="button" class="icon-btn edit-btn" data-index="8" title="Edit">✎</button>
+            <button type="button" class="icon-btn delete-btn" data-index="8" title="Delete">✕</button>
+          </div>
+        </div>
+        <h2>ASCRM COA Reference</h2>
+        <p>check ASCRM30, ASCRM32 and ASCRM34 certified values</p>
+        <div class="card-foot">
+          <span class="meta">reference</span>
+          <a class="open" href="https://mingfahfong-dev.github.io/ASCRM/" target="_blank" rel="noopener">Open →</a>
+        </div>
+      </div></section>
+  <p id="emptyState" style="display: none;">No tools yet — click <strong>Edit</strong> above to add your first one.</p>
+</main>
+
+<footer>
+  Mings_Tools_v2.html — Click Edit to add, update, or remove tools. Download saves the current list into a new index.html you can push to GitHub.
+</footer>
+
+<!-- Single source of truth for the tool list. Download rewrites this block. -->
+<script id="tools-data" type="application/json">[
+  {
+    "title": "COA Backlog",
+    "description": "2 tab, 1 for COA authorising, 1 for L1",
+    "url": "https://mingfahfong-dev.github.io/Backlog/",
+    "category": "operational"
+  },
+  {
+    "title": "Lab Roster",
+    "description": "need password, ask Ming",
+    "url": "https://mingfahfong-dev.github.io/Roster/",
+    "category": "operational"
+  },
+  {
+    "title": "ESLS",
+    "description": "convert ESLS for people with poor vision",
+    "url": "https://mingfahfong-dev.github.ioESLS/",
+    "category": "operational"
+  },
+  {
+    "title": "Parcher/LOI",
+    "description": "Parcher/LOI ISO",
+    "url": "https://mingfahfong-dev.github.io/Parcher/",
+    "category": "operational"
+  },
+  {
+    "title": "Sample Station Dashboard",
+    "description": "check berth, control contact number and moisture correction value",
+    "url": "https://mingfahfong-dev.github.io/Station/",
+    "category": "reference"
+  },
+  {
+    "title": "Shipping Quality Limit",
+    "description": "FY2026/FY2027",
+    "url": "https://mingfahfong-dev.github.io/Limit/",
+    "category": "reference"
+  },
+  {
+    "title": "Sample Barcode Generator",
+    "description": "Generate Barcode",
+    "url": "https://mingfahfong-dev.github.io/Barcode/",
+    "category": "operational"
+  },
+  {
+    "title": "Login QR Scan",
+    "description": "save your username/password for scanner login",
+    "url": "https://mingfahfong-dev.github.io/Login/",
+    "category": "operational"
+  },
+  {
+    "title": "ASCRM COA Reference",
+    "description": "check ASCRM30, ASCRM32 and ASCRM34 certified values",
+    "url": "https://mingfahfong-dev.github.io/ASCRM/",
+    "category": "reference"
+  }
+]</script>
+
+<script>
+  let tools = [];
+  try{ tools = JSON.parse(document.getElementById('tools-data').textContent || '[]'); }catch(e){ tools = []; }
+
+  let activeFilter = 'all';
+  let editingIndex = null;
+
+  const grid = document.getElementById('toolGrid');
+  const emptyState = document.getElementById('emptyState');
+  const search = document.getElementById('search');
+  const editToggle = document.getElementById('editToggle');
+  const editPanel = document.getElementById('editPanel');
+  const form = document.getElementById('toolForm');
+  const fTitle = document.getElementById('f-title');
+  const fDesc = document.getElementById('f-desc');
+  const fUrl = document.getElementById('f-url');
+  const fCategory = document.getElementById('f-category');
+  const fSubmit = document.getElementById('f-submit');
+  const fCancel = document.getElementById('f-cancel');
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, ch => ({
+      '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+    }[ch]));
+  }
+
+  function persistData(){
+    const json = JSON.stringify(tools, null, 2).replace(/</g, '\\u003c');
+    document.getElementById('tools-data').textContent = json;
+  }
+
+  const ICON = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg>';
+
+  function render(){
+    persistData();
+    const q = search.value.trim().toLowerCase();
+    grid.innerHTML = '';
+    let visible = 0;
+
+    tools.forEach((t, i) => {
+      const matchesCategory = activeFilter === 'all' || t.category === activeFilter;
+      const matchesSearch = q === '' || (t.title + ' ' + t.description).toLowerCase().includes(q);
+      if(!matchesCategory || !matchesSearch) return;
+      visible++;
+
+      const card = document.createElement('div');
+      card.className = 'card clickable';
+      card.dataset.category = t.category;
+      card.innerHTML = `
+        <div class="card-top">
+          ${ICON}
+          <div class="card-actions">
+            <button type="button" class="icon-btn edit-btn" data-index="${i}" title="Edit">✎</button>
+            <button type="button" class="icon-btn delete-btn" data-index="${i}" title="Delete">✕</button>
+          </div>
+        </div>
+        <h2>${escapeHtml(t.title)}</h2>
+        <p>${escapeHtml(t.description || '')}</p>
+        <div class="card-foot">
+          <span class="meta">${t.category}</span>
+          <a class="open" href="${escapeHtml(t.url)}" target="_blank" rel="noopener">Open →</a>
+        </div>
+      `;
+      card.addEventListener('click', (e) => {
+        if(e.target.closest('button') || e.target.closest('a')) return;
+        window.open(t.url, '_blank', 'noopener');
+      });
+      grid.appendChild(card);
+    });
+
+    emptyState.style.display = visible === 0 ? 'block' : 'none';
+    if(tools.length > 0 && visible === 0){
+      emptyState.innerHTML = 'No tools match your search.';
+    } else if(tools.length === 0){
+      emptyState.innerHTML = 'No tools yet — click <strong>Edit</strong> above to add your first one.';
+    }
+  }
+
+  // ---------- filters ----------
+  search.addEventListener('input', render);
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      render();
+    });
+  });
+
+  // ---------- edit mode ----------
+  editToggle.addEventListener('click', () => {
+    const isOn = document.body.classList.toggle('edit-mode');
+    editToggle.classList.toggle('on', isOn);
+    editPanel.hidden = !isOn;
+    if(!isOn) resetForm();
+  });
+
+  function resetForm(){
+    form.reset();
+    editingIndex = null;
+    fSubmit.textContent = 'Add Tool';
+    fCancel.hidden = true;
+  }
+
+  fCancel.addEventListener('click', resetForm);
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const entry = {
+      title: fTitle.value.trim(),
+      description: fDesc.value.trim(),
+      url: fUrl.value.trim(),
+      category: fCategory.value
+    };
+    if(!entry.title || !entry.url) return;
+
+    if(editingIndex !== null){
+      tools[editingIndex] = entry;
+    } else {
+      tools.push(entry);
+    }
+    resetForm();
+    render();
+  });
+
+  grid.addEventListener('click', (e) => {
+    const editBtn = e.target.closest('.edit-btn');
+    const delBtn = e.target.closest('.delete-btn');
+    if(editBtn){
+      const i = Number(editBtn.dataset.index);
+      const t = tools[i];
+      fTitle.value = t.title;
+      fDesc.value = t.description;
+      fUrl.value = t.url;
+      fCategory.value = t.category;
+      editingIndex = i;
+      fSubmit.textContent = 'Save Changes';
+      fCancel.hidden = false;
+      fTitle.focus();
+    } else if(delBtn){
+      const i = Number(delBtn.dataset.index);
+      if(editingIndex === i) resetForm();
+      tools.splice(i, 1);
+      render();
+    }
+  });
+
+  // ---------- download as index.html ----------
+  document.getElementById('downloadBtn').addEventListener('click', () => {
+    const wasEditMode = document.body.classList.contains('edit-mode');
+    document.body.classList.remove('edit-mode');
+    editToggle.classList.remove('on');
+    editPanel.hidden = true;
+    resetForm();
+    persistData();
+
+    const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    const blob = new Blob([html], { type: 'text/html' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'index.html';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
+
+    if(wasEditMode){
+      document.body.classList.add('edit-mode');
+      editToggle.classList.add('on');
+      editPanel.hidden = false;
+    }
+  });
+
+  render();
+</script>
+
+
+
+</body></html>
