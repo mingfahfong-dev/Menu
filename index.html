@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ming's Tools — Quick Access</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2314161A'/%3E%3Crect x='6' y='6' width='9' height='9' rx='2' fill='%23D5672B'/%3E%3Crect x='17' y='6' width='9' height='9' rx='2' fill='%235B8BA0'/%3E%3Crect x='6' y='17' width='9' height='9' rx='2' fill='%235B8BA0'/%3E%3Crect x='17' y='17' width='9' height='9' rx='2' fill='%23D5672B'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-iphone-180.png">
+<link rel="apple-touch-icon" sizes="167x167" href="apple-touch-icon-ipad-167.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;family=Inter:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
   :root{
@@ -148,6 +151,11 @@
     font-size:0.82rem; padding:0.6rem 1rem; border-radius:7px;
   }
   #downloadBtn:hover{ background:var(--blue-hi); }
+  #exportBtn, #importBtn{
+    background:transparent; border:1px solid var(--border); color:var(--text);
+    font-size:0.82rem; padding:0.6rem 1rem; border-radius:7px;
+  }
+  #exportBtn:hover, #importBtn:hover{ border-color:var(--faint); }
   .download-hint{ font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--faint); }
 
   /* ---------- grid + cards ---------- */
@@ -188,6 +196,8 @@
   }
   .icon-btn:hover{ color:var(--text); border-color:var(--faint); }
   .icon-btn.delete-btn:hover{ color:#E0645A; border-color:#E0645A; }
+  .icon-btn:disabled{ opacity:0.35; cursor:default; }
+  .icon-btn:disabled:hover{ color:var(--muted); border-color:var(--border); }
 
   .card h2{
     font-family:'Oswald', sans-serif; font-weight:600; font-size:1.08rem;
@@ -216,11 +226,11 @@
   @media (prefers-reduced-motion: reduce){ .card{ transition:none; } }
 </style>
 </head>
-<body class="">
+<body>
 
 <header>
   <div class="header-inner">
-    <p class="eyebrow">Personal Dashboard<span class="version-tag">v2</span></p>
+    <p class="eyebrow">Personal Dashboard<span class="version-tag">v4</span></p>
     <h1>MING'S <span>TOOLS</span></h1>
     <p class="sub">Quick access to my tools and projects. Click Edit to add a link, then download to publish it as your GitHub Pages index.html.</p>
   </div>
@@ -234,11 +244,11 @@
   <button class="edit-toggle" id="editToggle">✎ Edit</button>
 </div>
 
-<div id="editPanel" hidden="">
+<div id="editPanel" hidden>
   <form class="panel-box" id="toolForm">
     <div class="field wide">
       <label for="f-title">Title</label>
-      <input id="f-title" type="text" placeholder="e.g. Sample Station Dashboard" required="">
+      <input id="f-title" type="text" placeholder="e.g. Sample Station Dashboard" required>
     </div>
     <div class="field wide">
       <label for="f-desc">Description</label>
@@ -246,7 +256,7 @@
     </div>
     <div class="field wide">
       <label for="f-url">GitHub / page URL</label>
-      <input id="f-url" type="text" placeholder="https://username.github.io/repo/ or filename.html" required="">
+      <input id="f-url" type="text" placeholder="https://username.github.io/repo/ or filename.html" required>
     </div>
     <div class="field">
       <label for="f-category">Category</label>
@@ -256,210 +266,33 @@
       </select>
     </div>
     <button type="submit" id="f-submit">Add Tool</button>
-    <button type="button" id="f-cancel" hidden="">Cancel</button>
+    <button type="button" id="f-cancel" hidden>Cancel</button>
   </form>
   <div class="download-row">
     <button id="downloadBtn">⬇ Download index.html</button>
-    <span class="download-hint">Saves everything above into a ready-to-upload index.html for your GitHub Pages repo.</span>
+    <button id="exportBtn">⬇ Export Data (.json)</button>
+    <button id="importBtn">⬆ Import Data</button>
+    <input type="file" id="importFile" accept="application/json" hidden>
+    <span class="download-hint">Nothing saves automatically — Download before you close this tab, or Export a small backup you can Import again later.</span>
   </div>
 </div>
 
 <main>
-  <section class="grid" id="toolGrid"><div class="card clickable" data-category="operational">
-        <div class="card-top">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
-          <div class="card-actions">
-            <button type="button" class="icon-btn edit-btn" data-index="0" title="Edit">✎</button>
-            <button type="button" class="icon-btn delete-btn" data-index="0" title="Delete">✕</button>
-          </div>
-        </div>
-        <h2>COA Backlog</h2>
-        <p>2 tab, 1 for COA authorising, 1 for L1</p>
-        <div class="card-foot">
-          <span class="meta">operational</span>
-          <a class="open" href="https://mingfahfong-dev.github.io/Backlog/" target="_blank" rel="noopener">Open →</a>
-        </div>
-      </div><div class="card clickable" data-category="operational">
-        <div class="card-top">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
-          <div class="card-actions">
-            <button type="button" class="icon-btn edit-btn" data-index="1" title="Edit">✎</button>
-            <button type="button" class="icon-btn delete-btn" data-index="1" title="Delete">✕</button>
-          </div>
-        </div>
-        <h2>Lab Roster</h2>
-        <p>need password, ask Ming</p>
-        <div class="card-foot">
-          <span class="meta">operational</span>
-          <a class="open" href="https://mingfahfong-dev.github.io/Roster/" target="_blank" rel="noopener">Open →</a>
-        </div>
-      </div><div class="card clickable" data-category="operational">
-        <div class="card-top">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
-          <div class="card-actions">
-            <button type="button" class="icon-btn edit-btn" data-index="2" title="Edit">✎</button>
-            <button type="button" class="icon-btn delete-btn" data-index="2" title="Delete">✕</button>
-          </div>
-        </div>
-        <h2>ESLS</h2>
-        <p>convert ESLS for people with poor vision</p>
-        <div class="card-foot">
-          <span class="meta">operational</span>
-          <a class="open" href="https://mingfahfong-dev.github.ioESLS/" target="_blank" rel="noopener">Open →</a>
-        </div>
-      </div><div class="card clickable" data-category="operational">
-        <div class="card-top">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
-          <div class="card-actions">
-            <button type="button" class="icon-btn edit-btn" data-index="3" title="Edit">✎</button>
-            <button type="button" class="icon-btn delete-btn" data-index="3" title="Delete">✕</button>
-          </div>
-        </div>
-        <h2>Parcher/LOI</h2>
-        <p>Parcher/LOI ISO</p>
-        <div class="card-foot">
-          <span class="meta">operational</span>
-          <a class="open" href="https://mingfahfong-dev.github.io/Parcher/" target="_blank" rel="noopener">Open →</a>
-        </div>
-      </div><div class="card clickable" data-category="reference">
-        <div class="card-top">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
-          <div class="card-actions">
-            <button type="button" class="icon-btn edit-btn" data-index="4" title="Edit">✎</button>
-            <button type="button" class="icon-btn delete-btn" data-index="4" title="Delete">✕</button>
-          </div>
-        </div>
-        <h2>Sample Station Dashboard</h2>
-        <p>check berth, control contact number and moisture correction value</p>
-        <div class="card-foot">
-          <span class="meta">reference</span>
-          <a class="open" href="https://mingfahfong-dev.github.io/Station/" target="_blank" rel="noopener">Open →</a>
-        </div>
-      </div><div class="card clickable" data-category="reference">
-        <div class="card-top">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
-          <div class="card-actions">
-            <button type="button" class="icon-btn edit-btn" data-index="5" title="Edit">✎</button>
-            <button type="button" class="icon-btn delete-btn" data-index="5" title="Delete">✕</button>
-          </div>
-        </div>
-        <h2>Shipping Quality Limit</h2>
-        <p>FY2026/FY2027</p>
-        <div class="card-foot">
-          <span class="meta">reference</span>
-          <a class="open" href="https://mingfahfong-dev.github.io/Limit/" target="_blank" rel="noopener">Open →</a>
-        </div>
-      </div><div class="card clickable" data-category="operational">
-        <div class="card-top">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
-          <div class="card-actions">
-            <button type="button" class="icon-btn edit-btn" data-index="6" title="Edit">✎</button>
-            <button type="button" class="icon-btn delete-btn" data-index="6" title="Delete">✕</button>
-          </div>
-        </div>
-        <h2>Sample Barcode Generator</h2>
-        <p>Generate Barcode</p>
-        <div class="card-foot">
-          <span class="meta">operational</span>
-          <a class="open" href="https://mingfahfong-dev.github.io/Barcode/" target="_blank" rel="noopener">Open →</a>
-        </div>
-      </div><div class="card clickable" data-category="operational">
-        <div class="card-top">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
-          <div class="card-actions">
-            <button type="button" class="icon-btn edit-btn" data-index="7" title="Edit">✎</button>
-            <button type="button" class="icon-btn delete-btn" data-index="7" title="Delete">✕</button>
-          </div>
-        </div>
-        <h2>Login QR Scan</h2>
-        <p>save your username/password for scanner login</p>
-        <div class="card-foot">
-          <span class="meta">operational</span>
-          <a class="open" href="https://mingfahfong-dev.github.io/Login/" target="_blank" rel="noopener">Open →</a>
-        </div>
-      </div><div class="card clickable" data-category="reference">
-        <div class="card-top">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
-          <div class="card-actions">
-            <button type="button" class="icon-btn edit-btn" data-index="8" title="Edit">✎</button>
-            <button type="button" class="icon-btn delete-btn" data-index="8" title="Delete">✕</button>
-          </div>
-        </div>
-        <h2>ASCRM COA Reference</h2>
-        <p>check ASCRM30, ASCRM32 and ASCRM34 certified values</p>
-        <div class="card-foot">
-          <span class="meta">reference</span>
-          <a class="open" href="https://mingfahfong-dev.github.io/ASCRM/" target="_blank" rel="noopener">Open →</a>
-        </div>
-      </div></section>
-  <p id="emptyState" style="display: none;">No tools yet — click <strong>Edit</strong> above to add your first one.</p>
+  <section class="grid" id="toolGrid"></section>
+  <p id="emptyState">No tools yet — click <strong>Edit</strong> above to add your first one.</p>
 </main>
 
 <footer>
-  Mings_Tools_v2.html — Click Edit to add, update, or remove tools. Download saves the current list into a new index.html you can push to GitHub.
+  Mings_Tools_v4.html — Nothing is saved automatically. Click Edit to add/reorder tools, then Download to save into a new index.html, or Export Data as a lightweight backup you can re-Import later.
 </footer>
 
 <!-- Single source of truth for the tool list. Download rewrites this block. -->
-<script id="tools-data" type="application/json">[
-  {
-    "title": "COA Backlog",
-    "description": "2 tab, 1 for COA authorising, 1 for L1",
-    "url": "https://mingfahfong-dev.github.io/Backlog/",
-    "category": "operational"
-  },
-  {
-    "title": "Lab Roster",
-    "description": "need password, ask Ming",
-    "url": "https://mingfahfong-dev.github.io/Roster/",
-    "category": "operational"
-  },
-  {
-    "title": "ESLS",
-    "description": "convert ESLS for people with poor vision",
-    "url": "https://mingfahfong-dev.github.ioESLS/",
-    "category": "operational"
-  },
-  {
-    "title": "Parcher/LOI",
-    "description": "Parcher/LOI ISO",
-    "url": "https://mingfahfong-dev.github.io/Parcher/",
-    "category": "operational"
-  },
-  {
-    "title": "Sample Station Dashboard",
-    "description": "check berth, control contact number and moisture correction value",
-    "url": "https://mingfahfong-dev.github.io/Station/",
-    "category": "reference"
-  },
-  {
-    "title": "Shipping Quality Limit",
-    "description": "FY2026/FY2027",
-    "url": "https://mingfahfong-dev.github.io/Limit/",
-    "category": "reference"
-  },
-  {
-    "title": "Sample Barcode Generator",
-    "description": "Generate Barcode",
-    "url": "https://mingfahfong-dev.github.io/Barcode/",
-    "category": "operational"
-  },
-  {
-    "title": "Login QR Scan",
-    "description": "save your username/password for scanner login",
-    "url": "https://mingfahfong-dev.github.io/Login/",
-    "category": "operational"
-  },
-  {
-    "title": "ASCRM COA Reference",
-    "description": "check ASCRM30, ASCRM32 and ASCRM34 certified values",
-    "url": "https://mingfahfong-dev.github.io/ASCRM/",
-    "category": "reference"
-  }
-]</script>
+<script id="tools-data" type="application/json">[]</script>
 
 <script>
   let tools = [];
   try{ tools = JSON.parse(document.getElementById('tools-data').textContent || '[]'); }catch(e){ tools = []; }
+  let dirty = false;
 
   let activeFilter = 'all';
   let editingIndex = null;
@@ -509,6 +342,8 @@
         <div class="card-top">
           ${ICON}
           <div class="card-actions">
+            <button type="button" class="icon-btn up-btn" data-index="${i}" title="Move up" ${i === 0 ? 'disabled' : ''}>↑</button>
+            <button type="button" class="icon-btn down-btn" data-index="${i}" title="Move down" ${i === tools.length - 1 ? 'disabled' : ''}>↓</button>
             <button type="button" class="icon-btn edit-btn" data-index="${i}" title="Edit">✎</button>
             <button type="button" class="icon-btn delete-btn" data-index="${i}" title="Delete">✕</button>
           </div>
@@ -578,14 +413,27 @@
     } else {
       tools.push(entry);
     }
+    dirty = true;
     resetForm();
     render();
   });
 
   grid.addEventListener('click', (e) => {
+    const upBtn = e.target.closest('.up-btn');
+    const downBtn = e.target.closest('.down-btn');
     const editBtn = e.target.closest('.edit-btn');
     const delBtn = e.target.closest('.delete-btn');
-    if(editBtn){
+    if(upBtn && !upBtn.disabled){
+      const i = Number(upBtn.dataset.index);
+      [tools[i-1], tools[i]] = [tools[i], tools[i-1]];
+      dirty = true;
+      render();
+    } else if(downBtn && !downBtn.disabled){
+      const i = Number(downBtn.dataset.index);
+      [tools[i+1], tools[i]] = [tools[i], tools[i+1]];
+      dirty = true;
+      render();
+    } else if(editBtn){
       const i = Number(editBtn.dataset.index);
       const t = tools[i];
       fTitle.value = t.title;
@@ -600,6 +448,7 @@
       const i = Number(delBtn.dataset.index);
       if(editingIndex === i) resetForm();
       tools.splice(i, 1);
+      dirty = true;
       render();
     }
   });
@@ -622,6 +471,7 @@
     a.click();
     a.remove();
     URL.revokeObjectURL(a.href);
+    dirty = false;
 
     if(wasEditMode){
       document.body.classList.add('edit-mode');
@@ -630,9 +480,60 @@
     }
   });
 
+  // ---------- export / import just the data (lightweight backup) ----------
+  document.getElementById('exportBtn').addEventListener('click', () => {
+    persistData();
+    const blob = new Blob([JSON.stringify(tools, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'mings-tools-data.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
+    dirty = false;
+  });
+
+  document.getElementById('importBtn').addEventListener('click', () => {
+    document.getElementById('importFile').click();
+  });
+
+  document.getElementById('importFile').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const incoming = JSON.parse(reader.result);
+        if(!Array.isArray(incoming)) throw new Error('not an array');
+        const valid = incoming.every(t => typeof t === 'object' && typeof t.title === 'string' && typeof t.url === 'string');
+        if(!valid) throw new Error('unexpected shape');
+        const replace = tools.length === 0 || window.confirm(`Replace the current ${tools.length} tool(s) with ${incoming.length} from this file?`);
+        if(replace){
+          tools = incoming.map(t => ({
+            title: t.title, description: t.description || '', url: t.url,
+            category: (t.category === 'reference') ? 'reference' : 'operational'
+          }));
+          dirty = true;
+          render();
+        }
+      }catch(err){
+        window.alert('Could not read that file — expected a .json export from this tool.');
+      }
+      e.target.value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  window.addEventListener('beforeunload', (e) => {
+    if(dirty){
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  });
+
   render();
 </script>
 
-
-
-</body></html>
+</body>
+</html>
