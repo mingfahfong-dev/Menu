@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ming's Tools — Quick Access</title>
@@ -8,8 +7,8 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-iphone-180.png">
 <link rel="apple-touch-icon" sizes="167x167" href="apple-touch-icon-ipad-167.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;family=Inter:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 
 <style>
   :root{
@@ -25,6 +24,7 @@
     --orange-hi: #E87B3E;
     --blue:      #5B8BA0;
     --blue-hi:   #6EA0B6;
+    --red:       #C0564C;
   }
 
   *{ box-sizing:border-box; }
@@ -75,13 +75,33 @@
   h1 span{ color:var(--orange); }
   .sub{ color:var(--muted); font-size:0.95rem; max-width:50ch; margin:0; }
 
+  /* ---------- group toggle (Tools / BHP) ---------- */
+  .group-row{
+    max-width:1080px; margin:1.6rem auto 0; padding:0 1.5rem;
+    display:flex; gap:0.5rem;
+  }
+  .group-btn{
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:0.85rem; letter-spacing:0.03em;
+    text-transform:uppercase; background:var(--panel); border:1px solid var(--border);
+    color:var(--muted); padding:0.55rem 1.2rem; border-radius:8px 8px 0 0;
+    border-bottom:2px solid transparent; transition:all .15s ease;
+  }
+  .group-btn:hover{ color:var(--text); }
+  .group-btn.active{ color:var(--text); border-bottom-color:var(--orange); background:var(--panel-hi); }
+  .group-btn .lock{ font-size:0.75rem; opacity:0.7; margin-left:0.3rem; }
+
   /* ---------- controls ---------- */
   .controls{
-    max-width:1080px; margin:1.6rem auto 0; padding:0 1.5rem;
+    max-width:1080px; margin:0 auto; padding:0.8rem 1.5rem 0;
     display:flex; gap:0.6rem; flex-wrap:wrap; align-items:center;
+    background:var(--panel-hi); border-radius:0 10px 10px 10px;
+  }
+  .controls-inner{
+    display:flex; gap:0.6rem; flex-wrap:wrap; align-items:center; width:100%;
+    padding-bottom:0.8rem;
   }
   #search{
-    flex:1 1 220px; background:var(--panel); border:1px solid var(--border);
+    flex:1 1 220px; background:var(--bg); border:1px solid var(--border);
     color:var(--text); font-family:'Inter', sans-serif; font-size:0.9rem;
     padding:0.65rem 0.9rem; border-radius:8px; outline:none;
     transition:border-color .15s ease;
@@ -95,23 +115,44 @@
     color:var(--muted); padding:0.6rem 0.9rem; border-radius:8px; transition:all .15s ease;
   }
   .filter-btn:hover{ border-color:var(--faint); color:var(--text); }
-  .filter-btn.active[data-filter="all"]{ border-color:var(--text); color:var(--text); }
-  .filter-btn.active[data-filter="operational"]{ border-color:var(--orange); color:var(--orange-hi); }
-  .filter-btn.active[data-filter="reference"]{ border-color:var(--blue); color:var(--blue-hi); }
+  .filter-btn.active[data-accent="orange"]{ border-color:var(--orange); color:var(--orange-hi); }
+  .filter-btn.active[data-accent="blue"]{ border-color:var(--blue); color:var(--blue-hi); }
+  .filter-btn.active[data-accent="neutral"]{ border-color:var(--text); color:var(--text); }
 
   .edit-toggle{
     font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.06em;
-    text-transform:uppercase; background:var(--panel); border:1px solid var(--border);
+    text-transform:uppercase; background:var(--bg); border:1px solid var(--border);
     color:var(--text); padding:0.6rem 1rem; border-radius:8px; margin-left:auto;
     transition:all .15s ease;
   }
   .edit-toggle:hover{ border-color:var(--orange); }
   .edit-toggle.on{ background:var(--orange); border-color:var(--orange); color:#14161A; font-weight:600; }
 
-  /* ---------- edit panel ---------- */
-  #editPanel{
-    max-width:1080px; margin:1rem auto 0; padding:1.1rem 1.5rem;
+  /* ---------- password gate ---------- */
+  #bhpGate{ max-width:1080px; margin:1.2rem auto 0; padding:0 1.5rem; }
+  #bhpGate[hidden]{ display:none; }
+  .gate-box{
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    padding:2.4rem 1.5rem; max-width:340px; margin:1rem auto; text-align:center;
   }
+  .gate-box .lock-icon{ width:30px; height:30px; margin:0 auto 0.9rem; color:var(--muted); }
+  .gate-label{ font-size:0.88rem; color:var(--muted); margin:0 0 1rem; }
+  #gatePassword{
+    width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text);
+    font-family:'IBM Plex Mono', monospace; font-size:1rem; letter-spacing:0.2em; text-align:center;
+    padding:0.7rem; border-radius:7px; outline:none; margin-bottom:0.8rem;
+  }
+  #gatePassword:focus{ border-color:var(--orange); }
+  #gateSubmit{
+    width:100%; background:var(--orange); border:1px solid var(--orange); color:#14161A;
+    font-weight:600; font-size:0.85rem; padding:0.65rem; border-radius:7px;
+  }
+  #gateSubmit:hover{ background:var(--orange-hi); }
+  .gate-error{ color:var(--red); font-size:0.78rem; margin:0.7rem 0 0; }
+  .gate-error[hidden]{ display:none; }
+
+  /* ---------- edit panel ---------- */
+  #editPanel{ max-width:1080px; margin:1rem auto 0; padding:1.1rem 1.5rem; }
   #editPanel[hidden]{ display:none; }
   .panel-box{
     background:var(--panel); border:1px solid var(--border); border-radius:10px;
@@ -174,8 +215,8 @@
     content:""; position:absolute; top:-1px; left:14px; right:14px; height:3px;
     border-radius:0 0 3px 3px;
   }
-  .card[data-category="operational"]::before{ background:var(--orange); }
-  .card[data-category="reference"]::before{ background:var(--blue); }
+  .card[data-accent="orange"]::before{ background:var(--orange); }
+  .card[data-accent="blue"]::before{ background:var(--blue); }
 
   .card::after{
     content:""; position:absolute; top:9px; right:12px; width:5px; height:5px;
@@ -184,8 +225,8 @@
 
   .card-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:0.6rem; }
   .icon{ flex:none; width:24px; height:24px; }
-  .card[data-category="operational"] .icon{ color:var(--orange-hi); }
-  .card[data-category="reference"] .icon{ color:var(--blue-hi); }
+  .card[data-accent="orange"] .icon{ color:var(--orange-hi); }
+  .card[data-accent="blue"] .icon{ color:var(--blue-hi); }
 
   .card-actions{ display:none; gap:0.35rem; }
   body.edit-mode .card-actions{ display:flex; }
@@ -205,13 +246,20 @@
   }
   .card p{ font-size:0.86rem; color:var(--muted); line-height:1.45; margin:0; flex:1; }
   .card-foot{
-    display:flex; align-items:center; justify-content:space-between; margin-top:0.2rem;
+    display:flex; align-items:center; justify-content:space-between; gap:0.5rem; margin-top:0.2rem;
     padding-top:0.7rem; border-top:1px solid var(--border);
   }
-  .meta{ font-family:'IBM Plex Mono', monospace; font-size:0.68rem; color:var(--faint); letter-spacing:0.02em; }
-  .open{ font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase; text-decoration:none; }
-  .card[data-category="operational"] .open{ color:var(--orange-hi); }
-  .card[data-category="reference"] .open{ color:var(--blue-hi); }
+  .meta{
+    font-family:'IBM Plex Mono', monospace; font-size:0.68rem; color:var(--faint);
+    letter-spacing:0.02em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .open, .copy-btn{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.05em;
+    text-transform:uppercase; text-decoration:none; flex:none; background:transparent; border:none; padding:0;
+  }
+  .card[data-accent="orange"] .open, .card[data-accent="orange"] .copy-btn{ color:var(--orange-hi); }
+  .card[data-accent="blue"] .open, .card[data-accent="blue"] .copy-btn{ color:var(--blue-hi); }
+  .copy-btn.copied{ color:#7FBF8F !important; }
 
   #emptyState{
     display:none; text-align:center; color:var(--muted); font-family:'IBM Plex Mono', monospace;
@@ -226,74 +274,312 @@
   @media (prefers-reduced-motion: reduce){ .card{ transition:none; } }
 </style>
 </head>
-<body>
+<body class="">
 
 <header>
   <div class="header-inner">
-    <p class="eyebrow">Personal Dashboard<span class="version-tag">v4</span></p>
+    <p class="eyebrow">Personal Dashboard<span class="version-tag">v5</span></p>
     <h1>MING'S <span>TOOLS</span></h1>
     <p class="sub">Quick access to my tools and projects. Click Edit to add a link, then download to publish it as your GitHub Pages index.html.</p>
   </div>
 </header>
 
-<div class="controls">
-  <input id="search" type="text" placeholder="Search tools…" autocomplete="off">
-  <button class="filter-btn active" data-filter="all">All</button>
-  <button class="filter-btn" data-filter="operational">Operational</button>
-  <button class="filter-btn" data-filter="reference">Reference</button>
-  <button class="edit-toggle" id="editToggle">✎ Edit</button>
+<div class="group-row">
+  <button class="group-btn active" data-group="tools">Tools</button>
+  <button class="group-btn" data-group="bhp">BHP <span class="lock">🔒</span></button>
 </div>
 
-<div id="editPanel" hidden>
+<div class="controls">
+  <div class="controls-inner">
+    <input id="search" type="text" placeholder="Search…" autocomplete="off">
+    <button class="filter-btn active" data-group="tools" data-filter="all" data-accent="neutral">All</button>
+    <button class="filter-btn" data-group="tools" data-filter="operational" data-accent="orange">Operational</button>
+    <button class="filter-btn" data-group="tools" data-filter="reference" data-accent="blue">Reference</button>
+    <button class="filter-btn" data-group="bhp" data-filter="all" data-accent="neutral" hidden="">All</button>
+    <button class="filter-btn" data-group="bhp" data-filter="explorer" data-accent="orange" hidden="">Explorer Shortcut</button>
+    <button class="filter-btn" data-group="bhp" data-filter="webpage" data-accent="blue" hidden="">Webpage Shortcut</button>
+    <button class="edit-toggle" id="editToggle">✎ Edit</button>
+  </div>
+</div>
+
+<div id="bhpGate" hidden="">
+  <div class="gate-box">
+    <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4.5" y="10.5" width="15" height="10" rx="2"></rect>
+      <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"></path>
+    </svg>
+    <p class="gate-label">Enter the password to view BHP shortcuts</p>
+    <input type="password" id="gatePassword" placeholder="••••••" inputmode="numeric" autocomplete="off">
+    <button id="gateSubmit">Unlock</button>
+    <p class="gate-error" id="gateError" hidden="">Incorrect password.</p>
+  </div>
+</div>
+
+<div id="editPanel" hidden="">
   <form class="panel-box" id="toolForm">
     <div class="field wide">
       <label for="f-title">Title</label>
-      <input id="f-title" type="text" placeholder="e.g. Sample Station Dashboard" required>
+      <input id="f-title" type="text" placeholder="e.g. Sample Station Dashboard" required="">
     </div>
     <div class="field wide">
       <label for="f-desc">Description</label>
       <input id="f-desc" type="text" placeholder="One short line about what it does">
     </div>
     <div class="field wide">
-      <label for="f-url">GitHub / page URL</label>
-      <input id="f-url" type="text" placeholder="https://username.github.io/repo/ or filename.html" required>
+      <label for="f-url" id="f-url-label">GitHub / page URL</label>
+      <input id="f-url" type="text" placeholder="https://username.github.io/repo/ or filename.html" required="">
     </div>
     <div class="field">
       <label for="f-category">Category</label>
       <select id="f-category">
-        <option value="operational">Operational</option>
-        <option value="reference">Reference</option>
+        <optgroup label="Tools">
+          <option value="operational">Operational</option>
+          <option value="reference">Reference</option>
+        </optgroup>
+        <optgroup label="BHP">
+          <option value="explorer">Explorer Shortcut</option>
+          <option value="webpage">Webpage Shortcut</option>
+        </optgroup>
       </select>
     </div>
     <button type="submit" id="f-submit">Add Tool</button>
-    <button type="button" id="f-cancel" hidden>Cancel</button>
+    <button type="button" id="f-cancel" hidden="">Cancel</button>
   </form>
   <div class="download-row">
     <button id="downloadBtn">⬇ Download index.html</button>
     <button id="exportBtn">⬇ Export Data (.json)</button>
     <button id="importBtn">⬆ Import Data</button>
-    <input type="file" id="importFile" accept="application/json" hidden>
+    <input type="file" id="importFile" accept="application/json" hidden="">
     <span class="download-hint">Nothing saves automatically — Download before you close this tab, or Export a small backup you can Import again later.</span>
   </div>
 </div>
 
 <main>
-  <section class="grid" id="toolGrid"></section>
-  <p id="emptyState">No tools yet — click <strong>Edit</strong> above to add your first one.</p>
+  <section class="grid" id="toolGrid"><div class="card clickable" data-accent="orange">
+          <div class="card-top">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+            <div class="card-actions">
+              <button type="button" class="icon-btn up-btn" data-index="0" title="Move up" disabled="">↑</button>
+              <button type="button" class="icon-btn down-btn" data-index="0" title="Move down">↓</button>
+              <button type="button" class="icon-btn edit-btn" data-index="0" title="Edit">✎</button>
+              <button type="button" class="icon-btn delete-btn" data-index="0" title="Delete">✕</button>
+            </div>
+          </div>
+          <h2>COA BACKLOG</h2>
+          <p>Monitor Backlog tab, L1 COA Backlog for Dummies tab</p>
+          <div class="card-foot">
+            <span class="meta">Operational</span>
+            <a class="open" href="https://mingfahfong-dev.github.io/Backlog/" target="_blank" rel="noopener">Open →</a>
+          </div>
+        </div><div class="card clickable" data-accent="orange">
+          <div class="card-top">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+            <div class="card-actions">
+              <button type="button" class="icon-btn up-btn" data-index="1" title="Move up">↑</button>
+              <button type="button" class="icon-btn down-btn" data-index="1" title="Move down">↓</button>
+              <button type="button" class="icon-btn edit-btn" data-index="1" title="Edit">✎</button>
+              <button type="button" class="icon-btn delete-btn" data-index="1" title="Delete">✕</button>
+            </div>
+          </div>
+          <h2>ESLS</h2>
+          <p>Not Working Properly. not detecting calculated auto</p>
+          <div class="card-foot">
+            <span class="meta">Operational</span>
+            <a class="open" href="https://mingfahfong-dev.github.io/ESLS/" target="_blank" rel="noopener">Open →</a>
+          </div>
+        </div><div class="card clickable" data-accent="orange">
+          <div class="card-top">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+            <div class="card-actions">
+              <button type="button" class="icon-btn up-btn" data-index="2" title="Move up">↑</button>
+              <button type="button" class="icon-btn down-btn" data-index="2" title="Move down">↓</button>
+              <button type="button" class="icon-btn edit-btn" data-index="2" title="Edit">✎</button>
+              <button type="button" class="icon-btn delete-btn" data-index="2" title="Delete">✕</button>
+            </div>
+          </div>
+          <h2>Roster</h2>
+          <p>Ming's Roster. Need Password</p>
+          <div class="card-foot">
+            <span class="meta">Operational</span>
+            <a class="open" href="https://mingfahfong-dev.github.io/Roster/" target="_blank" rel="noopener">Open →</a>
+          </div>
+        </div><div class="card clickable" data-accent="orange">
+          <div class="card-top">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+            <div class="card-actions">
+              <button type="button" class="icon-btn up-btn" data-index="3" title="Move up">↑</button>
+              <button type="button" class="icon-btn down-btn" data-index="3" title="Move down">↓</button>
+              <button type="button" class="icon-btn edit-btn" data-index="3" title="Edit">✎</button>
+              <button type="button" class="icon-btn delete-btn" data-index="3" title="Delete">✕</button>
+            </div>
+          </div>
+          <h2>PARCHER/LOI</h2>
+          <p>ISO Parcher, LOI, auto TGA</p>
+          <div class="card-foot">
+            <span class="meta">Operational</span>
+            <a class="open" href="https://mingfahfong-dev.github.io/Parcher/" target="_blank" rel="noopener">Open →</a>
+          </div>
+        </div><div class="card clickable" data-accent="orange">
+          <div class="card-top">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+            <div class="card-actions">
+              <button type="button" class="icon-btn up-btn" data-index="4" title="Move up">↑</button>
+              <button type="button" class="icon-btn down-btn" data-index="4" title="Move down">↓</button>
+              <button type="button" class="icon-btn edit-btn" data-index="4" title="Edit">✎</button>
+              <button type="button" class="icon-btn delete-btn" data-index="4" title="Delete">✕</button>
+            </div>
+          </div>
+          <h2>Login</h2>
+          <p>Store Login. Generate QR Code or Barcode for scan login</p>
+          <div class="card-foot">
+            <span class="meta">Operational</span>
+            <a class="open" href="https://mingfahfong-dev.github.io/Login/" target="_blank" rel="noopener">Open →</a>
+          </div>
+        </div><div class="card clickable" data-accent="orange">
+          <div class="card-top">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+            <div class="card-actions">
+              <button type="button" class="icon-btn up-btn" data-index="5" title="Move up">↑</button>
+              <button type="button" class="icon-btn down-btn" data-index="5" title="Move down">↓</button>
+              <button type="button" class="icon-btn edit-btn" data-index="5" title="Edit">✎</button>
+              <button type="button" class="icon-btn delete-btn" data-index="5" title="Delete">✕</button>
+            </div>
+          </div>
+          <h2>Barcode Generator</h2>
+          <p>Generate Barcode Label for RSPU Sample Input</p>
+          <div class="card-foot">
+            <span class="meta">Operational</span>
+            <a class="open" href="https://mingfahfong-dev.github.io/Barcode/" target="_blank" rel="noopener">Open →</a>
+          </div>
+        </div><div class="card clickable" data-accent="blue">
+          <div class="card-top">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+            <div class="card-actions">
+              <button type="button" class="icon-btn up-btn" data-index="6" title="Move up">↑</button>
+              <button type="button" class="icon-btn down-btn" data-index="6" title="Move down">↓</button>
+              <button type="button" class="icon-btn edit-btn" data-index="6" title="Edit">✎</button>
+              <button type="button" class="icon-btn delete-btn" data-index="6" title="Delete">✕</button>
+            </div>
+          </div>
+          <h2>SAMPLE STATIONS</h2>
+          <p>Sample Station / Berth / Yard / Control phone number information</p>
+          <div class="card-foot">
+            <span class="meta">Reference</span>
+            <a class="open" href="https://mingfahfong-dev.github.io/Station/" target="_blank" rel="noopener">Open →</a>
+          </div>
+        </div><div class="card clickable" data-accent="blue">
+          <div class="card-top">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+            <div class="card-actions">
+              <button type="button" class="icon-btn up-btn" data-index="7" title="Move up">↑</button>
+              <button type="button" class="icon-btn down-btn" data-index="7" title="Move down">↓</button>
+              <button type="button" class="icon-btn edit-btn" data-index="7" title="Edit">✎</button>
+              <button type="button" class="icon-btn delete-btn" data-index="7" title="Delete">✕</button>
+            </div>
+          </div>
+          <h2>Shipping Product Quality</h2>
+          <p>FY2026/FY2027</p>
+          <div class="card-foot">
+            <span class="meta">Reference</span>
+            <a class="open" href="https://mingfahfong-dev.github.io/Limit/" target="_blank" rel="noopener">Open →</a>
+          </div>
+        </div><div class="card clickable" data-accent="blue">
+          <div class="card-top">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+            <div class="card-actions">
+              <button type="button" class="icon-btn up-btn" data-index="8" title="Move up">↑</button>
+              <button type="button" class="icon-btn down-btn" data-index="8" title="Move down" disabled="">↓</button>
+              <button type="button" class="icon-btn edit-btn" data-index="8" title="Edit">✎</button>
+              <button type="button" class="icon-btn delete-btn" data-index="8" title="Delete">✕</button>
+            </div>
+          </div>
+          <h2>ASCRM Reference</h2>
+          <p>ASCRM30 ASCRM32 ASCRM34</p>
+          <div class="card-foot">
+            <span class="meta">Reference</span>
+            <a class="open" href="https://mingfahfong-dev.github.io/ASCRM/" target="_blank" rel="noopener">Open →</a>
+          </div>
+        </div></section>
+  <p id="emptyState" style="display: none;">No tools yet — click <strong>Edit</strong> above to add your first one.</p>
 </main>
 
 <footer>
-  Mings_Tools_v4.html — Nothing is saved automatically. Click Edit to add/reorder tools, then Download to save into a new index.html, or Export Data as a lightweight backup you can re-Import later.
+  Mings_Tools_v5.html — Tools tab is always open; BHP tab (Explorer/Webpage Shortcuts) needs the password. This is a screen-privacy gate only, not real security — the password lives in this page's own code. Edit to manage entries, Download to save into a new index.html, or Export/Import a .json backup.
 </footer>
 
 <!-- Single source of truth for the tool list. Download rewrites this block. -->
-<script id="tools-data" type="application/json">[]</script>
+<script id="tools-data" type="application/json">[
+  {
+    "title": "COA BACKLOG",
+    "description": "Monitor Backlog tab, L1 COA Backlog for Dummies tab",
+    "url": "https://mingfahfong-dev.github.io/Backlog/",
+    "category": "operational"
+  },
+  {
+    "title": "ESLS",
+    "description": "Not Working Properly. not detecting calculated auto",
+    "url": "https://mingfahfong-dev.github.io/ESLS/",
+    "category": "operational"
+  },
+  {
+    "title": "Roster",
+    "description": "Ming's Roster. Need Password",
+    "url": "https://mingfahfong-dev.github.io/Roster/",
+    "category": "operational"
+  },
+  {
+    "title": "PARCHER/LOI",
+    "description": "ISO Parcher, LOI, auto TGA",
+    "url": "https://mingfahfong-dev.github.io/Parcher/",
+    "category": "operational"
+  },
+  {
+    "title": "Login",
+    "description": "Store Login. Generate QR Code or Barcode for scan login",
+    "url": "https://mingfahfong-dev.github.io/Login/",
+    "category": "operational"
+  },
+  {
+    "title": "Barcode Generator",
+    "description": "Generate Barcode Label for RSPU Sample Input",
+    "url": "https://mingfahfong-dev.github.io/Barcode/",
+    "category": "operational"
+  },
+  {
+    "title": "SAMPLE STATIONS",
+    "description": "Sample Station / Berth / Yard / Control phone number information",
+    "url": "https://mingfahfong-dev.github.io/Station/",
+    "category": "reference"
+  },
+  {
+    "title": "Shipping Product Quality",
+    "description": "FY2026/FY2027",
+    "url": "https://mingfahfong-dev.github.io/Limit/",
+    "category": "reference"
+  },
+  {
+    "title": "ASCRM Reference",
+    "description": "ASCRM30 ASCRM32 ASCRM34",
+    "url": "https://mingfahfong-dev.github.io/ASCRM/",
+    "category": "reference"
+  }
+]</script>
 
 <script>
+  // ---------- category / group config ----------
+  const CATEGORIES = {
+    operational: { group:'tools', label:'Operational', accent:'orange' },
+    reference:   { group:'tools', label:'Reference',    accent:'blue'   },
+    explorer:    { group:'bhp',   label:'Explorer Shortcut', accent:'orange' },
+    webpage:     { group:'bhp',   label:'Webpage Shortcut',  accent:'blue'   }
+  };
+  const BHP_PASSWORD = '112233';
+
   let tools = [];
   try{ tools = JSON.parse(document.getElementById('tools-data').textContent || '[]'); }catch(e){ tools = []; }
   let dirty = false;
-
+  let currentGroup = 'tools';
+  let bhpUnlocked = false;
   let activeFilter = 'all';
   let editingIndex = null;
 
@@ -302,10 +588,14 @@
   const search = document.getElementById('search');
   const editToggle = document.getElementById('editToggle');
   const editPanel = document.getElementById('editPanel');
+  const bhpGate = document.getElementById('bhpGate');
+  const gatePassword = document.getElementById('gatePassword');
+  const gateError = document.getElementById('gateError');
   const form = document.getElementById('toolForm');
   const fTitle = document.getElementById('f-title');
   const fDesc = document.getElementById('f-desc');
   const fUrl = document.getElementById('f-url');
+  const fUrlLabel = document.getElementById('f-url-label');
   const fCategory = document.getElementById('f-category');
   const fSubmit = document.getElementById('f-submit');
   const fCancel = document.getElementById('f-cancel');
@@ -322,59 +612,149 @@
   }
 
   const ICON = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg>';
+  const FOLDER_ICON = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2.2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-10Z"/></svg>';
+
+  function copyToClipboard(text){
+    if(navigator.clipboard && window.isSecureContext){
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise((resolve, reject) => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      try{
+        document.execCommand('copy');
+        resolve();
+      }catch(err){ reject(err); }
+      ta.remove();
+    });
+  }
+
+  function truncateMiddle(str, max){
+    if(str.length <= max) return str;
+    const half = Math.floor((max - 1) / 2);
+    return str.slice(0, half) + '…' + str.slice(str.length - half);
+  }
 
   function render(){
     persistData();
     const q = search.value.trim().toLowerCase();
     grid.innerHTML = '';
     let visible = 0;
+    let groupTotal = 0;
 
-    tools.forEach((t, i) => {
-      const matchesCategory = activeFilter === 'all' || t.category === activeFilter;
-      const matchesSearch = q === '' || (t.title + ' ' + t.description).toLowerCase().includes(q);
-      if(!matchesCategory || !matchesSearch) return;
-      visible++;
+    const showGate = currentGroup === 'bhp' && !bhpUnlocked;
+    bhpGate.hidden = !showGate;
 
-      const card = document.createElement('div');
-      card.className = 'card clickable';
-      card.dataset.category = t.category;
-      card.innerHTML = `
-        <div class="card-top">
-          ${ICON}
-          <div class="card-actions">
-            <button type="button" class="icon-btn up-btn" data-index="${i}" title="Move up" ${i === 0 ? 'disabled' : ''}>↑</button>
-            <button type="button" class="icon-btn down-btn" data-index="${i}" title="Move down" ${i === tools.length - 1 ? 'disabled' : ''}>↓</button>
-            <button type="button" class="icon-btn edit-btn" data-index="${i}" title="Edit">✎</button>
-            <button type="button" class="icon-btn delete-btn" data-index="${i}" title="Delete">✕</button>
+    if(!showGate){
+      tools.forEach((t, i) => {
+        const meta = CATEGORIES[t.category] || CATEGORIES.operational;
+        if(meta.group !== currentGroup) return;
+        groupTotal++;
+        const matchesCategory = activeFilter === 'all' || t.category === activeFilter;
+        const matchesSearch = q === '' || (t.title + ' ' + t.description).toLowerCase().includes(q);
+        if(!matchesCategory || !matchesSearch) return;
+        visible++;
+
+        const isExplorer = t.category === 'explorer';
+        const footRight = isExplorer
+          ? `<button type="button" class="copy-btn" data-index="${i}">Copy Path</button>`
+          : `<a class="open" href="${escapeHtml(t.url)}" target="_blank" rel="noopener">Open →</a>`;
+        const footLeft = isExplorer
+          ? `<span class="meta" title="${escapeHtml(t.url)}">${escapeHtml(truncateMiddle(t.url, 24))}</span>`
+          : `<span class="meta">${escapeHtml(meta.label)}</span>`;
+
+        const card = document.createElement('div');
+        card.className = 'card clickable';
+        card.dataset.accent = meta.accent;
+        card.innerHTML = `
+          <div class="card-top">
+            ${isExplorer ? FOLDER_ICON : ICON}
+            <div class="card-actions">
+              <button type="button" class="icon-btn up-btn" data-index="${i}" title="Move up" ${i === 0 ? 'disabled' : ''}>↑</button>
+              <button type="button" class="icon-btn down-btn" data-index="${i}" title="Move down" ${i === tools.length - 1 ? 'disabled' : ''}>↓</button>
+              <button type="button" class="icon-btn edit-btn" data-index="${i}" title="Edit">✎</button>
+              <button type="button" class="icon-btn delete-btn" data-index="${i}" title="Delete">✕</button>
+            </div>
           </div>
-        </div>
-        <h2>${escapeHtml(t.title)}</h2>
-        <p>${escapeHtml(t.description || '')}</p>
-        <div class="card-foot">
-          <span class="meta">${t.category}</span>
-          <a class="open" href="${escapeHtml(t.url)}" target="_blank" rel="noopener">Open →</a>
-        </div>
-      `;
-      card.addEventListener('click', (e) => {
-        if(e.target.closest('button') || e.target.closest('a')) return;
-        window.open(t.url, '_blank', 'noopener');
+          <h2>${escapeHtml(t.title)}</h2>
+          <p>${escapeHtml(t.description || '')}</p>
+          <div class="card-foot">
+            ${footLeft}
+            ${footRight}
+          </div>
+        `;
+        card.addEventListener('click', (e) => {
+          if(e.target.closest('button') || e.target.closest('a')) return;
+          if(isExplorer){
+            copyToClipboard(t.url).catch(()=>{});
+          } else {
+            window.open(t.url, '_blank', 'noopener');
+          }
+        });
+        grid.appendChild(card);
       });
-      grid.appendChild(card);
-    });
+    }
 
-    emptyState.style.display = visible === 0 ? 'block' : 'none';
-    if(tools.length > 0 && visible === 0){
+    emptyState.style.display = (!showGate && visible === 0) ? 'block' : 'none';
+    if(groupTotal > 0 && visible === 0){
       emptyState.innerHTML = 'No tools match your search.';
-    } else if(tools.length === 0){
+    } else if(groupTotal === 0){
       emptyState.innerHTML = 'No tools yet — click <strong>Edit</strong> above to add your first one.';
     }
   }
+
+  // ---------- group switching ----------
+  function setGroup(g){
+    currentGroup = g;
+    document.querySelectorAll('.group-btn').forEach(b => b.classList.toggle('active', b.dataset.group === g));
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      const belongs = b.dataset.group === g;
+      b.hidden = !belongs;
+    });
+    // reset filter to "All" for the newly active group
+    activeFilter = 'all';
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.toggle('active', belongsAndAll(b, g));
+    });
+    if(g === 'bhp' && !bhpUnlocked){
+      document.body.classList.remove('edit-mode');
+      editToggle.classList.remove('on');
+      editPanel.hidden = true;
+      resetForm();
+      gatePassword.value = '';
+      gateError.hidden = true;
+    }
+    render();
+  }
+  function belongsAndAll(btn, g){ return btn.dataset.group === g && btn.dataset.filter === 'all'; }
+
+  document.querySelectorAll('.group-btn').forEach(btn => {
+    btn.addEventListener('click', () => setGroup(btn.dataset.group));
+  });
+
+  const gateSubmitHandler = () => {
+    if(gatePassword.value === BHP_PASSWORD){
+      bhpUnlocked = true;
+      gateError.hidden = true;
+      render();
+    } else {
+      gateError.hidden = false;
+      gatePassword.value = '';
+      gatePassword.focus();
+    }
+  };
+  document.getElementById('gateSubmit').addEventListener('click', gateSubmitHandler);
+  gatePassword.addEventListener('keydown', (e) => { if(e.key === 'Enter') gateSubmitHandler(); });
 
   // ---------- filters ----------
   search.addEventListener('input', render);
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.filter-btn').forEach(b => { if(b.dataset.group === currentGroup) b.classList.remove('active'); });
       btn.classList.add('active');
       activeFilter = btn.dataset.filter;
       render();
@@ -383,6 +763,7 @@
 
   // ---------- edit mode ----------
   editToggle.addEventListener('click', () => {
+    if(currentGroup === 'bhp' && !bhpUnlocked) return;
     const isOn = document.body.classList.toggle('edit-mode');
     editToggle.classList.toggle('on', isOn);
     editPanel.hidden = !isOn;
@@ -394,7 +775,23 @@
     editingIndex = null;
     fSubmit.textContent = 'Add Tool';
     fCancel.hidden = true;
+    updateUrlLabel();
   }
+
+  function updateUrlLabel(){
+    const cat = fCategory.value;
+    if(cat === 'explorer'){
+      fUrlLabel.textContent = 'Network / folder path';
+      fUrl.placeholder = '\\\\server\\share\\folder or C:\\path\\to\\folder';
+    } else if(cat === 'webpage'){
+      fUrlLabel.textContent = 'Webpage URL';
+      fUrl.placeholder = 'https://intranet.example.com/page';
+    } else {
+      fUrlLabel.textContent = 'GitHub / page URL';
+      fUrl.placeholder = 'https://username.github.io/repo/ or filename.html';
+    }
+  }
+  fCategory.addEventListener('change', updateUrlLabel);
 
   fCancel.addEventListener('click', resetForm);
 
@@ -423,6 +820,7 @@
     const downBtn = e.target.closest('.down-btn');
     const editBtn = e.target.closest('.edit-btn');
     const delBtn = e.target.closest('.delete-btn');
+    const copyBtn = e.target.closest('.copy-btn');
     if(upBtn && !upBtn.disabled){
       const i = Number(upBtn.dataset.index);
       [tools[i-1], tools[i]] = [tools[i], tools[i-1]];
@@ -440,6 +838,7 @@
       fDesc.value = t.description;
       fUrl.value = t.url;
       fCategory.value = t.category;
+      updateUrlLabel();
       editingIndex = i;
       fSubmit.textContent = 'Save Changes';
       fCancel.hidden = false;
@@ -450,6 +849,16 @@
       tools.splice(i, 1);
       dirty = true;
       render();
+    } else if(copyBtn){
+      const i = Number(copyBtn.dataset.index);
+      copyToClipboard(tools[i].url).then(() => {
+        const original = copyBtn.textContent;
+        copyBtn.textContent = 'Copied!';
+        copyBtn.classList.add('copied');
+        setTimeout(() => { copyBtn.textContent = original; copyBtn.classList.remove('copied'); }, 1400);
+      }).catch(() => {
+        window.alert('Could not copy automatically — path: ' + tools[i].url);
+      });
     }
   });
 
@@ -512,7 +921,7 @@
         if(replace){
           tools = incoming.map(t => ({
             title: t.title, description: t.description || '', url: t.url,
-            category: (t.category === 'reference') ? 'reference' : 'operational'
+            category: CATEGORIES[t.category] ? t.category : 'operational'
           }));
           dirty = true;
           render();
@@ -532,8 +941,10 @@
     }
   });
 
+  updateUrlLabel();
   render();
 </script>
 
-</body>
-</html>
+
+
+</body></html>
