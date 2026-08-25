@@ -128,6 +128,16 @@
   .edit-toggle:hover{ border-color:var(--orange); }
   .edit-toggle.on{ background:var(--orange); border-color:var(--orange); color:#14161A; font-weight:600; }
 
+  .view-toggle{ display:flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; flex:none; }
+  .view-toggle[hidden]{ display:none; }
+  .view-btn{
+    background:var(--bg); border:none; border-right:1px solid var(--border); color:var(--muted);
+    padding:0.6rem 0.75rem; font-size:0.95rem; line-height:1; transition:all .15s ease;
+  }
+  .view-btn:last-child{ border-right:none; }
+  .view-btn:hover{ color:var(--text); }
+  .view-btn.active{ background:var(--orange); color:#14161A; }
+
   /* ---------- password gate ---------- */
   #bhpGate{ max-width:1080px; margin:1.2rem auto 0; padding:0 1.5rem; }
   #bhpGate[hidden]{ display:none; }
@@ -201,7 +211,41 @@
 
   /* ---------- grid + cards ---------- */
   main{ max-width:1080px; margin:0 auto; padding:2rem 1.5rem 4rem; }
-  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:1.1rem; }
+  #toolGrid{ display:flex; flex-direction:column; gap:1.5rem; }
+  .tool-section{ display:flex; flex-direction:column; gap:0.6rem; }
+  .tool-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:1.1rem; }
+  .tool-list{ display:flex; flex-direction:column; gap:0.5rem; }
+
+  .tool-row{
+    display:flex; align-items:center; gap:0.85rem; padding:0.65rem 0.9rem;
+    background:var(--panel); border:1px solid var(--border); border-left:3px solid var(--border);
+    border-radius:10px; transition:background .15s ease, border-color .15s ease;
+  }
+  .tool-row.clickable{ cursor:pointer; }
+  .tool-row.clickable:hover{ background:var(--panel-hi); border-color:var(--faint); }
+  .tool-row[data-accent="orange"]{ border-left-color:var(--orange); }
+  .tool-row[data-accent="blue"]{ border-left-color:var(--blue); }
+  .tool-row .icon{ flex:none; width:22px; height:22px; }
+  .tool-row[data-accent="orange"] .icon{ color:var(--orange-hi); }
+  .tool-row[data-accent="blue"] .icon{ color:var(--blue-hi); }
+  .tool-row-info{ flex:1; min-width:0; }
+  .tool-row-title{
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:0.92rem; letter-spacing:0.01em;
+    text-transform:uppercase; line-height:1.3;
+  }
+  .tool-row-desc{
+    font-size:0.8rem; color:var(--muted); line-height:1.3; margin-top:0.05rem;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .tool-row-meta{
+    flex:none; font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--faint);
+    max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:none;
+  }
+  @media (min-width: 640px){ .tool-row-meta{ display:block; } }
+  .tool-row-actions{ flex:none; display:flex; gap:0.4rem; align-items:center; }
+  .tool-row-actions.edit-actions{ display:none; }
+  body.edit-mode .tool-row-actions.view-actions{ display:none; }
+  body.edit-mode .tool-row-actions.edit-actions{ display:flex; }
 
   .card{
     position:relative; background:var(--panel); border:1px solid var(--border);
@@ -257,6 +301,8 @@
     font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.05em;
     text-transform:uppercase; text-decoration:none; flex:none; background:transparent; border:none; padding:0;
   }
+  .foot-actions{ display:flex; gap:0.7rem; flex:none; }
+  .foot-actions .open{ display:inline; }
   .card[data-accent="orange"] .open, .card[data-accent="orange"] .copy-btn{ color:var(--orange-hi); }
   .card[data-accent="blue"] .open, .card[data-accent="blue"] .copy-btn{ color:var(--blue-hi); }
   .copy-btn.copied{ color:#7FBF8F !important; }
@@ -265,6 +311,44 @@
     display:none; text-align:center; color:var(--muted); font-family:'IBM Plex Mono', monospace;
     font-size:0.85rem; padding:3rem 1rem; border:1px dashed var(--border); border-radius:10px;
   }
+
+  /* ---------- contact list (phone-book style) ---------- */
+  .contact-list{ display:flex; flex-direction:column; gap:1.4rem; }
+  .contact-section{ display:flex; flex-direction:column; gap:0.5rem; }
+  .section-label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--faint); margin:0 0 0.2rem 0.2rem;
+  }
+  .contact-row{
+    display:flex; align-items:center; gap:0.85rem; padding:0.65rem 0.9rem;
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .contact-row.clickable{ cursor:pointer; }
+  .contact-row.clickable:hover{ background:var(--panel-hi); border-color:var(--faint); }
+  .c-info{ flex:1; min-width:0; }
+  .c-name{
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:0.92rem; letter-spacing:0.01em;
+    text-transform:uppercase; line-height:1.3;
+  }
+  .c-title{ font-size:0.8rem; color:var(--muted); line-height:1.3; margin-top:0.05rem; }
+  .c-meta-row{ display:flex; gap:1rem; flex-wrap:wrap; margin-top:0.3rem; }
+  .c-meta-item{
+    display:inline-flex; align-items:center; gap:0.32rem;
+    font-family:'IBM Plex Mono', monospace; font-size:0.76rem; color:var(--text);
+  }
+  .c-meta-item svg{ width:13px; height:13px; flex:none; color:var(--faint); }
+  .c-actions{ flex:none; display:flex; gap:0.4rem; align-items:center; }
+  .c-actions.edit-actions{ display:none; }
+  body.edit-mode .c-actions.view-actions{ display:none; }
+  body.edit-mode .c-actions.edit-actions{ display:flex; }
+  .c-icon-btn{
+    width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    background:var(--bg); border:1px solid var(--border); text-decoration:none; transition:all .15s ease;
+  }
+  .c-icon-btn.call{ color:var(--orange-hi); }
+  .c-icon-btn.mail{ color:var(--blue-hi); }
+  .c-icon-btn:hover{ border-color:currentColor; }
 
   footer{
     max-width:1080px; margin:0 auto; padding:0 1.5rem 2.5rem; color:var(--faint);
@@ -278,7 +362,7 @@
 
 <header>
   <div class="header-inner">
-    <p class="eyebrow">Personal Dashboard<span class="version-tag">v5</span></p>
+    <p class="eyebrow">Personal Dashboard<span class="version-tag">v11</span></p>
     <h1>MING'S <span>TOOLS</span></h1>
     <p class="sub">Quick access to my tools and projects. Click Edit to add a link, then download to publish it as your GitHub Pages index.html.</p>
   </div>
@@ -287,6 +371,7 @@
 <div class="group-row">
   <button class="group-btn active" data-group="tools">Tools</button>
   <button class="group-btn" data-group="bhp">BHP <span class="lock">🔒</span></button>
+  <button class="group-btn" data-group="contact">Contact <span class="lock">🔒</span></button>
 </div>
 
 <div class="controls">
@@ -298,6 +383,12 @@
     <button class="filter-btn" data-group="bhp" data-filter="all" data-accent="neutral" hidden="">All</button>
     <button class="filter-btn" data-group="bhp" data-filter="explorer" data-accent="orange" hidden="">Explorer Shortcut</button>
     <button class="filter-btn" data-group="bhp" data-filter="webpage" data-accent="blue" hidden="">Webpage Shortcut</button>
+    <button class="filter-btn" data-group="contact" data-filter="all" data-accent="neutral" hidden="">All</button>
+    <span id="contactFilterSlot"></span>
+    <div class="view-toggle" id="viewToggle">
+      <button type="button" class="view-btn active" data-view="tile" title="Tile view">⊞</button>
+      <button type="button" class="view-btn" data-view="list" title="List view">☰</button>
+    </div>
     <button class="edit-toggle" id="editToggle">✎ Edit</button>
   </div>
 </div>
@@ -308,7 +399,7 @@
       <rect x="4.5" y="10.5" width="15" height="10" rx="2"></rect>
       <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"></path>
     </svg>
-    <p class="gate-label">Enter the password to view BHP shortcuts</p>
+    <p class="gate-label" id="gateLabel">Enter the password to view BHP shortcuts</p>
     <input type="password" id="gatePassword" placeholder="••••••" inputmode="numeric" autocomplete="off">
     <button id="gateSubmit">Unlock</button>
     <p class="gate-error" id="gateError" hidden="">Incorrect password.</p>
@@ -318,193 +409,198 @@
 <div id="editPanel" hidden="">
   <form class="panel-box" id="toolForm">
     <div class="field wide">
-      <label for="f-title">Title</label>
+      <label for="f-title" id="f-title-label">Title</label>
       <input id="f-title" type="text" placeholder="e.g. Sample Station Dashboard" required="">
     </div>
     <div class="field wide">
-      <label for="f-desc">Description</label>
+      <label for="f-desc" id="f-desc-label">Description</label>
       <input id="f-desc" type="text" placeholder="One short line about what it does">
     </div>
-    <div class="field wide">
+    <div class="field wide" id="f-url-group">
       <label for="f-url" id="f-url-label">GitHub / page URL</label>
-      <input id="f-url" type="text" placeholder="https://username.github.io/repo/ or filename.html" required="">
+      <input id="f-url" type="text" placeholder="https://username.github.io/repo/ or filename.html">
     </div>
-    <div class="field">
+    <div class="field" id="f-phone-group" hidden="">
+      <label for="f-phone">Phone</label>
+      <input id="f-phone" type="text" placeholder="0427 590 853">
+    </div>
+    <div class="field" id="f-email-group" hidden="">
+      <label for="f-email">Email</label>
+      <input id="f-email" type="text" placeholder="name@example.com">
+    </div>
+    <div class="field" id="f-section-group" hidden="">
+      <label for="f-section">Group</label>
+      <input id="f-section" type="text" placeholder="e.g. Site, Vendor, Family…" list="section-options">
+      <datalist id="section-options"></datalist>
+    </div>
+    <div class="field" id="f-category-wrap">
       <label for="f-category">Category</label>
-      <select id="f-category">
-        <optgroup label="Tools">
-          <option value="operational">Operational</option>
-          <option value="reference">Reference</option>
-        </optgroup>
-        <optgroup label="BHP">
-          <option value="explorer">Explorer Shortcut</option>
-          <option value="webpage">Webpage Shortcut</option>
-        </optgroup>
-      </select>
+      <select id="f-category"><option value="operational">Operational</option><option value="reference">Reference</option></select>
     </div>
     <button type="submit" id="f-submit">Add Tool</button>
     <button type="button" id="f-cancel" hidden="">Cancel</button>
   </form>
   <div class="download-row">
-    <button id="downloadBtn">⬇ Download index.html</button>
-    <button id="exportBtn">⬇ Export Data (.json)</button>
+    <button id="downloadBtn">💾 Save index.html</button>
+    <button id="exportBtn">💾 Save Data (.json)</button>
     <button id="importBtn">⬆ Import Data</button>
     <input type="file" id="importFile" accept="application/json" hidden="">
-    <span class="download-hint">Nothing saves automatically — Download before you close this tab, or Export a small backup you can Import again later.</span>
+    <span class="download-hint">Nothing saves automatically — Save before you close this tab, or Import a backup later. In Chrome/Edge you'll get a "Save As" dialog to pick the folder; other browsers save straight to your downloads folder.</span>
   </div>
 </div>
 
 <main>
-  <section class="grid" id="toolGrid"><div class="card clickable" data-accent="orange">
-          <div class="card-top">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
-            <div class="card-actions">
-              <button type="button" class="icon-btn up-btn" data-index="0" title="Move up" disabled="">↑</button>
-              <button type="button" class="icon-btn down-btn" data-index="0" title="Move down">↓</button>
-              <button type="button" class="icon-btn edit-btn" data-index="0" title="Edit">✎</button>
-              <button type="button" class="icon-btn delete-btn" data-index="0" title="Delete">✕</button>
-            </div>
-          </div>
-          <h2>COA BACKLOG</h2>
-          <p>Monitor Backlog tab, L1 COA Backlog for Dummies tab</p>
-          <div class="card-foot">
-            <span class="meta">Operational</span>
-            <a class="open" href="https://mingfahfong-dev.github.io/Backlog/" target="_blank" rel="noopener">Open →</a>
-          </div>
-        </div><div class="card clickable" data-accent="orange">
-          <div class="card-top">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
-            <div class="card-actions">
-              <button type="button" class="icon-btn up-btn" data-index="1" title="Move up">↑</button>
-              <button type="button" class="icon-btn down-btn" data-index="1" title="Move down">↓</button>
-              <button type="button" class="icon-btn edit-btn" data-index="1" title="Edit">✎</button>
-              <button type="button" class="icon-btn delete-btn" data-index="1" title="Delete">✕</button>
-            </div>
-          </div>
-          <h2>ESLS</h2>
-          <p>Not Working Properly. not detecting calculated auto</p>
-          <div class="card-foot">
-            <span class="meta">Operational</span>
-            <a class="open" href="https://mingfahfong-dev.github.io/ESLS/" target="_blank" rel="noopener">Open →</a>
-          </div>
-        </div><div class="card clickable" data-accent="orange">
-          <div class="card-top">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
-            <div class="card-actions">
-              <button type="button" class="icon-btn up-btn" data-index="2" title="Move up">↑</button>
-              <button type="button" class="icon-btn down-btn" data-index="2" title="Move down">↓</button>
-              <button type="button" class="icon-btn edit-btn" data-index="2" title="Edit">✎</button>
-              <button type="button" class="icon-btn delete-btn" data-index="2" title="Delete">✕</button>
-            </div>
-          </div>
-          <h2>Roster</h2>
-          <p>Ming's Roster. Need Password</p>
-          <div class="card-foot">
-            <span class="meta">Operational</span>
-            <a class="open" href="https://mingfahfong-dev.github.io/Roster/" target="_blank" rel="noopener">Open →</a>
-          </div>
-        </div><div class="card clickable" data-accent="orange">
-          <div class="card-top">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
-            <div class="card-actions">
-              <button type="button" class="icon-btn up-btn" data-index="3" title="Move up">↑</button>
-              <button type="button" class="icon-btn down-btn" data-index="3" title="Move down">↓</button>
-              <button type="button" class="icon-btn edit-btn" data-index="3" title="Edit">✎</button>
-              <button type="button" class="icon-btn delete-btn" data-index="3" title="Delete">✕</button>
-            </div>
-          </div>
-          <h2>PARCHER/LOI</h2>
-          <p>ISO Parcher, LOI, auto TGA</p>
-          <div class="card-foot">
-            <span class="meta">Operational</span>
-            <a class="open" href="https://mingfahfong-dev.github.io/Parcher/" target="_blank" rel="noopener">Open →</a>
-          </div>
-        </div><div class="card clickable" data-accent="orange">
-          <div class="card-top">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
-            <div class="card-actions">
-              <button type="button" class="icon-btn up-btn" data-index="4" title="Move up">↑</button>
-              <button type="button" class="icon-btn down-btn" data-index="4" title="Move down">↓</button>
-              <button type="button" class="icon-btn edit-btn" data-index="4" title="Edit">✎</button>
-              <button type="button" class="icon-btn delete-btn" data-index="4" title="Delete">✕</button>
-            </div>
-          </div>
-          <h2>Login</h2>
-          <p>Store Login. Generate QR Code or Barcode for scan login</p>
-          <div class="card-foot">
-            <span class="meta">Operational</span>
-            <a class="open" href="https://mingfahfong-dev.github.io/Login/" target="_blank" rel="noopener">Open →</a>
-          </div>
-        </div><div class="card clickable" data-accent="orange">
-          <div class="card-top">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
-            <div class="card-actions">
-              <button type="button" class="icon-btn up-btn" data-index="5" title="Move up">↑</button>
-              <button type="button" class="icon-btn down-btn" data-index="5" title="Move down">↓</button>
-              <button type="button" class="icon-btn edit-btn" data-index="5" title="Edit">✎</button>
-              <button type="button" class="icon-btn delete-btn" data-index="5" title="Delete">✕</button>
-            </div>
-          </div>
-          <h2>Barcode Generator</h2>
-          <p>Generate Barcode Label for RSPU Sample Input</p>
-          <div class="card-foot">
-            <span class="meta">Operational</span>
-            <a class="open" href="https://mingfahfong-dev.github.io/Barcode/" target="_blank" rel="noopener">Open →</a>
-          </div>
-        </div><div class="card clickable" data-accent="blue">
-          <div class="card-top">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
-            <div class="card-actions">
-              <button type="button" class="icon-btn up-btn" data-index="6" title="Move up">↑</button>
-              <button type="button" class="icon-btn down-btn" data-index="6" title="Move down">↓</button>
-              <button type="button" class="icon-btn edit-btn" data-index="6" title="Edit">✎</button>
-              <button type="button" class="icon-btn delete-btn" data-index="6" title="Delete">✕</button>
-            </div>
-          </div>
-          <h2>SAMPLE STATIONS</h2>
-          <p>Sample Station / Berth / Yard / Control phone number information</p>
-          <div class="card-foot">
-            <span class="meta">Reference</span>
-            <a class="open" href="https://mingfahfong-dev.github.io/Station/" target="_blank" rel="noopener">Open →</a>
-          </div>
-        </div><div class="card clickable" data-accent="blue">
-          <div class="card-top">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
-            <div class="card-actions">
-              <button type="button" class="icon-btn up-btn" data-index="7" title="Move up">↑</button>
-              <button type="button" class="icon-btn down-btn" data-index="7" title="Move down">↓</button>
-              <button type="button" class="icon-btn edit-btn" data-index="7" title="Edit">✎</button>
-              <button type="button" class="icon-btn delete-btn" data-index="7" title="Delete">✕</button>
-            </div>
-          </div>
-          <h2>Shipping Product Quality</h2>
-          <p>FY2026/FY2027</p>
-          <div class="card-foot">
-            <span class="meta">Reference</span>
-            <a class="open" href="https://mingfahfong-dev.github.io/Limit/" target="_blank" rel="noopener">Open →</a>
-          </div>
-        </div><div class="card clickable" data-accent="blue">
-          <div class="card-top">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
-            <div class="card-actions">
-              <button type="button" class="icon-btn up-btn" data-index="8" title="Move up">↑</button>
-              <button type="button" class="icon-btn down-btn" data-index="8" title="Move down" disabled="">↓</button>
-              <button type="button" class="icon-btn edit-btn" data-index="8" title="Edit">✎</button>
-              <button type="button" class="icon-btn delete-btn" data-index="8" title="Delete">✕</button>
-            </div>
-          </div>
-          <h2>ASCRM Reference</h2>
-          <p>ASCRM30 ASCRM32 ASCRM34</p>
-          <div class="card-foot">
-            <span class="meta">Reference</span>
-            <a class="open" href="https://mingfahfong-dev.github.io/ASCRM/" target="_blank" rel="noopener">Open →</a>
-          </div>
-        </div></section>
+  <section id="toolGrid"><div class="tool-section"><p class="section-label">Operational</p><div class="tool-grid"><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="0" title="Move up" disabled="">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="0" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="0" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="0" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>COA BACKLOG</h2>
+      <p>Monitor Backlog tab, L1 COA Backlog for Dummies tab</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Backlog/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="1" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="1" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="1" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="1" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>ESLS</h2>
+      <p>Convert ESLS for People with Poor Vision</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/ESLS/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="2" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="2" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="2" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="2" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>Roster</h2>
+      <p>Ming's Roster. Need Password</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Roster/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="3" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="3" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="3" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="3" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>PARCHER/LOI</h2>
+      <p>ISO Parcher, LOI, auto TGA</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Parcher/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="4" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="4" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="4" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="4" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>Login</h2>
+      <p>Store Login. Generate QR Code or Barcode for scan login</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Login/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="5" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="5" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="5" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="5" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>Barcode Generator</h2>
+      <p>Generate Barcode Label for RSPU Sample Input</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Barcode/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div></div></div><div class="tool-section"><p class="section-label">Reference</p><div class="tool-grid"><div class="card clickable" data-accent="blue">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="6" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="6" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="6" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="6" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>SAMPLE STATIONS</h2>
+      <p>Sample Station / Berth / Yard / Control phone number information and moisture correction</p>
+      <div class="card-foot">
+        <span class="meta">Reference</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Station/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="blue">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="7" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="7" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="7" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="7" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>Shipping Product Quality</h2>
+      <p>FY2026/FY2027</p>
+      <div class="card-foot">
+        <span class="meta">Reference</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Limit/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="blue">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="8" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="8" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="8" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="8" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>ASCRM Reference</h2>
+      <p>ASCRM30 ASCRM32 ASCRM34</p>
+      <div class="card-foot">
+        <span class="meta">Reference</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/ASCRM/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div></div></div></section>
+  <div class="contact-list" id="contactList" hidden=""></div>
   <p id="emptyState" style="display: none;">No tools yet — click <strong>Edit</strong> above to add your first one.</p>
 </main>
 
 <footer>
-  Mings_Tools_v5.html — Tools tab is always open; BHP tab (Explorer/Webpage Shortcuts) needs the password. This is a screen-privacy gate only, not real security — the password lives in this page's own code. Edit to manage entries, Download to save into a new index.html, or Export/Import a .json backup.
+  Mings_Tools_v11.html — Tools and BHP tabs now group entries by category and let you switch between Tile (⊞) and List (☰) view. Tools tab is always open; BHP and Contact tabs both need the password (screen-privacy only, not real security). Contacts show Name / Title / Phone / Email right in the row, sorted into whatever Groups you define. Save/Export let you pick a folder in Chrome/Edge; other browsers use their normal download location.
 </footer>
 
 <!-- Single source of truth for the tool list. Download rewrites this block. -->
@@ -512,83 +608,342 @@
   {
     "title": "COA BACKLOG",
     "description": "Monitor Backlog tab, L1 COA Backlog for Dummies tab",
+    "category": "operational",
     "url": "https://mingfahfong-dev.github.io/Backlog/",
-    "category": "operational"
+    "phone": "",
+    "email": "",
+    "section": ""
   },
   {
     "title": "ESLS",
-    "description": "Not Working Properly. not detecting calculated auto",
+    "description": "Convert ESLS for People with Poor Vision",
+    "category": "operational",
     "url": "https://mingfahfong-dev.github.io/ESLS/",
-    "category": "operational"
+    "phone": "",
+    "email": "",
+    "section": ""
   },
   {
     "title": "Roster",
     "description": "Ming's Roster. Need Password",
+    "category": "operational",
     "url": "https://mingfahfong-dev.github.io/Roster/",
-    "category": "operational"
+    "phone": "",
+    "email": "",
+    "section": ""
   },
   {
     "title": "PARCHER/LOI",
     "description": "ISO Parcher, LOI, auto TGA",
+    "category": "operational",
     "url": "https://mingfahfong-dev.github.io/Parcher/",
-    "category": "operational"
+    "phone": "",
+    "email": "",
+    "section": ""
   },
   {
     "title": "Login",
     "description": "Store Login. Generate QR Code or Barcode for scan login",
+    "category": "operational",
     "url": "https://mingfahfong-dev.github.io/Login/",
-    "category": "operational"
+    "phone": "",
+    "email": "",
+    "section": ""
   },
   {
     "title": "Barcode Generator",
     "description": "Generate Barcode Label for RSPU Sample Input",
+    "category": "operational",
     "url": "https://mingfahfong-dev.github.io/Barcode/",
-    "category": "operational"
+    "phone": "",
+    "email": "",
+    "section": ""
   },
   {
     "title": "SAMPLE STATIONS",
-    "description": "Sample Station / Berth / Yard / Control phone number information",
+    "description": "Sample Station / Berth / Yard / Control phone number information and moisture correction",
+    "category": "reference",
     "url": "https://mingfahfong-dev.github.io/Station/",
-    "category": "reference"
+    "phone": "",
+    "email": "",
+    "section": ""
   },
   {
     "title": "Shipping Product Quality",
     "description": "FY2026/FY2027",
+    "category": "reference",
     "url": "https://mingfahfong-dev.github.io/Limit/",
-    "category": "reference"
+    "phone": "",
+    "email": "",
+    "section": ""
   },
   {
     "title": "ASCRM Reference",
     "description": "ASCRM30 ASCRM32 ASCRM34",
+    "category": "reference",
     "url": "https://mingfahfong-dev.github.io/ASCRM/",
-    "category": "reference"
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "Colin Liew",
+    "description": "Software Manager",
+    "category": "contact",
+    "url": "",
+    "phone": "0488514383",
+    "email": "colin.liew@smart-solutions.com.au",
+    "section": "Smart Solutions"
+  },
+  {
+    "title": "Opsnet Citrix",
+    "description": "",
+    "category": "webpage",
+    "url": "https://opsnetapps.bhp.com/logon/LogonPoint/tmindex.html",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "PMAC Citrix",
+    "description": "",
+    "category": "webpage",
+    "url": "https://pheapps.bhp.com/logon/LogonPoint/tmindex.html",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "Material Tracker",
+    "description": "",
+    "category": "webpage",
+    "url": "https://waio-mt.bhp.com/mt/#/mt/dashboard",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "Lump Sizing",
+    "description": "",
+    "category": "webpage",
+    "url": "http://per0pmtm02:8080/ords/f?p=105:LOGIN_DESKTOP:110366674575400:::::",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "Security Camera",
+    "description": "APAC login",
+    "category": "webpage",
+    "url": "https://apaciocctv.bhp.com/index.html#group=2d0a8e5f-61cf-4217-a0fd-feb088ac60da&cam=66d9f927-f1f8-4013-9c48-540340af48f0",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "Lab Production Camera",
+    "description": "Opsnet Login",
+    "category": "webpage",
+    "url": "https://phecctv.bhp.com/index.html",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "PQ Escalation Tool",
+    "description": "",
+    "category": "webpage",
+    "url": "https://apps.powerapps.com/play/e/334a9626-5538-e7de-985d-8bfadeb54690/a/12af7a14-242c-4ff6-9b0f-cc0f2ccc8960?tenantId=4f6e1565-c2c7-43cb-8a4c-0981d022ce20&hint=8d377fbd-fdae-491c-8f32-753817827732&sourcetime=1757899127308",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "PQ COA Backlog Status",
+    "description": "APAC Login. COA Approval Level Config Tool",
+    "category": "webpage",
+    "url": "https://bobj.apac.ent.bhpbilliton.net/BOE/OpenDocument/opendoc/openDocument.jsp?sIDType=CUID&iDocID=AR_J8PSNoM1HuxIfYzMiTg8",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "PQ COA Level 3 Customers",
+    "description": "",
+    "category": "webpage",
+    "url": "http://per0pmtm01:8080/ords/f?p=143:101:16449588789943:::::",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "P2 Handover",
+    "description": "",
+    "category": "webpage",
+    "url": "https://waio-p2.bhp.com/P2.Explorer/",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "Hedland Printer Driver",
+    "description": "",
+    "category": "explorer",
+    "url": "\\\\csmhed-prn01",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "Opsnet to APAC Transfer Folder",
+    "description": "",
+    "category": "explorer",
+    "url": "\\\\entper-fil01\\2depts\\PHE_LAB",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "Port Control Completed Vessels",
+    "description": "",
+    "category": "explorer",
+    "url": "\\\\entper-fil01\\2depts\\IP\\Control\\Reference\\01 Port Control\\Current Vessel Documentation\\Completed Vessels",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "",
+    "description": "FI Shift Maintenance Electrical Supervisor",
+    "category": "contact",
+    "url": "",
+    "phone": "0477391959",
+    "email": "",
+    "section": "BHP"
+  },
+  {
+    "title": "Field Leadership",
+    "description": "",
+    "category": "webpage",
+    "url": "https://flex.bhp.com/#/dashboard/person",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "ChemAlert",
+    "description": "",
+    "category": "webpage",
+    "url": "https://chemalert.rmt.com.au/BHPMinAu/index.html",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "KaiNexus",
+    "description": "MIP Board Improvement",
+    "category": "webpage",
+    "url": "https://bhp.kainexus.com/#b",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "Sphera",
+    "description": "Permit to Work",
+    "category": "webpage",
+    "url": "https://cow-bhp.spheracloud.net/proscient/login?redirect=%2F",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "Port Lab Dashboard FI",
+    "description": "Power Bi",
+    "category": "webpage",
+    "url": "https://app.powerbi.com/groups/me/reports/a69d3ce2-a405-496f-bc76-bee3695fc9dd/ReportSection8dae1446a33ae15aeba8?ctid=4f6e1565-c2c7-43cb-8a4c-0981d022ce20&experience=power-bi",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "Coarse Ore Standard Dashboard",
+    "description": "Power Bi",
+    "category": "webpage",
+    "url": "https://app.powerbi.com/groups/me/apps/ce3510fe-cd5d-4b50-af80-86beed1f5998/reports/6507ef72-3c5d-4e10-b79b-4008d6afc6fc/ReportSection692788b830181fbbde8a?ctid=4f6e1565-c2c7-43cb-8a4c-0981d022ce20&experience=power-bi",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "WAIO PQ Report Dashboard",
+    "description": "Power Bi",
+    "category": "webpage",
+    "url": "https://app.powerbi.com/groups/me/reports/9a02b0e4-97aa-4344-924e-1b99d50f9580/ReportSection8dae1446a33ae15aeba8?ctid=4f6e1565-c2c7-43cb-8a4c-0981d022ce20&experience=power-bi",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "Fiori",
+    "description": "",
+    "category": "webpage",
+    "url": "https://mobile.bhp.com/fiori",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "Support Central",
+    "description": "",
+    "category": "webpage",
+    "url": "https://bhp.service-now.com/esc",
+    "phone": "",
+    "email": "",
+    "section": ""
+  },
+  {
+    "title": "Brian Adley",
+    "description": "Lab Supervisor",
+    "category": "contact",
+    "url": "",
+    "phone": "0408956859",
+    "email": "brian.adley@bhp.com",
+    "section": "Lab"
   }
 ]</script>
 
 <script>
   // ---------- category / group config ----------
   const CATEGORIES = {
-    operational: { group:'tools', label:'Operational', accent:'orange' },
-    reference:   { group:'tools', label:'Reference',    accent:'blue'   },
-    explorer:    { group:'bhp',   label:'Explorer Shortcut', accent:'orange' },
-    webpage:     { group:'bhp',   label:'Webpage Shortcut',  accent:'blue'   }
+    operational: { group:'tools',   label:'Operational',       accent:'orange' },
+    reference:   { group:'tools',   label:'Reference',         accent:'blue'   },
+    explorer:    { group:'bhp',     label:'Explorer Shortcut', accent:'orange' },
+    webpage:     { group:'bhp',     label:'Webpage Shortcut',  accent:'blue'   },
+    contact:     { group:'contact', label:'Contact',           accent:'orange' }
   };
-  const BHP_PASSWORD = '112233';
+  const CONTACT_CATEGORIES = ['contact'];
+  const GATE_PASSWORD = '112233';
+  const LOCKED_GROUPS = new Set(['bhp', 'contact']);
+  const GATE_LABELS = { bhp: 'Enter the password to view BHP shortcuts', contact: 'Enter the password to view your contacts' };
 
   let tools = [];
   try{ tools = JSON.parse(document.getElementById('tools-data').textContent || '[]'); }catch(e){ tools = []; }
   let dirty = false;
   let currentGroup = 'tools';
-  let bhpUnlocked = false;
+  let unlocked = { bhp: false, contact: false };
   let activeFilter = 'all';
   let editingIndex = null;
+  let viewMode = 'tile';
 
   const grid = document.getElementById('toolGrid');
+  const contactList = document.getElementById('contactList');
   const emptyState = document.getElementById('emptyState');
   const search = document.getElementById('search');
   const editToggle = document.getElementById('editToggle');
   const editPanel = document.getElementById('editPanel');
   const bhpGate = document.getElementById('bhpGate');
+  const gateLabel = document.getElementById('gateLabel');
   const gatePassword = document.getElementById('gatePassword');
   const gateError = document.getElementById('gateError');
   const form = document.getElementById('toolForm');
@@ -596,6 +951,16 @@
   const fDesc = document.getElementById('f-desc');
   const fUrl = document.getElementById('f-url');
   const fUrlLabel = document.getElementById('f-url-label');
+  const fUrlGroup = document.getElementById('f-url-group');
+  const fPhone = document.getElementById('f-phone');
+  const fPhoneGroup = document.getElementById('f-phone-group');
+  const fEmail = document.getElementById('f-email');
+  const fEmailGroup = document.getElementById('f-email-group');
+  const fSection = document.getElementById('f-section');
+  const fSectionGroup = document.getElementById('f-section-group');
+  const sectionOptions = document.getElementById('section-options');
+  const fTitleLabel = document.getElementById('f-title-label');
+  const fDescLabel = document.getElementById('f-desc-label');
   const fCategory = document.getElementById('f-category');
   const fSubmit = document.getElementById('f-submit');
   const fCancel = document.getElementById('f-cancel');
@@ -613,6 +978,8 @@
 
   const ICON = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg>';
   const FOLDER_ICON = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2.2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-10Z"/></svg>';
+  const PHONE_ICON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 9.5 9.5 0 0 0 3 .48 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 9.5 9.5 0 0 0 .48 3 1 1 0 0 1-.25 1Z"/></svg>';
+  const MAIL_ICON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>';
 
   function copyToClipboard(text){
     if(navigator.clipboard && window.isSecureContext){
@@ -639,63 +1006,214 @@
     return str.slice(0, half) + '…' + str.slice(str.length - half);
   }
 
+  function buildToolCard(t, i, meta, isExplorer){
+    let footLeft, footRight, icon;
+    if(isExplorer){
+      icon = FOLDER_ICON;
+      footLeft = `<span class="meta" title="${escapeHtml(t.url)}">${escapeHtml(truncateMiddle(t.url, 24))}</span>`;
+      footRight = `<button type="button" class="copy-btn" data-index="${i}">Copy Path</button>`;
+    } else {
+      icon = ICON;
+      footLeft = `<span class="meta">${escapeHtml(meta.label)}</span>`;
+      footRight = `<a class="open" href="${escapeHtml(t.url)}" target="_blank" rel="noopener">Open →</a>`;
+    }
+    const card = document.createElement('div');
+    card.className = 'card clickable';
+    card.dataset.accent = meta.accent;
+    card.innerHTML = `
+      <div class="card-top">
+        ${icon}
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="${i}" title="Move up" ${i === 0 ? 'disabled' : ''}>↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="${i}" title="Move down" ${i === tools.length - 1 ? 'disabled' : ''}>↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="${i}" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="${i}" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>${escapeHtml(t.title)}</h2>
+      <p>${escapeHtml(t.description || '')}</p>
+      <div class="card-foot">
+        ${footLeft}
+        ${footRight}
+      </div>
+    `;
+    card.addEventListener('click', (e) => {
+      if(e.target.closest('button') || e.target.closest('a')) return;
+      if(isExplorer) copyToClipboard(t.url).catch(()=>{});
+      else window.open(t.url, '_blank', 'noopener');
+    });
+    return card;
+  }
+
+  function buildToolRow(t, i, meta, isExplorer){
+    let metaText, actionHtml, icon;
+    if(isExplorer){
+      icon = FOLDER_ICON;
+      metaText = t.url;
+      actionHtml = `<button type="button" class="copy-btn" data-index="${i}">Copy Path</button>`;
+    } else {
+      icon = ICON;
+      metaText = meta.label;
+      actionHtml = `<a class="open" href="${escapeHtml(t.url)}" target="_blank" rel="noopener">Open →</a>`;
+    }
+    const row = document.createElement('div');
+    row.className = 'tool-row clickable';
+    row.dataset.accent = meta.accent;
+    row.innerHTML = `
+      ${icon}
+      <div class="tool-row-info">
+        <div class="tool-row-title">${escapeHtml(t.title)}</div>
+        <div class="tool-row-desc">${escapeHtml(t.description || '')}</div>
+      </div>
+      <div class="tool-row-meta" title="${escapeHtml(metaText)}">${escapeHtml(truncateMiddle(metaText, 28))}</div>
+      <div class="tool-row-actions view-actions">${actionHtml}</div>
+      <div class="tool-row-actions edit-actions">
+        <button type="button" class="icon-btn up-btn" data-index="${i}" title="Move up" ${i === 0 ? 'disabled' : ''}>↑</button>
+        <button type="button" class="icon-btn down-btn" data-index="${i}" title="Move down" ${i === tools.length - 1 ? 'disabled' : ''}>↓</button>
+        <button type="button" class="icon-btn edit-btn" data-index="${i}" title="Edit">✎</button>
+        <button type="button" class="icon-btn delete-btn" data-index="${i}" title="Delete">✕</button>
+      </div>
+    `;
+    row.addEventListener('click', (e) => {
+      if(e.target.closest('button') || e.target.closest('a')) return;
+      if(isExplorer) copyToClipboard(t.url).catch(()=>{});
+      else window.open(t.url, '_blank', 'noopener');
+    });
+    return row;
+  }
+
+  function getDistinctSections(){
+    const seen = new Map();
+    tools.forEach(t => {
+      if(t.category !== 'contact') return;
+      const raw = (t.section || '').trim();
+      const key = raw.toLowerCase();
+      if(key && !seen.has(key)) seen.set(key, raw);
+    });
+    return Array.from(seen.values()).sort((a, b) => a.localeCompare(b));
+  }
+
   function render(){
     persistData();
     const q = search.value.trim().toLowerCase();
     grid.innerHTML = '';
+    contactList.innerHTML = '';
     let visible = 0;
     let groupTotal = 0;
 
-    const showGate = currentGroup === 'bhp' && !bhpUnlocked;
+    const showGate = LOCKED_GROUPS.has(currentGroup) && !unlocked[currentGroup];
     bhpGate.hidden = !showGate;
+    const isContactGroup = currentGroup === 'contact';
+    grid.hidden = isContactGroup;
+    contactList.hidden = !isContactGroup;
 
-    if(!showGate){
+    if(!showGate && !isContactGroup){
+      const catOrder = currentGroup === 'tools' ? ['operational', 'reference'] : ['explorer', 'webpage'];
+      const sections = catOrder.map(cat => ({ cat, meta: CATEGORIES[cat], items: [] }));
+
       tools.forEach((t, i) => {
-        const meta = CATEGORIES[t.category] || CATEGORIES.operational;
-        if(meta.group !== currentGroup) return;
+        const meta = CATEGORIES[t.category];
+        if(!meta || meta.group !== currentGroup) return;
         groupTotal++;
         const matchesCategory = activeFilter === 'all' || t.category === activeFilter;
         const matchesSearch = q === '' || (t.title + ' ' + t.description).toLowerCase().includes(q);
         if(!matchesCategory || !matchesSearch) return;
         visible++;
+        const sec = sections.find(s => s.cat === t.category);
+        if(sec) sec.items.push({ t, i });
+      });
 
-        const isExplorer = t.category === 'explorer';
-        const footRight = isExplorer
-          ? `<button type="button" class="copy-btn" data-index="${i}">Copy Path</button>`
-          : `<a class="open" href="${escapeHtml(t.url)}" target="_blank" rel="noopener">Open →</a>`;
-        const footLeft = isExplorer
-          ? `<span class="meta" title="${escapeHtml(t.url)}">${escapeHtml(truncateMiddle(t.url, 24))}</span>`
-          : `<span class="meta">${escapeHtml(meta.label)}</span>`;
+      sections.forEach(({ meta, items }) => {
+        if(!items.length) return;
+        const sectionEl = document.createElement('div');
+        sectionEl.className = 'tool-section';
+        const inner = document.createElement('div');
+        inner.className = viewMode === 'list' ? 'tool-list' : 'tool-grid';
 
-        const card = document.createElement('div');
-        card.className = 'card clickable';
-        card.dataset.accent = meta.accent;
-        card.innerHTML = `
-          <div class="card-top">
-            ${isExplorer ? FOLDER_ICON : ICON}
-            <div class="card-actions">
-              <button type="button" class="icon-btn up-btn" data-index="${i}" title="Move up" ${i === 0 ? 'disabled' : ''}>↑</button>
-              <button type="button" class="icon-btn down-btn" data-index="${i}" title="Move down" ${i === tools.length - 1 ? 'disabled' : ''}>↓</button>
-              <button type="button" class="icon-btn edit-btn" data-index="${i}" title="Edit">✎</button>
-              <button type="button" class="icon-btn delete-btn" data-index="${i}" title="Delete">✕</button>
-            </div>
-          </div>
-          <h2>${escapeHtml(t.title)}</h2>
-          <p>${escapeHtml(t.description || '')}</p>
-          <div class="card-foot">
-            ${footLeft}
-            ${footRight}
-          </div>
-        `;
-        card.addEventListener('click', (e) => {
-          if(e.target.closest('button') || e.target.closest('a')) return;
-          if(isExplorer){
-            copyToClipboard(t.url).catch(()=>{});
-          } else {
-            window.open(t.url, '_blank', 'noopener');
-          }
+        items.forEach(({ t, i }) => {
+          const isExplorer = t.category === 'explorer';
+          const el = viewMode === 'list'
+            ? buildToolRow(t, i, meta, isExplorer)
+            : buildToolCard(t, i, meta, isExplorer);
+          inner.appendChild(el);
         });
-        grid.appendChild(card);
+
+        sectionEl.innerHTML = `<p class="section-label">${escapeHtml(meta.label)}</p>`;
+        sectionEl.appendChild(inner);
+        grid.appendChild(sectionEl);
+      });
+    } else if(!showGate && isContactGroup){
+      const contactEntries = tools
+        .map((t, i) => ({ t, i }))
+        .filter(({ t }) => t.category === 'contact');
+
+      // build distinct groups (case-insensitive, first-seen casing wins), for both the
+      // filter pills and the datalist suggestions in the edit form
+      const distinctSections = getDistinctSections();
+      renderContactFilterPills(distinctSections);
+      sectionOptions.innerHTML = distinctSections.map(s => `<option value="${escapeHtml(s)}">`).join('');
+
+      // group entries into sections, sorted alphabetically; ungrouped entries go last
+      const bySection = new Map();
+      contactEntries.forEach(({ t, i }) => {
+        const raw = (t.section || '').trim();
+        const key = raw ? raw.toLowerCase() : '\uFFFF__ungrouped';
+        if(!bySection.has(key)) bySection.set(key, { label: raw || 'Ungrouped', items: [] });
+        bySection.get(key).items.push({ t, i });
+      });
+      const orderedSections = Array.from(bySection.values()).sort((a, b) => {
+        if(a.label === 'Ungrouped') return 1;
+        if(b.label === 'Ungrouped') return -1;
+        return a.label.localeCompare(b.label);
+      });
+
+      orderedSections.forEach(({ label, items }) => {
+        const rowsHtml = [];
+        items.forEach(({ t, i }) => {
+          groupTotal++;
+          const matchesFilter = activeFilter === 'all' || (t.section || '').trim().toLowerCase() === activeFilter;
+          const matchesSearch = q === '' || (t.title + ' ' + t.description + ' ' + t.phone + ' ' + t.email + ' ' + (t.section||'')).toLowerCase().includes(q);
+          if(!matchesFilter || !matchesSearch) return;
+          visible++;
+
+          const name = t.title.trim();
+          const roleTitle = t.description.trim();
+          const displayName = name || roleTitle || '(unnamed contact)';
+          const displaySubtitle = (name && roleTitle) ? roleTitle : '';
+
+          const telHref = t.phone ? 'tel:' + t.phone.replace(/[^\d+]/g, '') : '';
+          const viewActions = [
+            t.phone ? `<a class="c-icon-btn call" href="${escapeHtml(telHref)}" title="Call ${escapeHtml(t.phone)}">${PHONE_ICON}</a>` : '',
+            t.email ? `<a class="c-icon-btn mail" href="mailto:${escapeHtml(t.email)}" title="Email ${escapeHtml(t.email)}">${MAIL_ICON}</a>` : ''
+          ].join('');
+          const metaItems = [
+            t.phone ? `<span class="c-meta-item">${PHONE_ICON}${escapeHtml(t.phone)}</span>` : '',
+            t.email ? `<span class="c-meta-item">${MAIL_ICON}${escapeHtml(t.email)}</span>` : ''
+          ].join('');
+
+          rowsHtml.push(`
+            <div class="contact-row clickable" data-index="${i}">
+              <div class="c-info">
+                <div class="c-name">${escapeHtml(displayName)}</div>
+                ${displaySubtitle ? `<div class="c-title">${escapeHtml(displaySubtitle)}</div>` : ''}
+                ${metaItems ? `<div class="c-meta-row">${metaItems}</div>` : ''}
+              </div>
+              <div class="c-actions view-actions">${viewActions}</div>
+              <div class="c-actions edit-actions">
+                <button type="button" class="icon-btn up-btn" data-index="${i}" title="Move up" ${i === 0 ? 'disabled' : ''}>↑</button>
+                <button type="button" class="icon-btn down-btn" data-index="${i}" title="Move down" ${i === tools.length - 1 ? 'disabled' : ''}>↓</button>
+                <button type="button" class="icon-btn edit-btn" data-index="${i}" title="Edit">✎</button>
+                <button type="button" class="icon-btn delete-btn" data-index="${i}" title="Delete">✕</button>
+              </div>
+            </div>
+          `);
+        });
+        if(rowsHtml.length){
+          const sectionEl = document.createElement('div');
+          sectionEl.className = 'contact-section';
+          sectionEl.innerHTML = `<p class="section-label">${escapeHtml(label)}</p>` + rowsHtml.join('');
+          contactList.appendChild(sectionEl);
+        }
       });
     }
 
@@ -710,6 +1228,8 @@
   // ---------- group switching ----------
   function setGroup(g){
     currentGroup = g;
+    updateCategoryOptions();
+    document.getElementById('viewToggle').hidden = (g === 'contact');
     document.querySelectorAll('.group-btn').forEach(b => b.classList.toggle('active', b.dataset.group === g));
     document.querySelectorAll('.filter-btn').forEach(b => {
       const belongs = b.dataset.group === g;
@@ -720,13 +1240,14 @@
     document.querySelectorAll('.filter-btn').forEach(b => {
       b.classList.toggle('active', belongsAndAll(b, g));
     });
-    if(g === 'bhp' && !bhpUnlocked){
+    if(LOCKED_GROUPS.has(g) && !unlocked[g]){
       document.body.classList.remove('edit-mode');
       editToggle.classList.remove('on');
       editPanel.hidden = true;
       resetForm();
       gatePassword.value = '';
       gateError.hidden = true;
+      gateLabel.textContent = GATE_LABELS[g] || 'Enter the password to continue';
     }
     render();
   }
@@ -737,8 +1258,8 @@
   });
 
   const gateSubmitHandler = () => {
-    if(gatePassword.value === BHP_PASSWORD){
-      bhpUnlocked = true;
+    if(gatePassword.value === GATE_PASSWORD){
+      unlocked[currentGroup] = true;
       gateError.hidden = true;
       render();
     } else {
@@ -750,20 +1271,41 @@
   document.getElementById('gateSubmit').addEventListener('click', gateSubmitHandler);
   gatePassword.addEventListener('keydown', (e) => { if(e.key === 'Enter') gateSubmitHandler(); });
 
-  // ---------- filters ----------
+  // ---------- filters (delegated so dynamically-added Contact group pills work too) ----------
   search.addEventListener('input', render);
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => { if(b.dataset.group === currentGroup) b.classList.remove('active'); });
-      btn.classList.add('active');
-      activeFilter = btn.dataset.filter;
+  document.querySelector('.controls-inner').addEventListener('click', (e) => {
+    const viewBtn = e.target.closest('.view-btn');
+    if(viewBtn){
+      viewMode = viewBtn.dataset.view;
+      document.querySelectorAll('.view-btn').forEach(b => b.classList.toggle('active', b === viewBtn));
       render();
-    });
+      return;
+    }
+    const btn = e.target.closest('.filter-btn');
+    if(!btn) return;
+    document.querySelectorAll('.filter-btn').forEach(b => { if(b.dataset.group === currentGroup) b.classList.remove('active'); });
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    render();
   });
+
+  function renderContactFilterPills(sections){
+    const allBtn = document.querySelector('.filter-btn[data-group="contact"][data-filter="all"]');
+    const keys = sections.map(s => s.toLowerCase());
+    if(activeFilter !== 'all' && !keys.includes(activeFilter)){
+      activeFilter = 'all';
+    }
+    allBtn.classList.toggle('active', activeFilter === 'all');
+    document.getElementById('contactFilterSlot').innerHTML = sections.map(s => {
+      const key = s.toLowerCase();
+      const isActive = activeFilter === key;
+      return `<button type="button" class="filter-btn${isActive ? ' active' : ''}" data-group="contact" data-filter="${escapeHtml(key)}" data-accent="neutral">${escapeHtml(s)}</button>`;
+    }).join('');
+  }
 
   // ---------- edit mode ----------
   editToggle.addEventListener('click', () => {
-    if(currentGroup === 'bhp' && !bhpUnlocked) return;
+    if(LOCKED_GROUPS.has(currentGroup) && !unlocked[currentGroup]) return;
     const isOn = document.body.classList.toggle('edit-mode');
     editToggle.classList.toggle('on', isOn);
     editPanel.hidden = !isOn;
@@ -771,7 +1313,9 @@
   });
 
   function resetForm(){
+    const keepCategory = fCategory.value;
     form.reset();
+    fCategory.value = keepCategory;
     editingIndex = null;
     fSubmit.textContent = 'Add Tool';
     fCancel.hidden = true;
@@ -780,30 +1324,80 @@
 
   function updateUrlLabel(){
     const cat = fCategory.value;
-    if(cat === 'explorer'){
-      fUrlLabel.textContent = 'Network / folder path';
-      fUrl.placeholder = '\\\\server\\share\\folder or C:\\path\\to\\folder';
-    } else if(cat === 'webpage'){
-      fUrlLabel.textContent = 'Webpage URL';
-      fUrl.placeholder = 'https://intranet.example.com/page';
+    if(CONTACT_CATEGORIES.includes(cat)){
+      fUrlGroup.hidden = true;
+      fPhoneGroup.hidden = false;
+      fEmailGroup.hidden = false;
+      fSectionGroup.hidden = false;
+      fTitleLabel.textContent = 'Name';
+      fTitle.placeholder = 'e.g. John Young — leave blank if this is a position';
+      fTitle.required = false;
+      fDescLabel.textContent = 'Title';
+      fDesc.placeholder = 'e.g. National Service Manager, or "Gatehouse" if no name';
+      sectionOptions.innerHTML = getDistinctSections().map(s => `<option value="${escapeHtml(s)}">`).join('');
     } else {
-      fUrlLabel.textContent = 'GitHub / page URL';
-      fUrl.placeholder = 'https://username.github.io/repo/ or filename.html';
+      fUrlGroup.hidden = false;
+      fPhoneGroup.hidden = true;
+      fEmailGroup.hidden = true;
+      fSectionGroup.hidden = true;
+      fTitleLabel.textContent = 'Title';
+      fTitle.required = true;
+      fDescLabel.textContent = 'Description';
+      fDesc.placeholder = 'One short line about what it does';
+      if(cat === 'explorer'){
+        fUrlLabel.textContent = 'Network / folder path';
+        fUrl.placeholder = '\\\\server\\share\\folder or C:\\path\\to\\folder';
+        fTitle.placeholder = 'e.g. Sample Station Dashboard';
+      } else if(cat === 'webpage'){
+        fUrlLabel.textContent = 'Webpage URL';
+        fUrl.placeholder = 'https://intranet.example.com/page';
+        fTitle.placeholder = 'e.g. Sample Station Dashboard';
+      } else {
+        fUrlLabel.textContent = 'GitHub / page URL';
+        fUrl.placeholder = 'https://username.github.io/repo/ or filename.html';
+        fTitle.placeholder = 'e.g. Sample Station Dashboard';
+      }
     }
   }
   fCategory.addEventListener('change', updateUrlLabel);
+
+  // ---------- category options depend on which tab you're adding from ----------
+  function updateCategoryOptions(){
+    let html;
+    if(currentGroup === 'bhp'){
+      html = '<option value="explorer">Explorer Shortcut</option><option value="webpage">Webpage Shortcut</option>';
+    } else if(currentGroup === 'contact'){
+      html = '<option value="contact">Contact</option>';
+    } else {
+      html = '<option value="operational">Operational</option><option value="reference">Reference</option>';
+    }
+    fCategory.innerHTML = html;
+    document.getElementById('f-category-wrap').hidden = (currentGroup === 'contact');
+    updateUrlLabel();
+  }
 
   fCancel.addEventListener('click', resetForm);
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+    const cat = fCategory.value;
+    const isContact = CONTACT_CATEGORIES.includes(cat);
     const entry = {
       title: fTitle.value.trim(),
       description: fDesc.value.trim(),
-      url: fUrl.value.trim(),
-      category: fCategory.value
+      category: cat,
+      url: isContact ? '' : fUrl.value.trim(),
+      phone: isContact ? fPhone.value.trim() : '',
+      email: isContact ? fEmail.value.trim() : '',
+      section: isContact ? fSection.value.trim() : ''
     };
-    if(!entry.title || !entry.url) return;
+    if(isContact){
+      if(!entry.title && !entry.description) return;
+      if(!entry.phone && !entry.email) return;
+    } else {
+      if(!entry.title) return;
+      if(!entry.url) return;
+    }
 
     if(editingIndex !== null){
       tools[editingIndex] = entry;
@@ -836,7 +1430,9 @@
       const t = tools[i];
       fTitle.value = t.title;
       fDesc.value = t.description;
-      fUrl.value = t.url;
+      fUrl.value = t.url || '';
+      fPhone.value = t.phone || '';
+      fEmail.value = t.email || '';
       fCategory.value = t.category;
       updateUrlLabel();
       editingIndex = i;
@@ -862,8 +1458,87 @@
     }
   });
 
-  // ---------- download as index.html ----------
-  document.getElementById('downloadBtn').addEventListener('click', () => {
+  contactList.addEventListener('click', (e) => {
+    const upBtn = e.target.closest('.up-btn');
+    const downBtn = e.target.closest('.down-btn');
+    const editBtn = e.target.closest('.edit-btn');
+    const delBtn = e.target.closest('.delete-btn');
+    const row = e.target.closest('.contact-row');
+    if(upBtn && !upBtn.disabled){
+      const i = Number(upBtn.dataset.index);
+      [tools[i-1], tools[i]] = [tools[i], tools[i-1]];
+      dirty = true;
+      render();
+    } else if(downBtn && !downBtn.disabled){
+      const i = Number(downBtn.dataset.index);
+      [tools[i+1], tools[i]] = [tools[i], tools[i+1]];
+      dirty = true;
+      render();
+    } else if(editBtn){
+      const i = Number(editBtn.dataset.index);
+      const t = tools[i];
+      fTitle.value = t.title;
+      fDesc.value = t.description;
+      fUrl.value = t.url || '';
+      fPhone.value = t.phone || '';
+      fEmail.value = t.email || '';
+      fSection.value = t.section || '';
+      fCategory.value = t.category;
+      updateUrlLabel();
+      editingIndex = i;
+      fSubmit.textContent = 'Save Changes';
+      fCancel.hidden = false;
+      fTitle.focus();
+    } else if(delBtn){
+      const i = Number(delBtn.dataset.index);
+      if(editingIndex === i) resetForm();
+      tools.splice(i, 1);
+      dirty = true;
+      render();
+    } else if(row && !e.target.closest('a') && !e.target.closest('button') && !document.body.classList.contains('edit-mode')){
+      const i = Number(row.dataset.index);
+      const t = tools[i];
+      if(t.phone) window.location.href = 'tel:' + t.phone.replace(/[^\d+]/g, '');
+      else if(t.email) window.location.href = 'mailto:' + t.email;
+    }
+  });
+
+  // ---------- save a file: lets the person pick a location in Chrome/Edge (File System
+  // Access API); falls back to a normal browser download everywhere else, since Safari
+  // and Firefox don't support that picker yet ----------
+  async function saveFile(filename, mimeType, content){
+    if(window.showSaveFilePicker){
+      try{
+        const ext = '.' + filename.split('.').pop();
+        const handle = await window.showSaveFilePicker({
+          suggestedName: filename,
+          types: [{
+            description: mimeType === 'application/json' ? 'JSON file' : 'HTML file',
+            accept: { [mimeType]: [ext] }
+          }]
+        });
+        const writable = await handle.createWritable();
+        await writable.write(content);
+        await writable.close();
+        return true;
+      }catch(err){
+        if(err && err.name === 'AbortError') return false; // person cancelled the dialog — don't fall back
+        // any other error (e.g. picker not actually usable here) — fall through to plain download
+      }
+    }
+    const blob = new Blob([content], { type: mimeType });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
+    return true;
+  }
+
+  // ---------- save as index.html ----------
+  document.getElementById('downloadBtn').addEventListener('click', async () => {
     const wasEditMode = document.body.classList.contains('edit-mode');
     document.body.classList.remove('edit-mode');
     editToggle.classList.remove('on');
@@ -872,15 +1547,8 @@
     persistData();
 
     const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-    const blob = new Blob([html], { type: 'text/html' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'index.html';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(a.href);
-    dirty = false;
+    const saved = await saveFile('index.html', 'text/html', html);
+    if(saved) dirty = false;
 
     if(wasEditMode){
       document.body.classList.add('edit-mode');
@@ -890,17 +1558,10 @@
   });
 
   // ---------- export / import just the data (lightweight backup) ----------
-  document.getElementById('exportBtn').addEventListener('click', () => {
+  document.getElementById('exportBtn').addEventListener('click', async () => {
     persistData();
-    const blob = new Blob([JSON.stringify(tools, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'mings-tools-data.json';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(a.href);
-    dirty = false;
+    const saved = await saveFile('mings-tools-data.json', 'application/json', JSON.stringify(tools, null, 2));
+    if(saved) dirty = false;
   });
 
   document.getElementById('importBtn').addEventListener('click', () => {
@@ -915,13 +1576,14 @@
       try{
         const incoming = JSON.parse(reader.result);
         if(!Array.isArray(incoming)) throw new Error('not an array');
-        const valid = incoming.every(t => typeof t === 'object' && typeof t.title === 'string' && typeof t.url === 'string');
+        const valid = incoming.every(t => typeof t === 'object' && typeof t.title === 'string' && (typeof t.url === 'string' || typeof t.phone === 'string' || typeof t.email === 'string'));
         if(!valid) throw new Error('unexpected shape');
         const replace = tools.length === 0 || window.confirm(`Replace the current ${tools.length} tool(s) with ${incoming.length} from this file?`);
         if(replace){
           tools = incoming.map(t => ({
-            title: t.title, description: t.description || '', url: t.url,
-            category: CATEGORIES[t.category] ? t.category : 'operational'
+            title: t.title, description: t.description || '',
+            category: CATEGORIES[t.category] ? t.category : 'operational',
+            url: t.url || '', phone: t.phone || '', email: t.email || '', section: t.section || ''
           }));
           dirty = true;
           render();
@@ -941,7 +1603,7 @@
     }
   });
 
-  updateUrlLabel();
+  updateCategoryOptions();
   render();
 </script>
 
