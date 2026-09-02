@@ -75,7 +75,7 @@
   h1 span{ color:var(--orange); }
   .sub{ color:var(--muted); font-size:0.95rem; max-width:50ch; margin:0; }
 
-  /* ---------- group toggle (Tools / BHP) ---------- */
+  /* ---------- group toggle (Tools / Links / Contact) ---------- */
   .group-row{
     max-width:1080px; margin:1.6rem auto 0; padding:0 1.5rem;
     display:flex; gap:0.5rem;
@@ -139,8 +139,8 @@
   .view-btn.active{ background:var(--orange); color:#14161A; }
 
   /* ---------- password gate ---------- */
-  #bhpGate{ max-width:1080px; margin:1.2rem auto 0; padding:0 1.5rem; }
-  #bhpGate[hidden]{ display:none; }
+  #lockGate{ max-width:1080px; margin:1.2rem auto 0; padding:0 1.5rem; }
+  #lockGate[hidden]{ display:none; }
   .gate-box{
     background:var(--panel); border:1px solid var(--border); border-radius:10px;
     padding:2.4rem 1.5rem; max-width:340px; margin:1rem auto; text-align:center;
@@ -169,6 +169,7 @@
     padding:1.1rem 1.2rem; display:flex; flex-wrap:wrap; gap:0.7rem; align-items:flex-end;
   }
   .field{ display:flex; flex-direction:column; gap:0.35rem; flex:1 1 160px; }
+  .field[hidden]{ display:none; }
   .field.wide{ flex:2 1 240px; }
   .field label{
     font-family:'IBM Plex Mono', monospace; font-size:0.66rem; letter-spacing:0.08em;
@@ -212,6 +213,7 @@
   /* ---------- grid + cards ---------- */
   main{ max-width:1080px; margin:0 auto; padding:2rem 1.5rem 4rem; }
   #toolGrid{ display:flex; flex-direction:column; gap:1.5rem; }
+  #toolGrid[hidden]{ display:none; }
   .tool-section{ display:flex; flex-direction:column; gap:0.6rem; }
   .tool-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:1.1rem; }
   .tool-list{ display:flex; flex-direction:column; gap:0.5rem; }
@@ -314,6 +316,7 @@
 
   /* ---------- contact list (phone-book style) ---------- */
   .contact-list{ display:flex; flex-direction:column; gap:1.4rem; }
+  .contact-list[hidden]{ display:none; }
   .contact-section{ display:flex; flex-direction:column; gap:0.5rem; }
   .section-label{
     font-family:'IBM Plex Mono', monospace; font-size:0.7rem; letter-spacing:0.14em;
@@ -362,7 +365,7 @@
 
 <header>
   <div class="header-inner">
-    <p class="eyebrow">Personal Dashboard<span class="version-tag">v11</span></p>
+    <p class="eyebrow">Personal Dashboard<span class="version-tag">v13</span></p>
     <h1>MING'S <span>TOOLS</span></h1>
     <p class="sub">Quick access to my tools and projects. Click Edit to add a link, then download to publish it as your GitHub Pages index.html.</p>
   </div>
@@ -370,7 +373,7 @@
 
 <div class="group-row">
   <button class="group-btn active" data-group="tools">Tools</button>
-  <button class="group-btn" data-group="bhp">BHP <span class="lock">🔒</span></button>
+  <button class="group-btn" data-group="links">Links <span class="lock">🔒</span></button>
   <button class="group-btn" data-group="contact">Contact <span class="lock">🔒</span></button>
 </div>
 
@@ -380,9 +383,9 @@
     <button class="filter-btn active" data-group="tools" data-filter="all" data-accent="neutral">All</button>
     <button class="filter-btn" data-group="tools" data-filter="operational" data-accent="orange">Operational</button>
     <button class="filter-btn" data-group="tools" data-filter="reference" data-accent="blue">Reference</button>
-    <button class="filter-btn" data-group="bhp" data-filter="all" data-accent="neutral" hidden="">All</button>
-    <button class="filter-btn" data-group="bhp" data-filter="explorer" data-accent="orange" hidden="">Explorer Shortcut</button>
-    <button class="filter-btn" data-group="bhp" data-filter="webpage" data-accent="blue" hidden="">Webpage Shortcut</button>
+    <button class="filter-btn" data-group="links" data-filter="all" data-accent="neutral" hidden="">All</button>
+    <button class="filter-btn" data-group="links" data-filter="explorer" data-accent="orange" hidden="">Explorer Shortcut</button>
+    <button class="filter-btn" data-group="links" data-filter="webpage" data-accent="blue" hidden="">Webpage Shortcut</button>
     <button class="filter-btn" data-group="contact" data-filter="all" data-accent="neutral" hidden="">All</button>
     <span id="contactFilterSlot"></span>
     <div class="view-toggle" id="viewToggle">
@@ -393,13 +396,13 @@
   </div>
 </div>
 
-<div id="bhpGate" hidden="">
+<div id="lockGate" hidden="">
   <div class="gate-box">
     <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
       <rect x="4.5" y="10.5" width="15" height="10" rx="2"></rect>
       <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"></path>
     </svg>
-    <p class="gate-label" id="gateLabel">Enter the password to view BHP shortcuts</p>
+    <p class="gate-label" id="gateLabel">Enter the password to view Links</p>
     <input type="password" id="gatePassword" placeholder="••••••" inputmode="numeric" autocomplete="off">
     <button id="gateSubmit">Unlock</button>
     <p class="gate-error" id="gateError" hidden="">Incorrect password.</p>
@@ -632,7 +635,7 @@
 </main>
 
 <footer>
-  Mings_Tools_v11.html — Tools and BHP tabs now group entries by category and let you switch between Tile (⊞) and List (☰) view. Tools tab is always open; BHP and Contact tabs both need the password (screen-privacy only, not real security). Contacts show Name / Title / Phone / Email right in the row, sorted into whatever Groups you define. Save/Export let you pick a folder in Chrome/Edge; other browsers use their normal download location.
+  Mings_Tools_v13.html — Fixed a real CSS bug: fields wrapped with class="field" (Phone/Email/Group/URL, and the Category selector) weren't actually hiding despite the hidden attribute being set correctly, because the .field{display:flex} rule was silently overriding the browser's default hidden behavior. Tools and Links tabs never show Phone/Email/Group fields or each other's Group suggestions; Contact never shows the folder-path field. Tools and Links tabs group entries by category with a Tile (⊞) / List (☰) toggle. Tools tab is always open; Links and Contact tabs both need the password (screen-privacy only, not real security). Save/Export let you pick a folder in Chrome/Edge; other browsers use their normal download location.
 </footer>
 
 <!-- Single source of truth for the tool list. Download rewrites this block. -->
@@ -1121,20 +1124,20 @@
   const CATEGORIES = {
     operational: { group:'tools',   label:'Operational',       accent:'orange' },
     reference:   { group:'tools',   label:'Reference',         accent:'blue'   },
-    explorer:    { group:'bhp',     label:'Explorer Shortcut', accent:'orange' },
-    webpage:     { group:'bhp',     label:'Webpage Shortcut',  accent:'blue'   },
+    explorer:    { group:'links',    label:'Explorer Shortcut', accent:'orange' },
+    webpage:     { group:'links',    label:'Webpage Shortcut',  accent:'blue'   },
     contact:     { group:'contact', label:'Contact',           accent:'orange' }
   };
   const CONTACT_CATEGORIES = ['contact'];
   const GATE_PASSWORD = '112233';
-  const LOCKED_GROUPS = new Set(['bhp', 'contact']);
-  const GATE_LABELS = { bhp: 'Enter the password to view BHP shortcuts', contact: 'Enter the password to view your contacts' };
+  const LOCKED_GROUPS = new Set(['links', 'contact']);
+  const GATE_LABELS = { links: 'Enter the password to view Links', contact: 'Enter the password to view your contacts' };
 
   let tools = [];
   try{ tools = JSON.parse(document.getElementById('tools-data').textContent || '[]'); }catch(e){ tools = []; }
   let dirty = false;
   let currentGroup = 'tools';
-  let unlocked = { bhp: false, contact: false };
+  let unlocked = { links: false, contact: false };
   let activeFilter = 'all';
   let editingIndex = null;
   let viewMode = 'tile';
@@ -1145,7 +1148,7 @@
   const search = document.getElementById('search');
   const editToggle = document.getElementById('editToggle');
   const editPanel = document.getElementById('editPanel');
-  const bhpGate = document.getElementById('bhpGate');
+  const lockGate = document.getElementById('lockGate');
   const gateLabel = document.getElementById('gateLabel');
   const gatePassword = document.getElementById('gatePassword');
   const gateError = document.getElementById('gateError');
@@ -1305,7 +1308,7 @@
     let groupTotal = 0;
 
     const showGate = LOCKED_GROUPS.has(currentGroup) && !unlocked[currentGroup];
-    bhpGate.hidden = !showGate;
+    lockGate.hidden = !showGate;
     const isContactGroup = currentGroup === 'contact';
     grid.hidden = isContactGroup;
     contactList.hidden = !isContactGroup;
@@ -1543,6 +1546,8 @@
       fPhoneGroup.hidden = true;
       fEmailGroup.hidden = true;
       fSectionGroup.hidden = true;
+      fSection.value = '';
+      sectionOptions.innerHTML = '';
       fTitleLabel.textContent = 'Title';
       fTitle.required = true;
       fDescLabel.textContent = 'Description';
@@ -1567,7 +1572,7 @@
   // ---------- category options depend on which tab you're adding from ----------
   function updateCategoryOptions(){
     let html;
-    if(currentGroup === 'bhp'){
+    if(currentGroup === 'links'){
       html = '<option value="explorer">Explorer Shortcut</option><option value="webpage">Webpage Shortcut</option>';
     } else if(currentGroup === 'contact'){
       html = '<option value="contact">Contact</option>';
