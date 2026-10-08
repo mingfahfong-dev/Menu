@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script>
+  /* Early device detection — sets data-device before first paint. iPhone (or a narrow touch screen)
+     = "phone"; everything else, including iPad and desktop browsers = "desktop".
+     Add ?view=phone or ?view=desktop to the address to force a layout. */
+  (function(){
+    var d = 'desktop';
+    try{
+      var ua = navigator.userAgent || '';
+      var q = new URLSearchParams(location.search).get('view');
+      var phone = /iPhone|iPod/.test(ua) ||
+        (window.matchMedia && matchMedia('(max-width: 640px)').matches && matchMedia('(pointer: coarse)').matches);
+      d = (q === 'phone' || q === 'desktop') ? q : (phone ? 'phone' : 'desktop');
+    }catch(e){}
+    document.documentElement.setAttribute('data-device', d);
+  })();
+</script>
+<title>Ming's Tools — Quick Access</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2314161A'/%3E%3Crect x='6' y='6' width='9' height='9' rx='2' fill='%23D5672B'/%3E%3Crect x='17' y='6' width='9' height='9' rx='2' fill='%235B8BA0'/%3E%3Crect x='6' y='17' width='9' height='9' rx='2' fill='%235B8BA0'/%3E%3Crect x='17' y='17' width='9' height='9' rx='2' fill='%23D5672B'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-iphone-180.png">
+<link rel="apple-touch-icon" sizes="167x167" href="apple-touch-icon-ipad-167.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:        #14161A;
+    --bg-2:      #191C21;
+    --panel:     #1E2126;
+    --panel-hi:  #23262C;
+    --border:    #2A2E34;
+    --text:      #ECE7DF;
+    --muted:     #868C94;
+    --faint:     #565B62;
+    --orange:    #D5672B;
+    --orange-hi: #E87B3E;
+    --blue:      #5B8BA0;
+    --blue-hi:   #6EA0B6;
+    --red:       #C0564C;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(213,103,43,0.07), transparent 60%),
+      radial-gradient(ellipse 900px 500px at 90% 0%, rgba(91,139,160,0.06), transparent 60%);
+    color:var(--text);
+    font-family:'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  a{ color:inherit; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  header{
+    padding:2.6rem 1.5rem 1.8rem;
+    background:
+      repeating-linear-gradient(135deg, rgba(213,103,43,0.05) 0 2px, transparent 2px 14px),
+      var(--bg-2);
+    border-bottom:1px solid var(--border);
+  }
+  .header-inner{ max-width:1080px; margin:0 auto; }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 0.6rem;
+  }
+  .eyebrow::before{ content:"● "; color:var(--orange); }
+  .version-tag{
+    font-family:'IBM Plex Mono', monospace; font-size:0.68rem; color:var(--faint);
+    letter-spacing:0.06em; float:right; margin-top:0.15rem;
+  }
+  h1{
+    font-family:'Oswald', sans-serif;
+    font-weight:700;
+    font-size:clamp(2rem, 5vw, 2.9rem);
+    letter-spacing:0.02em;
+    text-transform:uppercase;
+    margin:0 0 0.35rem;
+  }
+  h1 span{ color:var(--orange); }
+  .sub{ color:var(--muted); font-size:0.95rem; max-width:50ch; margin:0; }
+
+  /* ---------- group toggle (Tools / Links / Contact) ---------- */
+  .group-row{
+    max-width:1080px; margin:1.6rem auto 0; padding:0 1.5rem;
+    display:flex; gap:0.5rem;
+  }
+  .group-btn{
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:0.85rem; letter-spacing:0.03em;
+    text-transform:uppercase; background:var(--panel); border:1px solid var(--border);
+    color:var(--muted); padding:0.55rem 1.2rem; border-radius:8px 8px 0 0;
+    border-bottom:2px solid transparent; transition:all .15s ease;
+  }
+  .group-btn:hover{ color:var(--text); }
+  .group-btn.active{ color:var(--text); border-bottom-color:var(--orange); background:var(--panel-hi); }
+  .group-btn .lock{ font-size:0.75rem; opacity:0.7; margin-left:0.3rem; }
+
+  /* ---------- controls ---------- */
+  .controls{
+    max-width:1080px; margin:0 auto; padding:0.8rem 1.5rem 0;
+    display:flex; gap:0.6rem; flex-wrap:wrap; align-items:center;
+    background:var(--panel-hi); border-radius:0 10px 10px 10px;
+  }
+  .controls-inner{
+    display:flex; gap:0.6rem; flex-wrap:wrap; align-items:center; width:100%;
+    padding-bottom:0.8rem;
+  }
+  #search{
+    flex:1 1 220px; background:var(--bg); border:1px solid var(--border);
+    color:var(--text); font-family:'Inter', sans-serif; font-size:0.9rem;
+    padding:0.65rem 0.9rem; border-radius:8px; outline:none;
+    transition:border-color .15s ease;
+  }
+  #search:focus{ border-color:var(--orange); }
+  #search::placeholder{ color:var(--faint); }
+
+  .filter-btn{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.06em;
+    text-transform:uppercase; background:transparent; border:1px solid var(--border);
+    color:var(--muted); padding:0.6rem 0.9rem; border-radius:8px; transition:all .15s ease;
+  }
+  .filter-btn:hover{ border-color:var(--faint); color:var(--text); }
+  .filter-btn.active[data-accent="orange"]{ border-color:var(--orange); color:var(--orange-hi); }
+  .filter-btn.active[data-accent="blue"]{ border-color:var(--blue); color:var(--blue-hi); }
+  .filter-btn.active[data-accent="neutral"]{ border-color:var(--text); color:var(--text); }
+
+  .edit-toggle{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.06em;
+    text-transform:uppercase; background:var(--bg); border:1px solid var(--border);
+    color:var(--text); padding:0.6rem 1rem; border-radius:8px; margin-left:auto;
+    transition:all .15s ease;
+  }
+  .edit-toggle:hover{ border-color:var(--orange); }
+  .edit-toggle.on{ background:var(--orange); border-color:var(--orange); color:#14161A; font-weight:600; }
+
+  .view-toggle{ display:flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; flex:none; }
+  .view-toggle[hidden]{ display:none; }
+  .view-btn{
+    background:var(--bg); border:none; border-right:1px solid var(--border); color:var(--muted);
+    padding:0.6rem 0.75rem; font-size:0.95rem; line-height:1; transition:all .15s ease;
+  }
+  .view-btn:last-child{ border-right:none; }
+  .view-btn:hover{ color:var(--text); }
+  .view-btn.active{ background:var(--orange); color:#14161A; }
+
+  /* ---------- password gate ---------- */
+  #lockGate{ max-width:1080px; margin:1.2rem auto 0; padding:0 1.5rem; }
+  #lockGate[hidden]{ display:none; }
+  .gate-box{
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    padding:2.4rem 1.5rem; max-width:340px; margin:1rem auto; text-align:center;
+  }
+  .gate-box .lock-icon{ width:30px; height:30px; margin:0 auto 0.9rem; color:var(--muted); }
+  .gate-label{ font-size:0.88rem; color:var(--muted); margin:0 0 1rem; }
+  #gatePassword{
+    width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text);
+    font-family:'IBM Plex Mono', monospace; font-size:1rem; letter-spacing:0.2em; text-align:center;
+    padding:0.7rem; border-radius:7px; outline:none; margin-bottom:0.8rem;
+  }
+  #gatePassword:focus{ border-color:var(--orange); }
+  #gateSubmit{
+    width:100%; background:var(--orange); border:1px solid var(--orange); color:#14161A;
+    font-weight:600; font-size:0.85rem; padding:0.65rem; border-radius:7px;
+  }
+  #gateSubmit:hover{ background:var(--orange-hi); }
+  .gate-error{ color:var(--red); font-size:0.78rem; margin:0.7rem 0 0; }
+  .gate-error[hidden]{ display:none; }
+
+  /* ---------- edit panel ---------- */
+  #editPanel{ max-width:1080px; margin:1rem auto 0; padding:1.1rem 1.5rem; }
+  #editPanel[hidden]{ display:none; }
+  .panel-box{
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    padding:1.1rem 1.2rem; display:flex; flex-wrap:wrap; gap:0.7rem; align-items:flex-end;
+  }
+  .field{ display:flex; flex-direction:column; gap:0.35rem; flex:1 1 160px; }
+  .field[hidden]{ display:none; }
+  .check-field{ display:flex; align-items:center; flex:1 1 240px; min-height:38px; }
+  .check-field[hidden]{ display:none; }
+  .check-label{ display:flex; align-items:center; gap:0.55rem; font-size:0.86rem; color:var(--text); cursor:pointer; }
+  .check-label input{ width:18px; height:18px; accent-color:var(--orange); margin:0; }
+  .check-hint{ font-family:'IBM Plex Mono', monospace; font-size:0.66rem; color:var(--faint); margin-left:0.2rem; }
+  .lock-badge{
+    display:inline-flex; align-items:center; gap:0.3rem; margin-left:0.45rem; vertical-align:middle;
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; font-weight:500; letter-spacing:0.04em;
+    text-transform:none; color:var(--muted);
+  }
+  .lock-badge .lock-text{ display:none; text-transform:uppercase; font-size:0.62rem; color:var(--orange-hi); }
+  body.edit-mode .lock-badge .lock-text{ display:inline; }
+  .field.wide{ flex:2 1 240px; }
+  .field label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.66rem; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--muted);
+  }
+  .field input, .field select, .field textarea{
+    background:var(--bg); border:1px solid var(--border); color:var(--text);
+    font-family:'Inter', sans-serif; font-size:0.87rem; padding:0.55rem 0.7rem;
+    border-radius:7px; outline:none; resize:vertical; min-height:38px;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{ border-color:var(--orange); }
+  .field textarea{ min-height:38px; max-height:90px; }
+
+  #f-submit{
+    background:var(--orange); border:1px solid var(--orange); color:#14161A;
+    font-weight:600; font-size:0.85rem; padding:0.6rem 1.1rem; border-radius:7px;
+  }
+  #f-submit:hover{ background:var(--orange-hi); }
+  #f-cancel{
+    background:transparent; border:1px solid var(--border); color:var(--muted);
+    font-size:0.85rem; padding:0.6rem 1rem; border-radius:7px;
+  }
+  #f-cancel:hover{ color:var(--text); border-color:var(--faint); }
+
+  .download-row{
+    max-width:1080px; margin:0.7rem auto 0; padding:0 1.5rem;
+    display:flex; align-items:center; gap:0.7rem; flex-wrap:wrap;
+  }
+  #downloadBtn{
+    background:var(--blue); border:1px solid var(--blue); color:#14161A; font-weight:600;
+    font-size:0.82rem; padding:0.6rem 1rem; border-radius:7px;
+  }
+  #downloadBtn:hover{ background:var(--blue-hi); }
+  #exportBtn, #importBtn{
+    background:transparent; border:1px solid var(--border); color:var(--text);
+    font-size:0.82rem; padding:0.6rem 1rem; border-radius:7px;
+  }
+  #exportBtn:hover, #importBtn:hover{ border-color:var(--faint); }
+  .download-hint{ font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--faint); }
+
+  /* ---------- grid + cards ---------- */
+  main{ max-width:1080px; margin:0 auto; padding:2rem 1.5rem 4rem; }
+  #toolGrid{ display:flex; flex-direction:column; gap:1.5rem; }
+  #toolGrid[hidden]{ display:none; }
+  .tool-section{ display:flex; flex-direction:column; gap:0.6rem; }
+  .tool-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:1.1rem; }
+  .tool-list{ display:flex; flex-direction:column; gap:0.5rem; }
+
+  .tool-row{
+    display:flex; align-items:center; gap:0.85rem; padding:0.65rem 0.9rem;
+    background:var(--panel); border:1px solid var(--border); border-left:3px solid var(--border);
+    border-radius:10px; transition:background .15s ease, border-color .15s ease;
+  }
+  .tool-row.clickable{ cursor:pointer; }
+  .tool-row.clickable:hover{ background:var(--panel-hi); border-color:var(--faint); }
+  .tool-row[data-accent="orange"]{ border-left-color:var(--orange); }
+  .tool-row[data-accent="blue"]{ border-left-color:var(--blue); }
+  .tool-row .icon{ flex:none; width:22px; height:22px; }
+  .tool-row[data-accent="orange"] .icon{ color:var(--orange-hi); }
+  .tool-row[data-accent="blue"] .icon{ color:var(--blue-hi); }
+  .tool-row-info{ flex:1; min-width:0; }
+  .tool-row-title{
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:0.92rem; letter-spacing:0.01em;
+    text-transform:uppercase; line-height:1.3;
+  }
+  .tool-row-desc{
+    font-size:0.8rem; color:var(--muted); line-height:1.3; margin-top:0.05rem;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .tool-row-meta{
+    flex:none; font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--faint);
+    max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:none;
+  }
+  @media (min-width: 640px){ .tool-row-meta{ display:block; } }
+  .tool-row-actions{ flex:none; display:flex; gap:0.4rem; align-items:center; }
+  .tool-row-actions.edit-actions{ display:none; }
+  body.edit-mode .tool-row-actions.view-actions{ display:none; }
+  body.edit-mode .tool-row-actions.edit-actions{ display:flex; }
+
+  .card{
+    position:relative; background:var(--panel); border:1px solid var(--border);
+    border-radius:10px; padding:1.3rem 1.2rem 1.15rem; display:flex; flex-direction:column;
+    gap:0.7rem; transition:transform .15s ease, background .15s ease, border-color .15s ease;
+  }
+  .card.clickable{ cursor:pointer; }
+  .card.clickable:hover{ background:var(--panel-hi); transform:translateY(-2px); border-color:var(--faint); }
+
+  .card::before{
+    content:""; position:absolute; top:-1px; left:14px; right:14px; height:3px;
+    border-radius:0 0 3px 3px;
+  }
+  .card[data-accent="orange"]::before{ background:var(--orange); }
+  .card[data-accent="blue"]::before{ background:var(--blue); }
+
+  .card::after{
+    content:""; position:absolute; top:9px; right:12px; width:5px; height:5px;
+    border-radius:50%; background:var(--faint);
+  }
+
+  .card-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:0.6rem; }
+  .icon{ flex:none; width:24px; height:24px; }
+  .card[data-accent="orange"] .icon{ color:var(--orange-hi); }
+  .card[data-accent="blue"] .icon{ color:var(--blue-hi); }
+
+  .card-actions{ display:none; gap:0.35rem; }
+  body.edit-mode .card-actions{ display:flex; }
+  .icon-btn{
+    background:var(--bg); border:1px solid var(--border); color:var(--muted);
+    width:24px; height:24px; border-radius:6px; font-size:0.72rem; line-height:1;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .icon-btn:hover{ color:var(--text); border-color:var(--faint); }
+  .icon-btn.delete-btn:hover{ color:#E0645A; border-color:#E0645A; }
+  .icon-btn:disabled{ opacity:0.35; cursor:default; }
+  .icon-btn:disabled:hover{ color:var(--muted); border-color:var(--border); }
+
+  .card h2{
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:1.08rem;
+    letter-spacing:0.015em; text-transform:uppercase; margin:0; line-height:1.25;
+  }
+  .card p{ font-size:0.86rem; color:var(--muted); line-height:1.45; margin:0; flex:1; }
+  .card-foot{
+    display:flex; align-items:center; justify-content:space-between; gap:0.5rem; margin-top:0.2rem;
+    padding-top:0.7rem; border-top:1px solid var(--border);
+  }
+  .meta{
+    font-family:'IBM Plex Mono', monospace; font-size:0.68rem; color:var(--faint);
+    letter-spacing:0.02em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .open, .copy-btn{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.05em;
+    text-transform:uppercase; text-decoration:none; flex:none; background:transparent; border:none; padding:0;
+  }
+  .foot-actions{ display:flex; gap:0.7rem; flex:none; }
+  .foot-actions .open{ display:inline; }
+  .card[data-accent="orange"] .open, .card[data-accent="orange"] .copy-btn{ color:var(--orange-hi); }
+  .card[data-accent="blue"] .open, .card[data-accent="blue"] .copy-btn{ color:var(--blue-hi); }
+  .copy-btn.copied{ color:#7FBF8F !important; }
+
+  #emptyState{
+    display:none; text-align:center; color:var(--muted); font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem; padding:3rem 1rem; border:1px dashed var(--border); border-radius:10px;
+  }
+
+  /* ---------- contact list (phone-book style) ---------- */
+  .contact-list{ display:flex; flex-direction:column; gap:1.4rem; }
+  .contact-list[hidden]{ display:none; }
+  .contact-section{ display:flex; flex-direction:column; gap:0.5rem; }
+  .section-label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--faint); margin:0 0 0.2rem 0.2rem;
+  }
+  .contact-row{
+    display:flex; align-items:center; gap:0.85rem; padding:0.65rem 0.9rem;
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .contact-row.clickable{ cursor:pointer; }
+  .contact-row.clickable:hover{ background:var(--panel-hi); border-color:var(--faint); }
+  .c-info{ flex:1; min-width:0; }
+  .c-name{
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:0.92rem; letter-spacing:0.01em;
+    text-transform:uppercase; line-height:1.3;
+  }
+  .c-title{ font-size:0.8rem; color:var(--muted); line-height:1.3; margin-top:0.05rem; }
+  .c-meta-row{ display:flex; gap:1rem; flex-wrap:wrap; margin-top:0.3rem; }
+  .c-meta-item{
+    display:inline-flex; align-items:center; gap:0.32rem;
+    font-family:'IBM Plex Mono', monospace; font-size:0.76rem; color:var(--text);
+  }
+  .c-meta-item svg{ width:13px; height:13px; flex:none; color:var(--faint); }
+  .c-actions{ flex:none; display:flex; gap:0.4rem; align-items:center; }
+  .c-actions.edit-actions{ display:none; }
+  body.edit-mode .c-actions.view-actions{ display:none; }
+  body.edit-mode .c-actions.edit-actions{ display:flex; }
+  .c-icon-btn{
+    width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    background:var(--bg); border:1px solid var(--border); text-decoration:none; transition:all .15s ease;
+  }
+  .c-icon-btn.call{ color:var(--orange-hi); }
+  .c-icon-btn.mail{ color:var(--blue-hi); }
+  .c-icon-btn:hover{ border-color:currentColor; }
+
+  footer{
+    max-width:1080px; margin:0 auto; padding:0 1.5rem 2.5rem; color:var(--faint);
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem;
+  }
+
+  footer div + div{ margin-top:0.5rem; }
+  .view-switch button{
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; background:transparent;
+    border:1px solid var(--border); color:var(--muted); padding:0.3rem 0.6rem; border-radius:6px; margin-right:0.2rem;
+  }
+  .view-switch button.active{ border-color:var(--orange); color:var(--orange-hi); }
+  #deviceLabel{ margin-left:0.4rem; }
+
+  /* ---------- phone layout (iPhone / narrow touch screens): read-only, bottom tab bar ---------- */
+  .tab-bar{ display:none; }
+  html[data-device="phone"] .tab-bar{
+    display:flex; position:fixed; left:0; right:0; bottom:0; z-index:30; gap:0.25rem;
+    background:var(--bg-2); border-top:1px solid var(--border);
+    padding:0.35rem 0.5rem calc(0.35rem + env(safe-area-inset-bottom, 0px));
+  }
+  .tab-btn{
+    flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.2rem;
+    min-height:50px; background:transparent; border:none; color:var(--muted); border-radius:10px;
+    font-family:'IBM Plex Mono', monospace; font-size:0.62rem; letter-spacing:0.06em; text-transform:uppercase;
+  }
+  .tab-btn svg{ width:22px; height:22px; }
+  .tab-btn.active{ color:var(--orange-hi); background:var(--panel-hi); }
+
+  html[data-device="phone"] .group-row{ display:none; }
+  html[data-device="phone"] header{ padding:1.4rem 1.1rem 1rem; }
+  html[data-device="phone"] h1{ font-size:1.7rem; }
+  html[data-device="phone"] .sub{ display:none; }
+  html[data-device="phone"] .controls{ border-radius:0; padding:0.7rem 1rem 0; }
+  html[data-device="phone"] #search{ flex:1 1 100%; font-size:16px; padding:0.8rem 0.9rem; }
+  html[data-device="phone"] .filter-btn{ padding:0.7rem 0.9rem; font-size:0.74rem; }
+  html[data-device="phone"] .view-btn{ padding:0.75rem 0.9rem; }
+  html[data-device="phone"] .edit-toggle{ display:none; }
+  html[data-device="phone"] #editPanel{ display:none; }
+  html[data-device="phone"] .filter-btn[data-group="links"][data-filter="explorer"]{ display:none; }
+  html[data-device="phone"] main{ padding:1.2rem 1rem 1.5rem; }
+  html[data-device="phone"] .tool-grid{ grid-template-columns:1fr; }
+  html[data-device="phone"] .tool-row{ padding:0.85rem 0.9rem; }
+  html[data-device="phone"] .contact-row{ padding:0.8rem 0.9rem; }
+  html[data-device="phone"] .c-icon-btn{ width:44px; height:44px; }
+  html[data-device="phone"] .c-meta-item{ font-size:0.82rem; }
+  html[data-device="phone"] .footer-note{ display:none; }
+  html[data-device="phone"] footer{ padding-bottom:calc(6rem + env(safe-area-inset-bottom, 0px)); }
+
+  @media (prefers-reduced-motion: reduce){ .card{ transition:none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <p class="eyebrow">Personal Dashboard<span class="version-tag">v15</span></p>
+    <h1>MING'S <span>TOOLS</span></h1>
+    <p class="sub">Quick access to my tools and projects. Click Edit to add a link, then download to publish it as your GitHub Pages index.html.</p>
+  </div>
+</header>
+
+<div class="group-row">
+  <button class="group-btn active" data-group="tools">Tools</button>
+  <button class="group-btn" data-group="links">Links <span class="lock">🔒</span></button>
+  <button class="group-btn" data-group="contact">Contact <span class="lock">🔒</span></button>
+</div>
+
+<div class="controls">
+  <div class="controls-inner">
+    <input id="search" type="text" placeholder="Search…" autocomplete="off">
+    <button class="filter-btn active" data-group="tools" data-filter="all" data-accent="neutral">All</button>
+    <button class="filter-btn" data-group="tools" data-filter="operational" data-accent="orange">Operational</button>
+    <button class="filter-btn" data-group="tools" data-filter="reference" data-accent="blue">Reference</button>
+    <button class="filter-btn" data-group="links" data-filter="all" data-accent="neutral" hidden>All</button>
+    <button class="filter-btn" data-group="links" data-filter="explorer" data-accent="orange" hidden>Explorer Shortcut</button>
+    <button class="filter-btn" data-group="links" data-filter="webpage" data-accent="blue" hidden>Webpage Shortcut</button>
+    <button class="filter-btn" data-group="contact" data-filter="all" data-accent="neutral" hidden>All</button>
+    <span id="contactFilterSlot"></span>
+    <div class="view-toggle" id="viewToggle">
+      <button type="button" class="view-btn active" data-view="tile" title="Tile view">⊞</button>
+      <button type="button" class="view-btn" data-view="list" title="List view">☰</button>
+    </div>
+    <button class="edit-toggle" id="editToggle">✎ Edit</button>
+  </div>
+</div>
+
+<div id="lockGate" hidden>
+  <div class="gate-box">
+    <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4.5" y="10.5" width="15" height="10" rx="2"/>
+      <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/>
+    </svg>
+    <p class="gate-label" id="gateLabel">Enter the password to view Links</p>
+    <input type="password" id="gatePassword" placeholder="••••••" inputmode="numeric" autocomplete="off">
+    <button id="gateSubmit">Unlock</button>
+    <p class="gate-error" id="gateError" hidden>Incorrect password.</p>
+  </div>
+</div>
+
+<div id="editPanel" hidden>
+  <form class="panel-box" id="toolForm">
+    <div class="field wide">
+      <label for="f-title" id="f-title-label">Title</label>
+      <input id="f-title" type="text" placeholder="e.g. Sample Station Dashboard" required>
+    </div>
+    <div class="field wide">
+      <label for="f-desc" id="f-desc-label">Description</label>
+      <input id="f-desc" type="text" placeholder="One short line about what it does">
+    </div>
+    <div class="field wide" id="f-url-group">
+      <label for="f-url" id="f-url-label">GitHub / page URL</label>
+      <input id="f-url" type="text" placeholder="https://username.github.io/repo/ or filename.html">
+    </div>
+    <div class="field" id="f-phone-group" hidden>
+      <label for="f-phone">Phone</label>
+      <input id="f-phone" type="text" placeholder="0427 590 853">
+    </div>
+    <div class="field" id="f-email-group" hidden>
+      <label for="f-email">Email</label>
+      <input id="f-email" type="text" placeholder="name@example.com">
+    </div>
+    <div class="field" id="f-section-group" hidden>
+      <label for="f-section">Group</label>
+      <input id="f-section" type="text" placeholder="e.g. Site, Vendor, Family…" list="section-options">
+      <datalist id="section-options"></datalist>
+    </div>
+    <div class="check-field" id="f-locked-group">
+      <label class="check-label" for="f-locked"><input type="checkbox" id="f-locked"> 🔒 Needs a password / login <span class="check-hint">(flag only)</span></label>
+    </div>
+    <div class="field" id="f-category-wrap">
+      <label for="f-category">Category</label>
+      <select id="f-category">
+        <optgroup label="Tools">
+          <option value="operational">Operational</option>
+          <option value="reference">Reference</option>
+        </optgroup>
+        <optgroup label="Links">
+          <option value="explorer">Explorer Shortcut</option>
+          <option value="webpage">Webpage Shortcut</option>
+        </optgroup>
+        <optgroup label="Contact">
+          <option value="contact">Contact</option>
+        </optgroup>
+      </select>
+    </div>
+    <button type="submit" id="f-submit">Add Tool</button>
+    <button type="button" id="f-cancel" hidden>Cancel</button>
+  </form>
+  <div class="download-row">
+    <button id="downloadBtn">💾 Save index.html</button>
+    <button id="exportBtn">💾 Save Data (.json)</button>
+    <button id="importBtn">⬆ Import Data</button>
+    <input type="file" id="importFile" accept="application/json" hidden>
+    <span class="download-hint">Nothing saves automatically — Save before you close this tab, or Import a backup later. In Chrome/Edge you'll get a "Save As" dialog to pick the folder; other browsers save straight to your downloads folder.</span>
+  </div>
+</div>
+
+<main>
+  <section id="toolGrid"></section>
+  <div class="contact-list" id="contactList" hidden></div>
+  <p id="emptyState">No tools yet — click <strong>Edit</strong> above to add your first one.</p>
+</main>
+
+<footer>
+  <div class="footer-line">Mings_Tools_v15.html · Last saved <span id="lastSaved">—</span></div>
+  <div class="view-switch">View:
+    <button type="button" data-override="auto" class="active">Auto</button>
+    <button type="button" data-override="phone">Phone</button>
+    <button type="button" data-override="desktop">Desktop</button>
+    <span id="deviceLabel"></span>
+  </div>
+  <div class="footer-note">🔒 on a link means that website needs its own password or login (a flag only — nothing extra is asked here). Layout adapts to the device: iPhone gets a read-only phone view with a bottom tab bar and list layout (Explorer Shortcuts hidden); iPad and browsers get the full editable view. Add ?view=phone or ?view=desktop to the address to force one. Tools tab is always open; Links and Contact need the password (screen-privacy only, not real security). Save/Export let you pick a folder in Chrome/Edge; other browsers use their normal download location.</div>
+</footer>
+
+<nav class="tab-bar" id="tabBar" aria-label="Sections">
+  <button type="button" class="tab-btn active" data-group="tools">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg>
+    <span>Tools</span>
+  </button>
+  <button type="button" class="tab-btn" data-group="links">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>
+    <span>Links 🔒</span>
+  </button>
+  <button type="button" class="tab-btn" data-group="contact">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 9.5 9.5 0 0 0 3 .48 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 9.5 9.5 0 0 0 .48 3 1 1 0 0 1-.25 1Z"/></svg>
+    <span>Contact 🔒</span>
+  </button>
+</nav>
+
+<!-- Single source of truth for the tool list. Download rewrites this block. -->
+<script id="tools-data" type="application/json">[]</script>
+
+<script>
+  // ---------- category / group config ----------
+  const CATEGORIES = {
+    operational: { group:'tools',   label:'Operational',       accent:'orange' },
+    reference:   { group:'tools',   label:'Reference',         accent:'blue'   },
+    explorer:    { group:'links',    label:'Explorer Shortcut', accent:'orange' },
+    webpage:     { group:'links',    label:'Webpage Shortcut',  accent:'blue'   },
+    contact:     { group:'contact', label:'Contact',           accent:'orange' }
+  };
+  const CONTACT_CATEGORIES = ['contact'];
+  const GATE_PASSWORD = '112233';
+  const LOCKED_GROUPS = new Set(['links', 'contact']);
+  const GATE_LABELS = { links: 'Enter the password to view Links', contact: 'Enter the password to view your contacts' };
+
+  let tools = [];
+  try{ tools = JSON.parse(document.getElementById('tools-data').textContent || '[]'); }catch(e){ tools = []; }
+  let dirty = false;
+  let currentGroup = 'tools';
+  let unlocked = { links: false, contact: false };
+  let activeFilter = 'all';
+  let editingIndex = null;
+  // ---------- device handling (iPhone = read-only phone layout; iPad/browser = full layout) ----------
+  let deviceMode = document.documentElement.getAttribute('data-device') || 'desktop';
+  let viewOverride = 'auto';
+  try{
+    const q = new URLSearchParams(location.search).get('view');
+    if(q === 'phone' || q === 'desktop') viewOverride = q;
+  }catch(e){}
+  function isPhone(){ return deviceMode === 'phone'; }
+  function detectDevice(){
+    try{
+      const ua = navigator.userAgent || '';
+      const touchNarrow = window.matchMedia && matchMedia('(max-width: 640px)').matches && matchMedia('(pointer: coarse)').matches;
+      return (/iPhone|iPod/.test(ua) || touchNarrow) ? 'phone' : 'desktop';
+    }catch(e){ return 'desktop'; }
+  }
+  let viewMode = isPhone() ? 'list' : 'tile';
+
+  const grid = document.getElementById('toolGrid');
+  const contactList = document.getElementById('contactList');
+  const emptyState = document.getElementById('emptyState');
+  const search = document.getElementById('search');
+  const editToggle = document.getElementById('editToggle');
+  const editPanel = document.getElementById('editPanel');
+  const lockGate = document.getElementById('lockGate');
+  const gateLabel = document.getElementById('gateLabel');
+  const gatePassword = document.getElementById('gatePassword');
+  const gateError = document.getElementById('gateError');
+  const form = document.getElementById('toolForm');
+  const fTitle = document.getElementById('f-title');
+  const fDesc = document.getElementById('f-desc');
+  const fUrl = document.getElementById('f-url');
+  const fUrlLabel = document.getElementById('f-url-label');
+  const fUrlGroup = document.getElementById('f-url-group');
+  const fPhone = document.getElementById('f-phone');
+  const fPhoneGroup = document.getElementById('f-phone-group');
+  const fEmail = document.getElementById('f-email');
+  const fEmailGroup = document.getElementById('f-email-group');
+  const fSection = document.getElementById('f-section');
+  const fSectionGroup = document.getElementById('f-section-group');
+  const sectionOptions = document.getElementById('section-options');
+  const fTitleLabel = document.getElementById('f-title-label');
+  const fDescLabel = document.getElementById('f-desc-label');
+  const fCategory = document.getElementById('f-category');
+  const fLocked = document.getElementById('f-locked');
+  const fLockedGroup = document.getElementById('f-locked-group');
+  const LOCK_BADGE = '<span class="lock-badge" title="This website needs its own password / login">🔒<span class="lock-text">Locked</span></span>';
+  const fSubmit = document.getElementById('f-submit');
+  const fCancel = document.getElementById('f-cancel');
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, ch => ({
+      '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+    }[ch]));
+  }
+
+  function persistData(){
+    const json = JSON.stringify(tools, null, 2).replace(/</g, '\\u003c');
+    document.getElementById('tools-data').textContent = json;
+  }
+
+  const ICON = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg>';
+  const FOLDER_ICON = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2.2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-10Z"/></svg>';
+  const PHONE_ICON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 9.5 9.5 0 0 0 3 .48 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 9.5 9.5 0 0 0 .48 3 1 1 0 0 1-.25 1Z"/></svg>';
+  const MAIL_ICON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>';
+
+  function copyToClipboard(text){
+    if(navigator.clipboard && window.isSecureContext){
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise((resolve, reject) => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      try{
+        document.execCommand('copy');
+        resolve();
+      }catch(err){ reject(err); }
+      ta.remove();
+    });
+  }
+
+  function truncateMiddle(str, max){
+    if(str.length <= max) return str;
+    const half = Math.floor((max - 1) / 2);
+    return str.slice(0, half) + '…' + str.slice(str.length - half);
+  }
+
+  function buildToolCard(t, i, meta, isExplorer){
+    let footLeft, footRight, icon;
+    if(isExplorer){
+      icon = FOLDER_ICON;
+      footLeft = `<span class="meta" title="${escapeHtml(t.url)}">${escapeHtml(truncateMiddle(t.url, 24))}</span>`;
+      footRight = `<button type="button" class="copy-btn" data-index="${i}">Copy Path</button>`;
+    } else {
+      icon = ICON;
+      footLeft = `<span class="meta">${escapeHtml(meta.label)}</span>`;
+      footRight = `<a class="open" href="${escapeHtml(t.url)}" target="_blank" rel="noopener">Open →</a>`;
+    }
+    const card = document.createElement('div');
+    card.className = 'card clickable';
+    card.dataset.accent = meta.accent;
+    card.innerHTML = `
+      <div class="card-top">
+        ${icon}
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="${i}" title="Move up" ${i === 0 ? 'disabled' : ''}>↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="${i}" title="Move down" ${i === tools.length - 1 ? 'disabled' : ''}>↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="${i}" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="${i}" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>${escapeHtml(t.title)}${t.locked ? LOCK_BADGE : ''}</h2>
+      <p>${escapeHtml(t.description || '')}</p>
+      <div class="card-foot">
+        ${footLeft}
+        ${footRight}
+      </div>
+    `;
+    card.addEventListener('click', (e) => {
+      if(e.target.closest('button') || e.target.closest('a')) return;
+      if(isExplorer) copyToClipboard(t.url).catch(()=>{});
+      else window.open(t.url, '_blank', 'noopener');
+    });
+    return card;
+  }
+
+  function buildToolRow(t, i, meta, isExplorer){
+    let metaText, actionHtml, icon;
+    if(isExplorer){
+      icon = FOLDER_ICON;
+      metaText = t.url;
+      actionHtml = `<button type="button" class="copy-btn" data-index="${i}">Copy Path</button>`;
+    } else {
+      icon = ICON;
+      metaText = meta.label;
+      actionHtml = `<a class="open" href="${escapeHtml(t.url)}" target="_blank" rel="noopener">Open →</a>`;
+    }
+    const row = document.createElement('div');
+    row.className = 'tool-row clickable';
+    row.dataset.accent = meta.accent;
+    row.innerHTML = `
+      ${icon}
+      <div class="tool-row-info">
+        <div class="tool-row-title">${escapeHtml(t.title)}${t.locked ? LOCK_BADGE : ''}</div>
+        <div class="tool-row-desc">${escapeHtml(t.description || '')}</div>
+      </div>
+      <div class="tool-row-meta" title="${escapeHtml(metaText)}">${escapeHtml(truncateMiddle(metaText, 28))}</div>
+      <div class="tool-row-actions view-actions">${actionHtml}</div>
+      <div class="tool-row-actions edit-actions">
+        <button type="button" class="icon-btn up-btn" data-index="${i}" title="Move up" ${i === 0 ? 'disabled' : ''}>↑</button>
+        <button type="button" class="icon-btn down-btn" data-index="${i}" title="Move down" ${i === tools.length - 1 ? 'disabled' : ''}>↓</button>
+        <button type="button" class="icon-btn edit-btn" data-index="${i}" title="Edit">✎</button>
+        <button type="button" class="icon-btn delete-btn" data-index="${i}" title="Delete">✕</button>
+      </div>
+    `;
+    row.addEventListener('click', (e) => {
+      if(e.target.closest('button') || e.target.closest('a')) return;
+      if(isExplorer) copyToClipboard(t.url).catch(()=>{});
+      else window.open(t.url, '_blank', 'noopener');
+    });
+    return row;
+  }
+
+  function getDistinctSections(){
+    const seen = new Map();
+    tools.forEach(t => {
+      if(t.category !== 'contact') return;
+      const raw = (t.section || '').trim();
+      const key = raw.toLowerCase();
+      if(key && !seen.has(key)) seen.set(key, raw);
+    });
+    return Array.from(seen.values()).sort((a, b) => a.localeCompare(b));
+  }
+
+  function render(){
+    persistData();
+    const q = search.value.trim().toLowerCase();
+    grid.innerHTML = '';
+    contactList.innerHTML = '';
+    let visible = 0;
+    let groupTotal = 0;
+    let hiddenOnPhone = 0;
+
+    const showGate = LOCKED_GROUPS.has(currentGroup) && !unlocked[currentGroup];
+    lockGate.hidden = !showGate;
+    const isContactGroup = currentGroup === 'contact';
+    grid.hidden = isContactGroup;
+    contactList.hidden = !isContactGroup;
+
+    if(!showGate && !isContactGroup){
+      const catOrder = currentGroup === 'tools' ? ['operational', 'reference'] : ['explorer', 'webpage'];
+      const sections = catOrder.map(cat => ({ cat, meta: CATEGORIES[cat], items: [] }));
+
+      tools.forEach((t, i) => {
+        const meta = CATEGORIES[t.category];
+        if(!meta || meta.group !== currentGroup) return;
+        if(isPhone() && t.category === 'explorer'){ hiddenOnPhone++; return; } // Windows paths can't open on iPhone
+        groupTotal++;
+        const matchesCategory = activeFilter === 'all' || t.category === activeFilter;
+        const matchesSearch = q === '' || (t.title + ' ' + t.description).toLowerCase().includes(q);
+        if(!matchesCategory || !matchesSearch) return;
+        visible++;
+        const sec = sections.find(s => s.cat === t.category);
+        if(sec) sec.items.push({ t, i });
+      });
+
+      sections.forEach(({ meta, items }) => {
+        if(!items.length) return;
+        const sectionEl = document.createElement('div');
+        sectionEl.className = 'tool-section';
+        const inner = document.createElement('div');
+        inner.className = viewMode === 'list' ? 'tool-list' : 'tool-grid';
+
+        items.forEach(({ t, i }) => {
+          const isExplorer = t.category === 'explorer';
+          const el = viewMode === 'list'
+            ? buildToolRow(t, i, meta, isExplorer)
+            : buildToolCard(t, i, meta, isExplorer);
+          inner.appendChild(el);
+        });
+
+        sectionEl.innerHTML = `<p class="section-label">${escapeHtml(meta.label)}</p>`;
+        sectionEl.appendChild(inner);
+        grid.appendChild(sectionEl);
+      });
+    } else if(!showGate && isContactGroup){
+      const contactEntries = tools
+        .map((t, i) => ({ t, i }))
+        .filter(({ t }) => t.category === 'contact');
+
+      // build distinct groups (case-insensitive, first-seen casing wins), for both the
+      // filter pills and the datalist suggestions in the edit form
+      const distinctSections = getDistinctSections();
+      renderContactFilterPills(distinctSections);
+      sectionOptions.innerHTML = distinctSections.map(s => `<option value="${escapeHtml(s)}">`).join('');
+
+      // group entries into sections, sorted alphabetically; ungrouped entries go last
+      const bySection = new Map();
+      contactEntries.forEach(({ t, i }) => {
+        const raw = (t.section || '').trim();
+        const key = raw ? raw.toLowerCase() : '\uFFFF__ungrouped';
+        if(!bySection.has(key)) bySection.set(key, { label: raw || 'Ungrouped', items: [] });
+        bySection.get(key).items.push({ t, i });
+      });
+      const orderedSections = Array.from(bySection.values()).sort((a, b) => {
+        if(a.label === 'Ungrouped') return 1;
+        if(b.label === 'Ungrouped') return -1;
+        return a.label.localeCompare(b.label);
+      });
+
+      orderedSections.forEach(({ label, items }) => {
+        const rowsHtml = [];
+        items.forEach(({ t, i }) => {
+          groupTotal++;
+          const matchesFilter = activeFilter === 'all' || (t.section || '').trim().toLowerCase() === activeFilter;
+          const matchesSearch = q === '' || (t.title + ' ' + t.description + ' ' + t.phone + ' ' + t.email + ' ' + (t.section||'')).toLowerCase().includes(q);
+          if(!matchesFilter || !matchesSearch) return;
+          visible++;
+
+          const name = t.title.trim();
+          const roleTitle = t.description.trim();
+          const displayName = name || roleTitle || '(unnamed contact)';
+          const displaySubtitle = (name && roleTitle) ? roleTitle : '';
+
+          const telHref = t.phone ? 'tel:' + t.phone.replace(/[^\d+]/g, '') : '';
+          const viewActions = [
+            t.phone ? `<a class="c-icon-btn call" href="${escapeHtml(telHref)}" title="Call ${escapeHtml(t.phone)}">${PHONE_ICON}</a>` : '',
+            t.email ? `<a class="c-icon-btn mail" href="mailto:${escapeHtml(t.email)}" title="Email ${escapeHtml(t.email)}">${MAIL_ICON}</a>` : ''
+          ].join('');
+          const metaItems = [
+            t.phone ? `<span class="c-meta-item">${PHONE_ICON}${escapeHtml(t.phone)}</span>` : '',
+            t.email ? `<span class="c-meta-item">${MAIL_ICON}${escapeHtml(t.email)}</span>` : ''
+          ].join('');
+
+          rowsHtml.push(`
+            <div class="contact-row clickable" data-index="${i}">
+              <div class="c-info">
+                <div class="c-name">${escapeHtml(displayName)}</div>
+                ${displaySubtitle ? `<div class="c-title">${escapeHtml(displaySubtitle)}</div>` : ''}
+                ${metaItems ? `<div class="c-meta-row">${metaItems}</div>` : ''}
+              </div>
+              <div class="c-actions view-actions">${viewActions}</div>
+              <div class="c-actions edit-actions">
+                <button type="button" class="icon-btn up-btn" data-index="${i}" title="Move up" ${i === 0 ? 'disabled' : ''}>↑</button>
+                <button type="button" class="icon-btn down-btn" data-index="${i}" title="Move down" ${i === tools.length - 1 ? 'disabled' : ''}>↓</button>
+                <button type="button" class="icon-btn edit-btn" data-index="${i}" title="Edit">✎</button>
+                <button type="button" class="icon-btn delete-btn" data-index="${i}" title="Delete">✕</button>
+              </div>
+            </div>
+          `);
+        });
+        if(rowsHtml.length){
+          const sectionEl = document.createElement('div');
+          sectionEl.className = 'contact-section';
+          sectionEl.innerHTML = `<p class="section-label">${escapeHtml(label)}</p>` + rowsHtml.join('');
+          contactList.appendChild(sectionEl);
+        }
+      });
+    }
+
+    emptyState.style.display = (!showGate && visible === 0) ? 'block' : 'none';
+    if(isPhone() && hiddenOnPhone > 0 && groupTotal === 0){
+      emptyState.innerHTML = 'Explorer Shortcuts only work on a Windows PC, so they are hidden on iPhone.';
+    } else if(groupTotal > 0 && visible === 0){
+      emptyState.innerHTML = 'No tools match your search.';
+    } else if(groupTotal === 0){
+      emptyState.innerHTML = isPhone()
+        ? 'Nothing here yet — add entries from your PC.'
+        : 'No tools yet — click <strong>Edit</strong> above to add your first one.';
+    }
+  }
+
+  // ---------- group switching ----------
+  function setGroup(g){
+    currentGroup = g;
+    updateCategoryOptions();
+    document.getElementById('viewToggle').hidden = (g === 'contact');
+    document.querySelectorAll('.group-btn').forEach(b => b.classList.toggle('active', b.dataset.group === g));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.group === g));
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      const belongs = b.dataset.group === g;
+      b.hidden = !belongs;
+    });
+    // reset filter to "All" for the newly active group
+    activeFilter = 'all';
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.toggle('active', belongsAndAll(b, g));
+    });
+    if(LOCKED_GROUPS.has(g) && !unlocked[g]){
+      document.body.classList.remove('edit-mode');
+      editToggle.classList.remove('on');
+      editPanel.hidden = true;
+      resetForm();
+      gatePassword.value = '';
+      gateError.hidden = true;
+      gateLabel.textContent = GATE_LABELS[g] || 'Enter the password to continue';
+    }
+    render();
+  }
+  function belongsAndAll(btn, g){ return btn.dataset.group === g && btn.dataset.filter === 'all'; }
+
+  document.querySelectorAll('.group-btn').forEach(btn => {
+    btn.addEventListener('click', () => setGroup(btn.dataset.group));
+  });
+
+  const gateSubmitHandler = () => {
+    if(gatePassword.value === GATE_PASSWORD){
+      unlocked[currentGroup] = true;
+      gateError.hidden = true;
+      render();
+    } else {
+      gateError.hidden = false;
+      gatePassword.value = '';
+      gatePassword.focus();
+    }
+  };
+  document.getElementById('gateSubmit').addEventListener('click', gateSubmitHandler);
+  gatePassword.addEventListener('keydown', (e) => { if(e.key === 'Enter') gateSubmitHandler(); });
+
+  // ---------- filters (delegated so dynamically-added Contact group pills work too) ----------
+  search.addEventListener('input', render);
+  document.querySelector('.controls-inner').addEventListener('click', (e) => {
+    const viewBtn = e.target.closest('.view-btn');
+    if(viewBtn){
+      viewMode = viewBtn.dataset.view;
+      document.querySelectorAll('.view-btn').forEach(b => b.classList.toggle('active', b === viewBtn));
+      render();
+      return;
+    }
+    const btn = e.target.closest('.filter-btn');
+    if(!btn) return;
+    document.querySelectorAll('.filter-btn').forEach(b => { if(b.dataset.group === currentGroup) b.classList.remove('active'); });
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    render();
+  });
+
+  function renderContactFilterPills(sections){
+    const allBtn = document.querySelector('.filter-btn[data-group="contact"][data-filter="all"]');
+    const keys = sections.map(s => s.toLowerCase());
+    if(activeFilter !== 'all' && !keys.includes(activeFilter)){
+      activeFilter = 'all';
+    }
+    allBtn.classList.toggle('active', activeFilter === 'all');
+    document.getElementById('contactFilterSlot').innerHTML = sections.map(s => {
+      const key = s.toLowerCase();
+      const isActive = activeFilter === key;
+      return `<button type="button" class="filter-btn${isActive ? ' active' : ''}" data-group="contact" data-filter="${escapeHtml(key)}" data-accent="neutral">${escapeHtml(s)}</button>`;
+    }).join('');
+  }
+
+  // ---------- edit mode ----------
+  editToggle.addEventListener('click', () => {
+    if(isPhone()) return; // phone layout is read-only
+    if(LOCKED_GROUPS.has(currentGroup) && !unlocked[currentGroup]) return;
+    const isOn = document.body.classList.toggle('edit-mode');
+    editToggle.classList.toggle('on', isOn);
+    editPanel.hidden = !isOn;
+    if(!isOn) resetForm();
+  });
+
+  function resetForm(){
+    const keepCategory = fCategory.value;
+    form.reset();
+    fCategory.value = keepCategory;
+    editingIndex = null;
+    fSubmit.textContent = 'Add Tool';
+    fCancel.hidden = true;
+    updateUrlLabel();
+  }
+
+  function updateUrlLabel(){
+    const cat = fCategory.value;
+    if(CONTACT_CATEGORIES.includes(cat)){
+      fUrlGroup.hidden = true;
+      fLockedGroup.hidden = true;
+      fLocked.checked = false;
+      fPhoneGroup.hidden = false;
+      fEmailGroup.hidden = false;
+      fSectionGroup.hidden = false;
+      fTitleLabel.textContent = 'Name';
+      fTitle.placeholder = 'e.g. John Young — leave blank if this is a position';
+      fTitle.required = false;
+      fDescLabel.textContent = 'Title';
+      fDesc.placeholder = 'e.g. National Service Manager, or "Gatehouse" if no name';
+      sectionOptions.innerHTML = getDistinctSections().map(s => `<option value="${escapeHtml(s)}">`).join('');
+    } else {
+      fUrlGroup.hidden = false;
+      fLockedGroup.hidden = false;
+      fPhoneGroup.hidden = true;
+      fEmailGroup.hidden = true;
+      fSectionGroup.hidden = true;
+      fSection.value = '';
+      sectionOptions.innerHTML = '';
+      fTitleLabel.textContent = 'Title';
+      fTitle.required = true;
+      fDescLabel.textContent = 'Description';
+      fDesc.placeholder = 'One short line about what it does';
+      if(cat === 'explorer'){
+        fUrlLabel.textContent = 'Network / folder path';
+        fUrl.placeholder = '\\\\server\\share\\folder or C:\\path\\to\\folder';
+        fTitle.placeholder = 'e.g. Sample Station Dashboard';
+      } else if(cat === 'webpage'){
+        fUrlLabel.textContent = 'Webpage URL';
+        fUrl.placeholder = 'https://intranet.example.com/page';
+        fTitle.placeholder = 'e.g. Sample Station Dashboard';
+      } else {
+        fUrlLabel.textContent = 'GitHub / page URL';
+        fUrl.placeholder = 'https://username.github.io/repo/ or filename.html';
+        fTitle.placeholder = 'e.g. Sample Station Dashboard';
+      }
+    }
+  }
+  fCategory.addEventListener('change', updateUrlLabel);
+
+  // ---------- category options depend on which tab you're adding from ----------
+  function updateCategoryOptions(){
+    let html;
+    if(currentGroup === 'links'){
+      html = '<option value="explorer">Explorer Shortcut</option><option value="webpage">Webpage Shortcut</option>';
+    } else if(currentGroup === 'contact'){
+      html = '<option value="contact">Contact</option>';
+    } else {
+      html = '<option value="operational">Operational</option><option value="reference">Reference</option>';
+    }
+    fCategory.innerHTML = html;
+    document.getElementById('f-category-wrap').hidden = (currentGroup === 'contact');
+    updateUrlLabel();
+  }
+
+  fCancel.addEventListener('click', resetForm);
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const cat = fCategory.value;
+    const isContact = CONTACT_CATEGORIES.includes(cat);
+    const entry = {
+      title: fTitle.value.trim(),
+      description: fDesc.value.trim(),
+      category: cat,
+      url: isContact ? '' : fUrl.value.trim(),
+      phone: isContact ? fPhone.value.trim() : '',
+      email: isContact ? fEmail.value.trim() : '',
+      section: isContact ? fSection.value.trim() : '',
+      locked: !isContact && fLocked.checked
+    };
+    if(isContact){
+      if(!entry.title && !entry.description) return;
+      if(!entry.phone && !entry.email) return;
+    } else {
+      if(!entry.title) return;
+      if(!entry.url) return;
+    }
+
+    if(editingIndex !== null){
+      tools[editingIndex] = entry;
+    } else {
+      tools.push(entry);
+    }
+    dirty = true;
+    resetForm();
+    render();
+  });
+
+  grid.addEventListener('click', (e) => {
+    const upBtn = e.target.closest('.up-btn');
+    const downBtn = e.target.closest('.down-btn');
+    const editBtn = e.target.closest('.edit-btn');
+    const delBtn = e.target.closest('.delete-btn');
+    const copyBtn = e.target.closest('.copy-btn');
+    if(upBtn && !upBtn.disabled){
+      const i = Number(upBtn.dataset.index);
+      [tools[i-1], tools[i]] = [tools[i], tools[i-1]];
+      dirty = true;
+      render();
+    } else if(downBtn && !downBtn.disabled){
+      const i = Number(downBtn.dataset.index);
+      [tools[i+1], tools[i]] = [tools[i], tools[i+1]];
+      dirty = true;
+      render();
+    } else if(editBtn){
+      const i = Number(editBtn.dataset.index);
+      const t = tools[i];
+      fTitle.value = t.title;
+      fDesc.value = t.description;
+      fUrl.value = t.url || '';
+      fLocked.checked = !!t.locked;
+      fPhone.value = t.phone || '';
+      fEmail.value = t.email || '';
+      fCategory.value = t.category;
+      updateUrlLabel();
+      editingIndex = i;
+      fSubmit.textContent = 'Save Changes';
+      fCancel.hidden = false;
+      fTitle.focus();
+    } else if(delBtn){
+      const i = Number(delBtn.dataset.index);
+      if(editingIndex === i) resetForm();
+      tools.splice(i, 1);
+      dirty = true;
+      render();
+    } else if(copyBtn){
+      const i = Number(copyBtn.dataset.index);
+      copyToClipboard(tools[i].url).then(() => {
+        const original = copyBtn.textContent;
+        copyBtn.textContent = 'Copied!';
+        copyBtn.classList.add('copied');
+        setTimeout(() => { copyBtn.textContent = original; copyBtn.classList.remove('copied'); }, 1400);
+      }).catch(() => {
+        window.alert('Could not copy automatically — path: ' + tools[i].url);
+      });
+    }
+  });
+
+  contactList.addEventListener('click', (e) => {
+    const upBtn = e.target.closest('.up-btn');
+    const downBtn = e.target.closest('.down-btn');
+    const editBtn = e.target.closest('.edit-btn');
+    const delBtn = e.target.closest('.delete-btn');
+    const row = e.target.closest('.contact-row');
+    if(upBtn && !upBtn.disabled){
+      const i = Number(upBtn.dataset.index);
+      [tools[i-1], tools[i]] = [tools[i], tools[i-1]];
+      dirty = true;
+      render();
+    } else if(downBtn && !downBtn.disabled){
+      const i = Number(downBtn.dataset.index);
+      [tools[i+1], tools[i]] = [tools[i], tools[i+1]];
+      dirty = true;
+      render();
+    } else if(editBtn){
+      const i = Number(editBtn.dataset.index);
+      const t = tools[i];
+      fTitle.value = t.title;
+      fDesc.value = t.description;
+      fUrl.value = t.url || '';
+      fPhone.value = t.phone || '';
+      fEmail.value = t.email || '';
+      fSection.value = t.section || '';
+      fCategory.value = t.category;
+      updateUrlLabel();
+      editingIndex = i;
+      fSubmit.textContent = 'Save Changes';
+      fCancel.hidden = false;
+      fTitle.focus();
+    } else if(delBtn){
+      const i = Number(delBtn.dataset.index);
+      if(editingIndex === i) resetForm();
+      tools.splice(i, 1);
+      dirty = true;
+      render();
+    } else if(row && !e.target.closest('a') && !e.target.closest('button') && !document.body.classList.contains('edit-mode')){
+      const i = Number(row.dataset.index);
+      const t = tools[i];
+      if(t.phone) window.location.href = 'tel:' + t.phone.replace(/[^\d+]/g, '');
+      else if(t.email) window.location.href = 'mailto:' + t.email;
+    }
+  });
+
+  // ---------- save a file: lets the person pick a location in Chrome/Edge (File System
+  // Access API); falls back to a normal browser download everywhere else, since Safari
+  // and Firefox don't support that picker yet ----------
+  async function saveFile(filename, mimeType, content){
+    if(window.showSaveFilePicker){
+      try{
+        const ext = '.' + filename.split('.').pop();
+        const handle = await window.showSaveFilePicker({
+          suggestedName: filename,
+          types: [{
+            description: mimeType === 'application/json' ? 'JSON file' : 'HTML file',
+            accept: { [mimeType]: [ext] }
+          }]
+        });
+        const writable = await handle.createWritable();
+        await writable.write(content);
+        await writable.close();
+        return true;
+      }catch(err){
+        if(err && err.name === 'AbortError') return false; // person cancelled the dialog — don't fall back
+        // any other error (e.g. picker not actually usable here) — fall through to plain download
+      }
+    }
+    const blob = new Blob([content], { type: mimeType });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
+    return true;
+  }
+
+  // ---------- save as index.html ----------
+  document.getElementById('downloadBtn').addEventListener('click', async () => {
+    const wasEditMode = document.body.classList.contains('edit-mode');
+    document.body.classList.remove('edit-mode');
+    editToggle.classList.remove('on');
+    editPanel.hidden = true;
+    resetForm();
+    persistData();
+
+    const lastSavedEl = document.getElementById('lastSaved');
+    const prevStamp = lastSavedEl.textContent;
+    lastSavedEl.textContent = new Date().toLocaleString('en-AU', { dateStyle: 'medium', timeStyle: 'short' });
+    const root = document.documentElement;
+    const devAttr = root.getAttribute('data-device');
+    root.removeAttribute('data-device'); // each device sets its own layout on load
+    const html = '<!DOCTYPE html>\n' + root.outerHTML;
+    if(devAttr) root.setAttribute('data-device', devAttr);
+    const saved = await saveFile('index.html', 'text/html', html);
+    if(saved) dirty = false; else lastSavedEl.textContent = prevStamp;
+
+    if(wasEditMode){
+      document.body.classList.add('edit-mode');
+      editToggle.classList.add('on');
+      editPanel.hidden = false;
+    }
+  });
+
+  // ---------- export / import just the data (lightweight backup) ----------
+  document.getElementById('exportBtn').addEventListener('click', async () => {
+    persistData();
+    const saved = await saveFile('mings-tools-data.json', 'application/json', JSON.stringify(tools, null, 2));
+    if(saved) dirty = false;
+  });
+
+  document.getElementById('importBtn').addEventListener('click', () => {
+    document.getElementById('importFile').click();
+  });
+
+  document.getElementById('importFile').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const incoming = JSON.parse(reader.result);
+        if(!Array.isArray(incoming)) throw new Error('not an array');
+        const valid = incoming.every(t => typeof t === 'object' && typeof t.title === 'string' && (typeof t.url === 'string' || typeof t.phone === 'string' || typeof t.email === 'string'));
+        if(!valid) throw new Error('unexpected shape');
+        const replace = tools.length === 0 || window.confirm(`Replace the current ${tools.length} tool(s) with ${incoming.length} from this file?`);
+        if(replace){
+          tools = incoming.map(t => ({
+            title: t.title, description: t.description || '',
+            category: CATEGORIES[t.category] ? t.category : 'operational',
+            url: t.url || '', phone: t.phone || '', email: t.email || '', section: t.section || '', locked: !!t.locked
+          }));
+          dirty = true;
+          render();
+        }
+      }catch(err){
+        window.alert('Could not read that file — expected a .json export from this tool.');
+      }
+      e.target.value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  window.addEventListener('beforeunload', (e) => {
+    if(dirty){
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  });
+
+  function syncViewButtons(){
+    document.querySelectorAll('.view-btn').forEach(b => b.classList.toggle('active', b.dataset.view === viewMode));
+  }
+
+  function applyDevice(mode){
+    deviceMode = mode;
+    document.documentElement.setAttribute('data-device', mode);
+    if(mode === 'phone'){
+      document.body.classList.remove('edit-mode');
+      editToggle.classList.remove('on');
+      editPanel.hidden = true;
+      resetForm();
+    }
+    viewMode = mode === 'phone' ? 'list' : 'tile';
+    syncViewButtons();
+    document.querySelectorAll('.view-switch button').forEach(b => b.classList.toggle('active', b.dataset.override === viewOverride));
+    document.getElementById('deviceLabel').textContent =
+      (mode === 'phone' ? 'Showing: phone layout' : 'Showing: desktop layout') + (viewOverride === 'auto' ? ' (auto-detected)' : ' (manual)');
+    render();
+  }
+
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => setGroup(btn.dataset.group)));
+
+  document.querySelector('.view-switch').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-override]');
+    if(!b) return;
+    viewOverride = b.dataset.override;
+    try{
+      const u = new URL(location.href);
+      if(viewOverride === 'auto') u.searchParams.delete('view'); else u.searchParams.set('view', viewOverride);
+      history.replaceState(null, '', u);
+    }catch(err){}
+    applyDevice(viewOverride === 'auto' ? detectDevice() : viewOverride);
+  });
+
+  updateCategoryOptions();
+  applyDevice(viewOverride === 'auto' ? detectDevice() : viewOverride);
+</script>
+
+</body>
+</html>
