@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <script>
@@ -24,8 +23,8 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-iphone-180.png">
 <link rel="apple-touch-icon" sizes="167x167" href="apple-touch-icon-ipad-167.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;family=Inter:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 
 <style>
   :root{
@@ -432,8 +431,8 @@
 
   @media (prefers-reduced-motion: reduce){ .card{ transition:none; } }
 </style>
-</head>
-<body>
+<input type="hidden" id="_o_dbjbempljhcmhlfpfacalomonjpalpko" data-inspect-config="7"><script type="text/javascript" src="chrome-extension://odphnbhiddhdpoccbialllejaajemdio/scripts/inspector.js"></script></head>
+<body class="">
 
 <header>
   <div class="header-inner">
@@ -455,10 +454,10 @@
     <button class="filter-btn active" data-group="tools" data-filter="all" data-accent="neutral">All</button>
     <button class="filter-btn" data-group="tools" data-filter="operational" data-accent="orange">Operational</button>
     <button class="filter-btn" data-group="tools" data-filter="reference" data-accent="blue">Reference</button>
-    <button class="filter-btn" data-group="links" data-filter="all" data-accent="neutral" hidden>All</button>
-    <button class="filter-btn" data-group="links" data-filter="explorer" data-accent="orange" hidden>Explorer Shortcut</button>
-    <button class="filter-btn" data-group="links" data-filter="webpage" data-accent="blue" hidden>Webpage Shortcut</button>
-    <button class="filter-btn" data-group="contact" data-filter="all" data-accent="neutral" hidden>All</button>
+    <button class="filter-btn" data-group="links" data-filter="all" data-accent="neutral" hidden="">All</button>
+    <button class="filter-btn" data-group="links" data-filter="explorer" data-accent="orange" hidden="">Explorer Shortcut</button>
+    <button class="filter-btn" data-group="links" data-filter="webpage" data-accent="blue" hidden="">Webpage Shortcut</button>
+    <button class="filter-btn" data-group="contact" data-filter="all" data-accent="neutral" hidden="">All</button>
     <span id="contactFilterSlot"></span>
     <div class="view-toggle" id="viewToggle">
       <button type="button" class="view-btn active" data-view="tile" title="Tile view">⊞</button>
@@ -468,24 +467,24 @@
   </div>
 </div>
 
-<div id="lockGate" hidden>
+<div id="lockGate" hidden="">
   <div class="gate-box">
     <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="4.5" y="10.5" width="15" height="10" rx="2"/>
-      <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/>
+      <rect x="4.5" y="10.5" width="15" height="10" rx="2"></rect>
+      <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"></path>
     </svg>
     <p class="gate-label" id="gateLabel">Enter the password to view Links</p>
     <input type="password" id="gatePassword" placeholder="••••••" inputmode="numeric" autocomplete="off">
     <button id="gateSubmit">Unlock</button>
-    <p class="gate-error" id="gateError" hidden>Incorrect password.</p>
+    <p class="gate-error" id="gateError" hidden="">Incorrect password.</p>
   </div>
 </div>
 
-<div id="editPanel" hidden>
+<div id="editPanel" hidden="">
   <form class="panel-box" id="toolForm">
     <div class="field wide">
       <label for="f-title" id="f-title-label">Title</label>
-      <input id="f-title" type="text" placeholder="e.g. Sample Station Dashboard" required>
+      <input id="f-title" type="text" placeholder="e.g. Sample Station Dashboard" required="">
     </div>
     <div class="field wide">
       <label for="f-desc" id="f-desc-label">Description</label>
@@ -495,15 +494,15 @@
       <label for="f-url" id="f-url-label">GitHub / page URL</label>
       <input id="f-url" type="text" placeholder="https://username.github.io/repo/ or filename.html">
     </div>
-    <div class="field" id="f-phone-group" hidden>
+    <div class="field" id="f-phone-group" hidden="">
       <label for="f-phone">Phone</label>
       <input id="f-phone" type="text" placeholder="0427 590 853">
     </div>
-    <div class="field" id="f-email-group" hidden>
+    <div class="field" id="f-email-group" hidden="">
       <label for="f-email">Email</label>
       <input id="f-email" type="text" placeholder="name@example.com">
     </div>
-    <div class="field" id="f-section-group" hidden>
+    <div class="field" id="f-section-group" hidden="">
       <label for="f-section">Group</label>
       <input id="f-section" type="text" placeholder="e.g. Site, Vendor, Family…" list="section-options">
       <datalist id="section-options"></datalist>
@@ -513,66 +512,1119 @@
     </div>
     <div class="field" id="f-category-wrap">
       <label for="f-category">Category</label>
-      <select id="f-category">
-        <optgroup label="Tools">
-          <option value="operational">Operational</option>
-          <option value="reference">Reference</option>
-        </optgroup>
-        <optgroup label="Links">
-          <option value="explorer">Explorer Shortcut</option>
-          <option value="webpage">Webpage Shortcut</option>
-        </optgroup>
-        <optgroup label="Contact">
-          <option value="contact">Contact</option>
-        </optgroup>
-      </select>
+      <select id="f-category"><option value="operational">Operational</option><option value="reference">Reference</option></select>
     </div>
     <button type="submit" id="f-submit">Add Tool</button>
-    <button type="button" id="f-cancel" hidden>Cancel</button>
+    <button type="button" id="f-cancel" hidden="">Cancel</button>
   </form>
   <div class="download-row">
     <button id="downloadBtn">💾 Save index.html</button>
     <button id="exportBtn">💾 Save Data (.json)</button>
     <button id="importBtn">⬆ Import Data</button>
-    <input type="file" id="importFile" accept="application/json" hidden>
+    <input type="file" id="importFile" accept="application/json" hidden="">
     <span class="download-hint">Nothing saves automatically — Save before you close this tab, or Import a backup later. In Chrome/Edge you'll get a "Save As" dialog to pick the folder; other browsers save straight to your downloads folder.</span>
   </div>
 </div>
 
 <main>
-  <section id="toolGrid"></section>
-  <div class="contact-list" id="contactList" hidden></div>
-  <p id="emptyState">No tools yet — click <strong>Edit</strong> above to add your first one.</p>
+  <section id="toolGrid"><div class="tool-section"><p class="section-label">Operational</p><div class="tool-grid"><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="0" title="Move up" disabled="">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="0" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="0" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="0" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>COA BACKLOG</h2>
+      <p>Monitor Backlog tab, L1 COA Backlog for Dummies tab</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Backlog/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="1" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="1" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="1" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="1" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>ESLS</h2>
+      <p>Convert ESLS for People with Poor Vision</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/ESLS/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="2" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="2" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="2" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="2" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>Roster<span class="lock-badge" title="This website needs its own password / login">🔒<span class="lock-text">Locked</span></span></h2>
+      <p>Ming's Roster. Need Password</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Roster/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="3" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="3" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="3" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="3" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>PARCHER/LOI</h2>
+      <p>ISO Parcher, LOI, auto TGA</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Parcher/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="4" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="4" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="4" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="4" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>Login</h2>
+      <p>Store Login. Generate QR Code or Barcode for scan login</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Login/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="5" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="5" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="5" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="5" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>Barcode Generator</h2>
+      <p>Generate Barcode Label for RSPU Sample Input</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Barcode/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="52" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="52" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="52" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="52" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>Crusher and Mill Test</h2>
+      <p>Testing Trial</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Crusher/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="54" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="54" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="54" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="54" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>Sample Chain of Custody</h2>
+      <p>Testing Trial</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Scan" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="55" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="55" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="55" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="55" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>CSIRO Report Builder</h2>
+      <p>Generate Report for CSIRO Testwork and draft email</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/CSIRO" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="58" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="58" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="58" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="58" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>Weighted Average</h2>
+      <p>Testing Trial</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Average" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="59" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="59" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="59" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="59" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>CCLAS Ship Report</h2>
+      <p>Testing Trial</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Gross" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="63" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="63" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="63" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="63" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>LECO Template Builder</h2>
+      <p>Testing Trial</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/LECO" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="64" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="64" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="64" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="64" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>H2H Chemistry Report</h2>
+      <p>Testing Trial</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/H2H/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="orange">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="66" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="66" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="66" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="66" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>H2H Moisture Calculation Template</h2>
+      <p>Testing Trial</p>
+      <div class="card-foot">
+        <span class="meta">Operational</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/H2H_Template/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div></div></div><div class="tool-section"><p class="section-label">Reference</p><div class="tool-grid"><div class="card clickable" data-accent="blue">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="6" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="6" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="6" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="6" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>SAMPLE STATIONS</h2>
+      <p>Sample Station / Berth / Yard / Control phone number information and moisture correction</p>
+      <div class="card-foot">
+        <span class="meta">Reference</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Station/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="blue">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="7" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="7" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="7" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="7" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>Shipping Product Quality</h2>
+      <p>FY2026/FY2027</p>
+      <div class="card-foot">
+        <span class="meta">Reference</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Limit/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="blue">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="8" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="8" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="8" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="8" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>ASCRM Reference</h2>
+      <p>ASCRM30 ASCRM32 ASCRM34</p>
+      <div class="card-foot">
+        <span class="meta">Reference</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/ASCRM/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="blue">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="48" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="48" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="48" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="48" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>RSD Split Flow Table</h2>
+      <p>Verified to 210kg. Project up to 500kg</p>
+      <div class="card-foot">
+        <span class="meta">Reference</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/RSD" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="blue">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="56" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="56" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="56" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="56" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>CCLAS to XRF Element Convert</h2>
+      <p>XRF adjustment reference</p>
+      <div class="card-foot">
+        <span class="meta">Reference</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Conversion/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="blue">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="57" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="57" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="57" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="57" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>LOI Correction Factor Simulation</h2>
+      <p>Testing Trial</p>
+      <div class="card-foot">
+        <span class="meta">Reference</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/LOI" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="blue">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="60" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="60" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="60" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="60" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>CCLAS Sizing Simulation</h2>
+      <p>Testing Trial</p>
+      <div class="card-foot">
+        <span class="meta">Reference</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Sizing" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="blue">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="61" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="61" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="61" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="61" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>Custody Log Viewing</h2>
+      <p>Testing Trial</p>
+      <div class="card-foot">
+        <span class="meta">Reference</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Custody/" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="blue">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="65" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="65" title="Move down">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="65" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="65" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>Prepmaster Route Decoder<span class="lock-badge" title="This website needs its own password / login">🔒<span class="lock-text">Locked</span></span></h2>
+      <p>View in Window Browser</p>
+      <div class="card-foot">
+        <span class="meta">Reference</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Route" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div><div class="card clickable" data-accent="blue">
+      <div class="card-top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
+        <div class="card-actions">
+          <button type="button" class="icon-btn up-btn" data-index="67" title="Move up">↑</button>
+          <button type="button" class="icon-btn down-btn" data-index="67" title="Move down" disabled="">↓</button>
+          <button type="button" class="icon-btn edit-btn" data-index="67" title="Edit">✎</button>
+          <button type="button" class="icon-btn delete-btn" data-index="67" title="Delete">✕</button>
+        </div>
+      </div>
+      <h2>CCLAS Simulation<span class="lock-badge" title="This website needs its own password / login">🔒<span class="lock-text">Locked</span></span></h2>
+      <p>Testing Trial</p>
+      <div class="card-foot">
+        <span class="meta">Reference</span>
+        <a class="open" href="https://mingfahfong-dev.github.io/Normalisation" target="_blank" rel="noopener">Open →</a>
+      </div>
+    </div></div></div></section>
+  <div class="contact-list" id="contactList" hidden=""></div>
+  <p id="emptyState" style="display: none;">No tools yet — click <strong>Edit</strong> above to add your first one.</p>
 </main>
 
 <footer>
-  <div class="footer-line">Mings_Tools_v15.html · Last saved <span id="lastSaved">—</span></div>
+  <div class="footer-line">Mings_Tools_v15.html · Last saved <span id="lastSaved">8 Oct 2026, 7:15 pm</span></div>
   <div class="view-switch">View:
     <button type="button" data-override="auto" class="active">Auto</button>
     <button type="button" data-override="phone">Phone</button>
     <button type="button" data-override="desktop">Desktop</button>
-    <span id="deviceLabel"></span>
+    <span id="deviceLabel">Showing: desktop layout (auto-detected)</span>
   </div>
   <div class="footer-note">🔒 on a link means that website needs its own password or login (a flag only — nothing extra is asked here). Layout adapts to the device: iPhone gets a read-only phone view with a bottom tab bar and list layout (Explorer Shortcuts hidden); iPad and browsers get the full editable view. Add ?view=phone or ?view=desktop to the address to force one. Tools tab is always open; Links and Contact need the password (screen-privacy only, not real security). Save/Export let you pick a folder in Chrome/Edge; other browsers use their normal download location.</div>
 </footer>
 
 <nav class="tab-bar" id="tabBar" aria-label="Sections">
   <button type="button" class="tab-btn active" data-group="tools">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"></rect><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"></rect><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"></rect><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"></rect></svg>
     <span>Tools</span>
   </button>
   <button type="button" class="tab-btn" data-group="links">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"></path><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"></path></svg>
     <span>Links 🔒</span>
   </button>
   <button type="button" class="tab-btn" data-group="contact">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 9.5 9.5 0 0 0 3 .48 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 9.5 9.5 0 0 0 .48 3 1 1 0 0 1-.25 1Z"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 9.5 9.5 0 0 0 3 .48 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 9.5 9.5 0 0 0 .48 3 1 1 0 0 1-.25 1Z"></path></svg>
     <span>Contact 🔒</span>
   </button>
 </nav>
 
 <!-- Single source of truth for the tool list. Download rewrites this block. -->
-<script id="tools-data" type="application/json">[]</script>
+<script id="tools-data" type="application/json">[
+  {
+    "title": "COA BACKLOG",
+    "description": "Monitor Backlog tab, L1 COA Backlog for Dummies tab",
+    "category": "operational",
+    "url": "https://mingfahfong-dev.github.io/Backlog/",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "ESLS",
+    "description": "Convert ESLS for People with Poor Vision",
+    "category": "operational",
+    "url": "https://mingfahfong-dev.github.io/ESLS/",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Roster",
+    "description": "Ming's Roster. Need Password",
+    "category": "operational",
+    "url": "https://mingfahfong-dev.github.io/Roster/",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": true
+  },
+  {
+    "title": "PARCHER/LOI",
+    "description": "ISO Parcher, LOI, auto TGA",
+    "category": "operational",
+    "url": "https://mingfahfong-dev.github.io/Parcher/",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Login",
+    "description": "Store Login. Generate QR Code or Barcode for scan login",
+    "category": "operational",
+    "url": "https://mingfahfong-dev.github.io/Login/",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Barcode Generator",
+    "description": "Generate Barcode Label for RSPU Sample Input",
+    "category": "operational",
+    "url": "https://mingfahfong-dev.github.io/Barcode/",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "SAMPLE STATIONS",
+    "description": "Sample Station / Berth / Yard / Control phone number information and moisture correction",
+    "category": "reference",
+    "url": "https://mingfahfong-dev.github.io/Station/",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Shipping Product Quality",
+    "description": "FY2026/FY2027",
+    "category": "reference",
+    "url": "https://mingfahfong-dev.github.io/Limit/",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "ASCRM Reference",
+    "description": "ASCRM30 ASCRM32 ASCRM34",
+    "category": "reference",
+    "url": "https://mingfahfong-dev.github.io/ASCRM/",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Colin Liew",
+    "description": "Software Manager",
+    "category": "contact",
+    "url": "",
+    "phone": "0488514383",
+    "email": "colin.liew@smart-solutions.com.au",
+    "section": "Smart Solutions",
+    "locked": false
+  },
+  {
+    "title": "Opsnet Citrix",
+    "description": "",
+    "category": "webpage",
+    "url": "https://opsnetapps.bhp.com/logon/LogonPoint/tmindex.html",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "PMAC Citrix",
+    "description": "",
+    "category": "webpage",
+    "url": "https://pheapps.bhp.com/logon/LogonPoint/tmindex.html",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Material Tracker",
+    "description": "",
+    "category": "webpage",
+    "url": "https://waio-mt.bhp.com/mt/#/mt/dashboard",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Lump Sizing",
+    "description": "",
+    "category": "webpage",
+    "url": "http://per0pmtm02:8080/ords/f?p=105:LOGIN_DESKTOP:110366674575400:::::",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Security Camera",
+    "description": "APAC login",
+    "category": "webpage",
+    "url": "https://apaciocctv.bhp.com/index.html#group=2d0a8e5f-61cf-4217-a0fd-feb088ac60da&cam=66d9f927-f1f8-4013-9c48-540340af48f0",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Lab Production Camera",
+    "description": "Opsnet Login",
+    "category": "webpage",
+    "url": "https://phecctv.bhp.com/index.html",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "PQ Escalation Tool",
+    "description": "Power Bi",
+    "category": "webpage",
+    "url": "https://apps.powerapps.com/play/e/334a9626-5538-e7de-985d-8bfadeb54690/a/12af7a14-242c-4ff6-9b0f-cc0f2ccc8960?tenantId=4f6e1565-c2c7-43cb-8a4c-0981d022ce20&hint=8d377fbd-fdae-491c-8f32-753817827732&sourcetime=1757899127308",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "PQ COA Backlog Status",
+    "description": "APAC Login. COA Approval Level Config Tool",
+    "category": "webpage",
+    "url": "https://bobj.apac.ent.bhpbilliton.net/BOE/OpenDocument/opendoc/openDocument.jsp?sIDType=CUID&iDocID=AR_J8PSNoM1HuxIfYzMiTg8",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "PQ COA Level 3 Customers",
+    "description": "",
+    "category": "webpage",
+    "url": "http://per0pmtm01:8080/ords/f?p=143:101:16449588789943:::::",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "P2 Handover",
+    "description": "",
+    "category": "webpage",
+    "url": "https://waio-p2.bhp.com/P2.Explorer/",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Hedland Printer Driver",
+    "description": "",
+    "category": "explorer",
+    "url": "\\\\csmhed-prn01",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Opsnet to APAC Transfer Folder",
+    "description": "",
+    "category": "explorer",
+    "url": "\\\\entper-fil01\\2depts\\PHE_LAB",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Port Control Completed Vessels",
+    "description": "",
+    "category": "explorer",
+    "url": "\\\\entper-fil01\\2depts\\IP\\Control\\Reference\\01 Port Control\\Current Vessel Documentation\\Completed Vessels",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "",
+    "description": "FI Shift Maintenance Electrical Supervisor",
+    "category": "contact",
+    "url": "",
+    "phone": "0477391959",
+    "email": "",
+    "section": "BHP",
+    "locked": false
+  },
+  {
+    "title": "P2 Handover (Mobile)",
+    "description": "P2 for iPhone",
+    "category": "webpage",
+    "url": "https://waio-p2.bhp.com/P2.Explorer/Pages/Guid/d6385fc7-cc59-ef11-9fc5-005056898b67?frameless=true",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Port Lab Dashboard FI",
+    "description": "Power Bi",
+    "category": "webpage",
+    "url": "https://app.powerbi.com/groups/me/reports/2fb07fd2-728d-4758-8706-f3255c9b7849/ReportSection8dae1446a33ae15aeba8?ctid=4f6e1565-c2c7-43cb-8a4c-0981d022ce20&experience=power-bi",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Field Leadership",
+    "description": "",
+    "category": "webpage",
+    "url": "https://flex.bhp.com/#/dashboard/person",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "ChemAlert",
+    "description": "",
+    "category": "webpage",
+    "url": "https://chemalert.rmt.com.au/BHPMinAu/index.html",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "KaiNexus",
+    "description": "MIP Board Improvement",
+    "category": "webpage",
+    "url": "https://bhp.kainexus.com/#b",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Sphera",
+    "description": "Permit to Work",
+    "category": "webpage",
+    "url": "https://cow-bhp.spheracloud.net/proscient/login?redirect=%2F",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Coarse Ore Standard Dashboard",
+    "description": "Power Bi",
+    "category": "webpage",
+    "url": "https://app.powerbi.com/groups/me/apps/ce3510fe-cd5d-4b50-af80-86beed1f5998/reports/6507ef72-3c5d-4e10-b79b-4008d6afc6fc/ReportSection692788b830181fbbde8a?ctid=4f6e1565-c2c7-43cb-8a4c-0981d022ce20&experience=power-bi",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "WAIO PQ Report Dashboard",
+    "description": "Power Bi",
+    "category": "webpage",
+    "url": "https://app.powerbi.com/groups/me/reports/b108bd65-5e46-40f6-95a5-d3534fc14d28/ReportSection8dae1446a33ae15aeba8?ctid=4f6e1565-c2c7-43cb-8a4c-0981d022ce20&experience=power-bi",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Fiori",
+    "description": "",
+    "category": "webpage",
+    "url": "https://mobile.bhp.com/fiori",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Support Central",
+    "description": "",
+    "category": "webpage",
+    "url": "https://bhp.service-now.com/esc",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Brian Adley",
+    "description": "Lab Supervisor",
+    "category": "contact",
+    "url": "",
+    "phone": "0408956859",
+    "email": "brian.adley@bhp.com",
+    "section": "Lab",
+    "locked": false
+  },
+  {
+    "title": "",
+    "description": "FI Shift Maintenance Mechanical Supervisor",
+    "category": "contact",
+    "url": "",
+    "phone": "0427590853",
+    "email": "",
+    "section": "BHP",
+    "locked": false
+  },
+  {
+    "title": "Self-Service Password Reset",
+    "description": "Reset Password",
+    "category": "webpage",
+    "url": "https://sspr.bhp.com/",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "",
+    "description": "IM Service Desk",
+    "category": "contact",
+    "url": "",
+    "phone": "1800115371",
+    "email": "",
+    "section": "BHP",
+    "locked": false
+  },
+  {
+    "title": "D2",
+    "description": "Controlled Document - for Workflow Task. Managed Document - for document like Roster",
+    "category": "webpage",
+    "url": "https://waio-dctm.bhp.com/D2/#d2",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Tristan Martin",
+    "description": "Senior Consultant / CCLAS",
+    "category": "contact",
+    "url": "",
+    "phone": "0494692004",
+    "email": "tristan.martin@dataminesoftware.com",
+    "section": "Datamine",
+    "locked": false
+  },
+  {
+    "title": "Saidah Mokta",
+    "description": "FI Production Administrator",
+    "category": "contact",
+    "url": "",
+    "phone": "0437704548",
+    "email": "saidah.mokta2@bhp.com",
+    "section": "BHP",
+    "locked": false
+  },
+  {
+    "title": "Raelene Armstrong",
+    "description": "NP Production Administrator",
+    "category": "contact",
+    "url": "",
+    "phone": "+61891749450",
+    "email": "raelene.armstrong@bhp.com",
+    "section": "BHP",
+    "locked": false
+  },
+  {
+    "title": "Jessica Johnson",
+    "description": "Port General Manager Administrator",
+    "category": "contact",
+    "url": "",
+    "phone": "0428578575",
+    "email": "jessica.johnson2@bhp.com",
+    "section": "BHP",
+    "locked": false
+  },
+  {
+    "title": "Mike Brouwer",
+    "description": "Superintendent Port Production",
+    "category": "contact",
+    "url": "",
+    "phone": "0400563332",
+    "email": "michael.brouwer@bhp.com",
+    "section": "LAB",
+    "locked": false
+  },
+  {
+    "title": "",
+    "description": "IROC Port Control",
+    "category": "contact",
+    "url": "",
+    "phone": "",
+    "email": "DL-IOR-PER-IROCPortControlCompletedVessels@bhp.com",
+    "section": "BHP",
+    "locked": false
+  },
+  {
+    "title": "",
+    "description": "MT Support",
+    "category": "contact",
+    "url": "",
+    "phone": "",
+    "email": "DL-IOR-Perth-AS-MTSupport@bhp.com",
+    "section": "BHP",
+    "locked": false
+  },
+  {
+    "title": "Harvey Moir",
+    "description": "",
+    "category": "contact",
+    "url": "",
+    "phone": "0427120715",
+    "email": "harvey.moir@smartsolutions.au",
+    "section": "Smart Solutions",
+    "locked": false
+  },
+  {
+    "title": "e-Catalogue",
+    "description": "",
+    "category": "webpage",
+    "url": "https://support.bhp.com/esc?id=sc_cat_item&table=sc_cat_item&sys_id=61619b182b67ae14faf5f72cd891bfb4",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "RSD Split Flow Table",
+    "description": "Verified to 210kg. Project up to 500kg",
+    "category": "reference",
+    "url": "https://mingfahfong-dev.github.io/RSD",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "",
+    "description": "NP Production Supervisor",
+    "category": "contact",
+    "url": "",
+    "phone": "0427004254",
+    "email": "",
+    "section": "BHP",
+    "locked": false
+  },
+  {
+    "title": "",
+    "description": "FI Production Supervisor",
+    "category": "contact",
+    "url": "",
+    "phone": "0439970237",
+    "email": "",
+    "section": "BHP",
+    "locked": false
+  },
+  {
+    "title": "Hedland Transfer",
+    "description": "",
+    "category": "explorer",
+    "url": "\\\\csmhed-nas01\\Transfer",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Crusher and Mill Test",
+    "description": "Testing Trial",
+    "category": "operational",
+    "url": "https://mingfahfong-dev.github.io/Crusher/",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "PQ Shipment Bias Detail",
+    "description": "Power Bi",
+    "category": "webpage",
+    "url": "https://app.powerbi.com/groups/me/reports/b1894663-aa07-4249-a87b-53bb404f2643/ReportSection?ctid=4f6e1565-c2c7-43cb-8a4c-0981d022ce20&experience=power-bi",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Sample Chain of Custody",
+    "description": "Testing Trial",
+    "category": "operational",
+    "url": "https://mingfahfong-dev.github.io/Scan",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "CSIRO Report Builder",
+    "description": "Generate Report for CSIRO Testwork and draft email",
+    "category": "operational",
+    "url": "https://mingfahfong-dev.github.io/CSIRO",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "CCLAS to XRF Element Convert",
+    "description": "XRF adjustment reference",
+    "category": "reference",
+    "url": "https://mingfahfong-dev.github.io/Conversion/",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "LOI Correction Factor Simulation",
+    "description": "Testing Trial",
+    "category": "reference",
+    "url": "https://mingfahfong-dev.github.io/LOI",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Weighted Average",
+    "description": "Testing Trial",
+    "category": "operational",
+    "url": "https://mingfahfong-dev.github.io/Average",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "CCLAS Ship Report",
+    "description": "Testing Trial",
+    "category": "operational",
+    "url": "https://mingfahfong-dev.github.io/Gross",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "CCLAS Sizing Simulation",
+    "description": "Testing Trial",
+    "category": "reference",
+    "url": "https://mingfahfong-dev.github.io/Sizing",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Custody Log Viewing",
+    "description": "Testing Trial",
+    "category": "reference",
+    "url": "https://mingfahfong-dev.github.io/Custody/",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Vessel Status Schedule",
+    "description": "MES Portal",
+    "category": "webpage",
+    "url": "https://pss-waio.bhp.com/portdm/#/schedules/published/vesselStatus",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "LECO Template Builder",
+    "description": "Testing Trial",
+    "category": "operational",
+    "url": "https://mingfahfong-dev.github.io/LECO",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "H2H Chemistry Report",
+    "description": "Testing Trial",
+    "category": "operational",
+    "url": "https://mingfahfong-dev.github.io/H2H/",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "Prepmaster Route Decoder",
+    "description": "View in Window Browser",
+    "category": "reference",
+    "url": "https://mingfahfong-dev.github.io/Route",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": true
+  },
+  {
+    "title": "H2H Moisture Calculation Template",
+    "description": "Testing Trial",
+    "category": "operational",
+    "url": "https://mingfahfong-dev.github.io/H2H_Template/",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": false
+  },
+  {
+    "title": "CCLAS Simulation",
+    "description": "Testing Trial",
+    "category": "reference",
+    "url": "https://mingfahfong-dev.github.io/Normalisation",
+    "phone": "",
+    "email": "",
+    "section": "",
+    "locked": true
+  }
+]</script>
 
 <script>
   // ---------- category / group config ----------
@@ -1343,5 +2395,6 @@
   applyDevice(viewOverride === 'auto' ? detectDevice() : viewOverride);
 </script>
 
-</body>
-</html>
+
+
+</body></html>
