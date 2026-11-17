@@ -1,6 +1,6 @@
 {
  "updated": "2026-11-17",
- "source": "Work Index v75",
+ "source": "Work Index v76",
  "tools": [
   {
    "repo": "Normalisation",
@@ -65,7 +65,7 @@
   {
    "repo": "Average",
    "tool": "Weighted Average Builder",
-   "latest": "?",
+   "latest": "v1",
    "project": "BHP - CCLAS EL"
   },
   {
@@ -89,19 +89,19 @@
   {
    "repo": "Barcode",
    "tool": "Sample Label Generator",
-   "latest": "?",
+   "latest": "v1",
    "project": "BHP - Sample Station"
   },
   {
    "repo": "RSD",
    "tool": "RSD Split Sample Flow Table",
-   "latest": "?",
+   "latest": "v1",
    "project": "BHP - Sample Station"
   },
   {
    "repo": "Station",
    "tool": "Sample Station dashboard",
-   "latest": "?",
+   "latest": "v1",
    "project": "BHP - Sample Station"
   },
   {
@@ -149,31 +149,31 @@
   {
    "repo": "Menu",
    "tool": "Ming's Tools (menu page)",
-   "latest": "v8",
+   "latest": "v16",
    "project": "Not in a Project"
   },
   {
    "repo": "Log",
    "tool": "Prepmaster Log Explorer",
-   "latest": "",
+   "latest": "v1",
    "project": "Not in Work Index"
   },
   {
    "repo": "Layout",
    "tool": "Equipment Layout Map",
-   "latest": "",
+   "latest": "v2",
    "project": "Not in Work Index"
   },
   {
    "repo": "Custody",
    "tool": "Sample Custody Log Viewer",
-   "latest": "",
+   "latest": "v5",
    "project": "Not in Work Index"
   },
   {
    "repo": "Scan",
    "tool": "Sample Custody Scanner",
-   "latest": "",
+   "latest": "v6",
    "project": "Not in Work Index"
   }
  ]
