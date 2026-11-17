@@ -1,6 +1,6 @@
 # Ming's Tools (menu page) — changelog
 
-**Current version: v15** · Live: https://mingfahfong-dev.github.io/Menu/
+**Current version: v16** · Live: https://mingfahfong-dev.github.io/Menu/
 
 Each release replaces `index.html`. To see or download any earlier version, open
 [the file's history](https://github.com/mingfahfong-dev/Menu/commits/main/index.html).
