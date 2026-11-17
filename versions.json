@@ -1,0 +1,180 @@
+{
+ "updated": "2026-11-17",
+ "source": "Work Index v75",
+ "tools": [
+  {
+   "repo": "Normalisation",
+   "tool": "CCLAS Simulation",
+   "latest": "v29",
+   "project": "BHP - CCLAS EL"
+  },
+  {
+   "repo": "Sizing",
+   "tool": "Sizing preview",
+   "latest": "v10",
+   "project": "BHP - CCLAS EL"
+  },
+  {
+   "repo": "LOI",
+   "tool": "LOI CF preview",
+   "latest": "v4",
+   "project": "BHP - CCLAS EL"
+  },
+  {
+   "repo": "Moisture",
+   "tool": "Moisture preview",
+   "latest": "v8",
+   "project": "BHP - CCLAS EL"
+  },
+  {
+   "repo": "H2H",
+   "tool": "H2H Report Builder",
+   "latest": "v5",
+   "project": "BHP - CCLAS EL"
+  },
+  {
+   "repo": "H2H_Template",
+   "tool": "24 Hour Hatch to Hatch Moisture",
+   "latest": "v9",
+   "project": "BHP - Sample Station"
+  },
+  {
+   "repo": "Conversion",
+   "tool": "CCLAS → XRF Adjustment Converter",
+   "latest": "v5",
+   "project": "BHP - CCLAS EL"
+  },
+  {
+   "repo": "LECO",
+   "tool": "LECO TGA801 CSV Builder",
+   "latest": "v2",
+   "project": "BHP - CCLAS EL"
+  },
+  {
+   "repo": "CSIRO",
+   "tool": "CSIRO Report Builder",
+   "latest": "v4",
+   "project": "BHP - CCLAS EL"
+  },
+  {
+   "repo": "Gross",
+   "tool": "XRF Report Builder",
+   "latest": "v1",
+   "project": "BHP - CCLAS EL"
+  },
+  {
+   "repo": "Average",
+   "tool": "Weighted Average Builder",
+   "latest": "?",
+   "project": "BHP - CCLAS EL"
+  },
+  {
+   "repo": "Crusher",
+   "tool": "Crusher & Mill test sheet",
+   "latest": "v9",
+   "project": "BHP - Sample Station"
+  },
+  {
+   "repo": "ESLS",
+   "tool": "ESLS Sampling Viewer",
+   "latest": "v36",
+   "project": "BHP - Sample Station"
+  },
+  {
+   "repo": "ASCRM",
+   "tool": "ASCRM CoA",
+   "latest": "v7",
+   "project": "BHP - Sample Station"
+  },
+  {
+   "repo": "Barcode",
+   "tool": "Sample Label Generator",
+   "latest": "?",
+   "project": "BHP - Sample Station"
+  },
+  {
+   "repo": "RSD",
+   "tool": "RSD Split Sample Flow Table",
+   "latest": "?",
+   "project": "BHP - Sample Station"
+  },
+  {
+   "repo": "Station",
+   "tool": "Sample Station dashboard",
+   "latest": "?",
+   "project": "BHP - Sample Station"
+  },
+  {
+   "repo": "Limit",
+   "tool": "Shipping Target Lookup FY2627",
+   "latest": "v2",
+   "project": "BHP - Sample Station"
+  },
+  {
+   "repo": "Fault_Decoder",
+   "tool": "Prepmaster Fault Decoder",
+   "latest": "v21",
+   "project": "BHP - Prepmaster Tools"
+  },
+  {
+   "repo": "Fault_Log",
+   "tool": "Prepmaster Log Overview",
+   "latest": "v53",
+   "project": "BHP - Prepmaster Tools"
+  },
+  {
+   "repo": "Route",
+   "tool": "Route Decoder Viewer",
+   "latest": "v34",
+   "project": "BHP - Prepmaster Tools"
+  },
+  {
+   "repo": "Backlog",
+   "tool": "COA Backlog Interactive Tool",
+   "latest": "v42",
+   "project": "COA L1 Report"
+  },
+  {
+   "repo": "Parcher",
+   "tool": "Parcher LOI worksheet",
+   "latest": "v21",
+   "project": "Not in a Project"
+  },
+  {
+   "repo": "Roster",
+   "tool": "PMLB Roster Dashboard",
+   "latest": "v3",
+   "project": "Not in a Project"
+  },
+  {
+   "repo": "Menu",
+   "tool": "Ming's Tools (menu page)",
+   "latest": "v8",
+   "project": "Not in a Project"
+  },
+  {
+   "repo": "Log",
+   "tool": "Prepmaster Log Explorer",
+   "latest": "",
+   "project": "Not in Work Index"
+  },
+  {
+   "repo": "Layout",
+   "tool": "Equipment Layout Map",
+   "latest": "",
+   "project": "Not in Work Index"
+  },
+  {
+   "repo": "Custody",
+   "tool": "Sample Custody Log Viewer",
+   "latest": "",
+   "project": "Not in Work Index"
+  },
+  {
+   "repo": "Scan",
+   "tool": "Sample Custody Scanner",
+   "latest": "",
+   "project": "Not in Work Index"
+  }
+ ]
+}

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<!--
+  Tool Versions (PMLB) — status page for Ming's GitHub Pages tools
+  Purpose: shows, live, which version each work tool is serving on GitHub Pages
+           and whether it matches the latest version recorded in Ming's Work Index.
+  Context: Ming (PMLB, BHP Port Hedland) hosts one repo per tool under
+           mingfahfong-dev; each serves index.html at mingfahfong-dev.github.io/<Repo>/.
+           Claude artifacts cannot fetch other sites, so this page lives on the same
+           GitHub Pages site and reads each tool page same-origin.
+  How it works:
+    - versions.json (same folder) = latest known version per repo; Claude updates it
+      on every release (PMLB Toolkit "Release a version" routine).
+    - For each repo, fetches /<Repo>/ and reads <meta name="tool-version" content="vN">;
+      falls back to the first "vN" in <title> (shown as "from title").
+    - Badges: Up to date / Behind / Ahead of index / Not tagged / Unreachable.
+  Personal repos (e.g. Login) are deliberately excluded.
+  Version history:
+    v1 — 2026-11-17 — first version (pilot in Menu repo).
+-->
+<head>
+<meta charset="utf-8">
+<meta name="tool-version" content="v1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tool Versions — PMLB</title>
+<script>try{var t=localStorage.getItem("tv-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2714%27%20fill%3D%27%23F7931E%27/%3E%3Cpath%20d%3D%27M14%2018h22l14%2014-18%2018-18-18z%27%20fill%3D%27none%27%20stroke%3D%27%23fff%27%20stroke-width%3D%275%27%20stroke-linejoin%3D%27round%27/%3E%3Ccircle%20cx%3D%2724%27%20cy%3D%2727%27%20r%3D%273.5%27%20fill%3D%27%23fff%27/%3E%3Cpath%20d%3D%27M30%2036l5%205%209-10%27%20fill%3D%27none%27%20stroke%3D%27%23fff%27%20stroke-width%3D%274.5%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20fill%3D%27%23F7931E%27/%3E%3Cpath%20d%3D%27M14%2018h22l14%2014-18%2018-18-18z%27%20fill%3D%27none%27%20stroke%3D%27%23fff%27%20stroke-width%3D%275%27%20stroke-linejoin%3D%27round%27/%3E%3Ccircle%20cx%3D%2724%27%20cy%3D%2727%27%20r%3D%273.5%27%20fill%3D%27%23fff%27/%3E%3C/svg%3E">
+<style>
+:root{--bg:#f5f5f7;--card:#fff;--text:#1d1d1f;--muted:#6e6e73;--line:#e5e5ea;--accent:#F7931E;
+--ok:#248a3d;--okbg:#e3f5e8;--warn:#b25000;--warnbg:#fff1e0;--bad:#c4271c;--badbg:#fde8e7;--info:#6e6e73;--infobg:#efeff4}
+[data-theme="dark"]{--bg:#000;--card:#1c1c1e;--text:#f5f5f7;--muted:#98989d;--line:#2c2c2e;
+--ok:#30d158;--okbg:#0f2a17;--warn:#ff9f0a;--warnbg:#2e2005;--bad:#ff453a;--badbg:#2f1210;--info:#98989d;--infobg:#2c2c2e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif}
+.wrap{max-width:2400px;margin:0 auto;padding:28px 40px 40px}
+header{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+h1{font-size:28px;font-weight:600;margin:0;letter-spacing:-.02em}
+.sub{color:var(--muted);font-size:14px}
+.sp{flex:1}
+button{font:inherit;font-size:14px;padding:8px 16px;border-radius:980px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.tiles{display:grid;grid-template-columns:repeat(5,minmax(160px,1fr));gap:14px;margin-bottom:20px}
+.tile{background:var(--card);border-radius:16px;padding:16px 20px}
+.tile b{display:block;font-size:30px;font-weight:600;letter-spacing:-.02em}
+.tile span{color:var(--muted);font-size:13px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filters button.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.card{background:var(--card);border-radius:16px;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:12px 18px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:12px;font-weight:500;color:var(--muted);text-transform:none}
+tr:last-child td{border-bottom:none}
+td.v{font-variant-numeric:tabular-nums;font-weight:500}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:980px;font-size:13px;font-weight:500;white-space:nowrap}
+.ok{color:var(--ok);background:var(--okbg)}.warn{color:var(--warn);background:var(--warnbg)}
+.bad{color:var(--bad);background:var(--badbg)}.info{color:var(--info);background:var(--infobg)}
+.note{color:var(--muted);font-size:12px}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+details.about{margin-top:22px;background:var(--card);border-radius:16px;padding:14px 20px}
+details.about summary{cursor:pointer;font-weight:500}
+footer{margin-top:18px;color:var(--muted);font-size:12px;text-align:center}
+@media(max-width:900px){.wrap{padding:18px}.tiles{grid-template-columns:repeat(2,1fr)}.hide-sm{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <h1>Tool Versions</h1>
+    <div class="sub" id="sub">Checking GitHub Pages…</div>
+  </div>
+  <div class="sp"></div>
+  <button id="refresh" class="primary">Check again</button>
+  <button id="theme" aria-label="Toggle light or dark mode">Light mode</button>
+</header>
+
+<div class="tiles">
+  <div class="tile"><b id="n-ok">–</b><span>Up to date</span></div>
+  <div class="tile"><b id="n-behind">–</b><span>GitHub behind</span></div>
+  <div class="tile"><b id="n-ahead">–</b><span>Index behind</span></div>
+  <div class="tile"><b id="n-untag">–</b><span>No version found</span></div>
+  <div class="tile"><b id="n-err">–</b><span>Unreachable</span></div>
+</div>
+
+<div class="filters" id="filters">
+  <button data-f="all" class="on">All</button>
+  <button data-f="attention">Needs attention</button>
+  <button data-f="BHP - CCLAS EL">CCLAS EL</button>
+  <button data-f="BHP - Sample Station">Sample Station</button>
+  <button data-f="BHP - Prepmaster Tools">Prepmaster Tools</button>
+  <button data-f="COA L1 Report">COA L1</button>
+  <button data-f="Not in a Project">Not in a Project</button>
+  <button data-f="Not in Work Index">Not in Work Index</button>
+</div>
+
+<div class="card">
+<table>
+  <thead><tr><th>Tool</th><th class="hide-sm">Project</th><th>On GitHub</th><th>Latest (Work Index)</th><th>Status</th><th class="hide-sm">Links</th></tr></thead>
+  <tbody id="rows"><tr><td colspan="6" class="note">Loading…</td></tr></tbody>
+</table>
+</div>
+
+<details class="about">
+  <summary>About this page</summary>
+  <p><b>Purpose.</b> One place to see whether each PMLB work tool on GitHub Pages is serving the latest version.</p>
+  <p><b>How it works.</b> The latest versions come from <code>versions.json</code> beside this page, which Claude updates on every release. The live version is read from each tool page's <code>tool-version</code> tag; tools without the tag fall back to the version in their title. Personal tools are not listed.</p>
+  <p><b>History of a tool.</b> "History" opens the commit list for that tool's <code>index.html</code>; every version ever published can be viewed or downloaded there. "Changelog" opens the repo's CHANGELOG.md.</p>
+  <p><b>Version history.</b> v1 — 17 Nov 2026 — first version (pilot).</p>
+</details>
+<footer>Tool Versions · v1 · PMLB</footer>
+</div>
+
+<script>
+const OWNER="mingfahfong-dev";
+const $=s=>document.querySelector(s);
+const num=v=>{const m=/v(\d+)/i.exec(v||"");return m?+m[1]:null};
+let data=[],filter="all";
+
+function setTheme(t){document.documentElement.setAttribute("data-theme",t);$("#theme").textContent=t==="dark"?"Light mode":"Dark mode";try{localStorage.setItem("tv-theme",t)}catch(e){}}
+$("#theme").onclick=()=>setTheme(document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark");
+setTheme(document.documentElement.getAttribute("data-theme")||"dark");
+
+async function live(repo){
+  try{
+    const r=await fetch(`/${repo}/?t=${Date.now()}`,{cache:"no-store"});
+    if(!r.ok) return {err:`HTTP ${r.status}`};
+    const html=await r.text();
+    const meta=/<meta[^>]+name=["']tool-version["'][^>]+content=["']([^"']+)["']/i.exec(html)||/<meta[^>]+content=["']([^"']+)["'][^>]+name=["']tool-version["']/i.exec(html);
+    if(meta) return {v:meta[1],src:"tag"};
+    const t=/<title>([^<]*)<\/title>/i.exec(html);
+    const tv=t&&/\bv(\d+(?:\.\d+)?)\b/i.exec(t[1]);
+    return {v:tv?"v"+tv[1]:"",src:"title"};
+  }catch(e){return {err:"unreachable"}}
+}
+
+function status(d){
+  if(d.err) return ["bad","Unreachable","err"];
+  const a=num(d.v),b=num(d.latest);
+  if(!d.latest) return d.src==="tag"?["info","Not in Work Index","untag"]:["info","Not tagged · not indexed","untag"];
+  if(a==null) return ["info","No version found","untag"];
+  if(a<b) return ["warn",`GitHub behind (${d.v} → ${d.latest})`,"behind"];
+  if(a>b) return ["warn","Work Index behind","ahead"];
+  return d.src==="tag"?["ok","Up to date","ok"]:["ok","Up to date · from title","ok"];
+}
+
+function render(){
+  const counts={ok:0,behind:0,ahead:0,untag:0,err:0};
+  const rows=data.map(d=>{const s=status(d);counts[s[2]]++;return [d,s]})
+    .filter(([d,s])=>filter==="all"||(filter==="attention"?s[2]!=="ok":d.project===filter));
+  for(const k in counts) $("#n-"+k).textContent=data.some(d=>d.v!==undefined||d.err)?counts[k]:"–";
+  $("#rows").innerHTML=rows.length?rows.map(([d,s])=>`<tr>
+    <td><a href="https://${OWNER}.github.io/${d.repo}/">${d.tool}</a><div class="note">${d.repo}</div></td>
+    <td class="hide-sm note">${d.project}</td>
+    <td class="v">${d.err?"—":(d.v===undefined?"…":(d.v||"—"))}${d.src==="title"&&d.v?' <span class="note">from title</span>':""}</td>
+    <td class="v">${d.latest||'<span class="note">—</span>'}</td>
+    <td><span class="badge ${s[0]}">${s[1]}</span></td>
+    <td class="hide-sm note"><a href="https://github.com/${OWNER}/${d.repo}/commits/main/index.html">History</a> · <a href="https://github.com/${OWNER}/${d.repo}/blob/main/CHANGELOG.md">Changelog</a></td>
+  </tr>`).join(""):`<tr><td colspan="6" class="note">Nothing here.</td></tr>`;
+}
+
+$("#filters").onclick=e=>{const b=e.target.closest("button");if(!b)return;filter=b.dataset.f;
+  document.querySelectorAll("#filters button").forEach(x=>x.classList.toggle("on",x===b));render()};
+
+async function run(){
+  $("#sub").textContent="Checking GitHub Pages…";
+  let list;
+  try{const r=await fetch(`versions.json?t=${Date.now()}`,{cache:"no-store"});list=await r.json();}
+  catch(e){$("#sub").textContent="Could not load versions.json";return}
+  data=list.tools.map(t=>({...t}));render();
+  await Promise.all(data.map(async d=>{Object.assign(d,await live(d.repo));render()}));
+  const when=new Date().toLocaleString("en-AU",{dateStyle:"medium",timeStyle:"short"});
+  $("#sub").textContent=`${data.length} work tools · latest list from ${list.source}, ${list.updated} · checked ${when}`;
+}
+$("#refresh").onclick=run;
+run();
+</script>
+</body>
+</html>
